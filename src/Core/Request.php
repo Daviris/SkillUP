@@ -6,6 +6,7 @@ class Request
 {
     public readonly string $method;
     public readonly string $uri;
+    private array $routeParams = [];
 
     public function __construct()
     {
@@ -24,5 +25,15 @@ class Request
     public function input(string $key, $default = null): mixed
     {
         return $_REQUEST[$key] ?? $default;
+    }
+
+    public function setRouteParam(array $params): void
+    {
+        $this->routeParams = $params;
+    }
+
+    public function param(string $key, $default = null): ?string
+    {
+        return $this->routeParams[$key] ?? $default;
     }
 }

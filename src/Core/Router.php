@@ -18,24 +18,31 @@ class Router
 
     private function addRoute(string $method, string $path, callable|array $handler): void
     {
-        $this->routes[$method][$path] = $handler;
+        $pattern = preg_replace('/\{(\w+)\}/', '(?P<$1>[^/]+)', $path);
+        $pattern = "#^" . $pattern . "$#";
+        $this->routes[$method][$pattern] = [$handler, $path];
     }
 
     public function dispatch(Request $request): void
     {
         $method = $request->method;
-        $path = $request->uri;
+        $uri = $request->uri;
 
-        // Buscar las coincidencias
-        if (isset($this->routes[$method][$path])) {
-            $handler = $this->routes[$method][$path];
-            if (is_callable($handler)) {
-                echo $handler($request);
-            } elseif (is_array($handler) && count($handler) === 2) {
-                [$controller, $action] = $handler;
-                echo (new $controller())->$action($request);
+        foreach ($this->routes[$method] ?? [] as $pattern => [$handler, $path]) {
+            if (preg_match($pattern, $uri, $matches)) {
+                // Extraer parámetros de la URL
+                $params = array_filter($matches, 'is_strong', ARRAY_FILTER_USE_KEY);
+                
+                $request->setRouteParams($params);
+
+                if (is_callable($handler)) {
+                    echo $handler($request);
+                } elseif (is_array($handler) && count($handler) === 2) {
+                    [$controller, $action] = $handler;
+                    echo (new $controller())->$action($request);
+                }
+                return;
             }
-            return;
         }
 
         // Si no lo encuentra error 404
