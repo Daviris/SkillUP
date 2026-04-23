@@ -14,11 +14,7 @@ class Database
         if (self::$connection !== null) return;
 
         try {
-            $dsn = sprintf('mysql:host=%s;port=$s;dbname=$s;charset=utf8mb4',
-            $config['host'],
-            $config['port'],
-            $config['database']
-            );
+            $dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['database']};charset=utf8mb4";
             self::$connection = new PDO($dsn, $config['username'], $config['password'], [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

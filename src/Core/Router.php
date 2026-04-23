@@ -31,9 +31,9 @@ class Router
         foreach ($this->routes[$method] ?? [] as $pattern => [$handler, $path]) {
             if (preg_match($pattern, $uri, $matches)) {
                 // Extraer parámetros de la URL
-                $params = array_filter($matches, 'is_strong', ARRAY_FILTER_USE_KEY);
+                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
                 
-                $request->setRouteParams($params);
+                $request->uri;
 
                 if (is_callable($handler)) {
                     echo $handler($request);
