@@ -11,7 +11,7 @@ class Curso extends Model
     protected static string $primaryKey = 'id';
 
     // Paginación con filtros
-    public static function listar(?string $modalidad = null, ?float $precioMax = null, int $porPag = 12, int $pag = 1) : array
+    public static function listar(?string $modalidad = null, ?float $precioMax = null, int $porPagina = 12, int $pagina = 1) : array
     {
         $pdo = Database::getConnection();
         $sql = "SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE 1=1";
@@ -32,9 +32,9 @@ class Curso extends Model
         $total = (int) $countStmt->fetchColumn();
 
         // Paginación
-        $offset = ($pag -1) * $porPag;
+        $offset = ($pagina -1) * $porPagina;
         $sql .= " LIMIT :limit OFFSET :offset";
-        $params['limit'] = $porPag;
+        $params['limit'] = $porPagina;
         $params['offset'] = $offset;
 
         $stmt = $pdo->prepare($sql);
@@ -50,9 +50,9 @@ class Curso extends Model
         return [
             'cursos' => $cursos,
             'total' => $total,
-            'paginaActual' => $pag,
-            'porPag' => $porPag,
-            'ultimaPag' => ceil($total / $porPag),
+            'paginaActual' => $pagina,
+            'porPag' => $porPagina,
+            'ultimaPag' => ceil($total / $porPagina),
         ];
     }
 
