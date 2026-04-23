@@ -27,7 +27,7 @@ class Request
         return $_REQUEST[$key] ?? $default;
     }
 
-    public function setRouteParam(array $params): void
+    public function setRouteParams(array $params): void
     {
         $this->routeParams = $params;
     }
