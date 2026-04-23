@@ -90,5 +90,31 @@ class AuthController
             header('Location: /register');
             exit;
         }
+
+        $id = Usuario::create([
+            'nombre' => $nombre,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'rol' => $rol,
+            'reputacion' => 0,
+        ]);
+
+        $usuario = Usuario::find($id);
+        $_SESSION['usuario'] = [
+            'id' => $usuario['id'],
+            'nombre' => $usuario['nombre'],
+            'email' => $usuario['email'],
+            'rol' => $usuario['rol'],
+        ];
+        $_SESSION['mensaje'] = 'Cuenta creada con éxito';
+        header('Location: /');
+        exit;
+    }
+
+    public function logout(Request $request): void
+    {
+        session_destroy();
+        header('Location: /');
+        exit;
     }
 }
