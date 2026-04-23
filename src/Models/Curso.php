@@ -40,9 +40,9 @@ class Curso extends Model
         $stmt = $pdo->prepare($sql);
 
         // Asignar tipos
-        foreach ($params as $key = $valor) {
-            $paramType = is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
-            $stmt->bindValue(":$key", $value, $paramType);
+        foreach ($params as $key => $valor) {
+            $paramType = is_int($valor) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+            $stmt->bindValue(":$key", $valor, $paramType);
         }
         $stmt->execute();
         $cursos = $stmt->fetchAll();
