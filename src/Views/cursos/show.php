@@ -17,11 +17,9 @@
             </ul>
 
             <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'alumno'): ?>
-                <form action="/carrito/agregar/<?= $curso['id'] ?>" method="POST" class="mt-6">
-                    <button type="submit" class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded border border-amber-500 shadow-lg transition transform hover:scale-105">
-                        Añadir a la mochila
-                    </button>
-                </form>
+                <a href="/carrito/agregar/<?= htmlspecialchars($curso['id']) ?>" class="mt-6 inline-block bg-amber-700 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded border border-amber-500 shadow-lg transition transform hover:scale-105">
+                    Añadir a la mochila
+                </a>
             <?php elseif (!isset($_SESSION['usuario'])): ?>
                 <div class="mt-6 p-4 bg-gray-700 border border-amber-600 rounded">
                     <p class="text-gray-300"><a href="/login" class="font-medium text-amber-400 hover:underline">Inicia sesión</a> para comprar este curso.</p>
