@@ -19,3 +19,7 @@ $router->get('/carrito', [\App\Controllers\CarritoController::class, 'index']);
 $router->get('/carrito/agregar/{id}', [\App\Controllers\CarritoController::class, 'agregar']);
 $router->get('/carrito/eliminar/{id}', [\App\Controllers\CarritoController::class, 'eliminar']);
 $router->get('/carrito/vaciar', [\App\Controllers\CarritoController::class, 'vaciar']);
+
+// Checkout
+$router->get('/pedido/checkout', [\App\Controllers\PedidoController::class, 'checkout']);
+$router->get('/pedido/confirmacion/{id}', [\App\Controllers\PedidoController::class, 'confirmacion']);
