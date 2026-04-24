@@ -1,10 +1,21 @@
 <?php
 
+// Home
 $router->get('/', [\App\Controllers\HomeController::class, 'index']);
+
+// Cursos
 $router->get('/cursos', [\App\Controllers\CursoController::class, 'index']);
 $router->get('/cursos/{id}', [\App\Controllers\CursoController::class, 'show']);
+
+// Autenticación
 $router->get('/login', [\App\Controllers\AuthController::class, 'formularioLogin']);
 $router->post('/login', [\App\Controllers\AuthController::class, 'login']);
 $router->get('/register', [\App\Controllers\AuthController::class, 'formularioRegister']);
 $router->post('/register', [\App\Controllers\AuthController::class, 'register']);
 $router->get('/logout', [\App\Controllers\AuthController::class, 'logout']);
+
+// Carrito
+$router->get('/carrito', [\App\Controllers\CarritoController::class, 'index']);
+$router->get('/carrito/agregar/{id}', [\App\Controllers\CarritoController::class, 'agregar']);
+$router->get('/carrito/eliminar/{id}', [\App\Controllers\CarritoController::class, 'eliminar']);
+$router->get('/carrito/vaciar', [\App\Controllers\CarritoController::class, 'vaciar']);
