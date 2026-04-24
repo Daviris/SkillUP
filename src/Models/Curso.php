@@ -61,7 +61,7 @@ class Curso extends Model
     {
         // Curso
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ONc.id_instructor = u.id WHERE c.id = :id");
+        $stmt = $pdo->prepare("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE c.id = :id");
         $stmt->execute(['id' => $id]);
         $curso = $stmt->fetch();
         if (!$curso) return null;

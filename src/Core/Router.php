@@ -33,7 +33,7 @@ class Router
                 // Extraer parámetros de la URL
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
                 
-                $request->uri;
+                $request->setRouteParams($params);
 
                 if (is_callable($handler)) {
                     echo $handler($request);

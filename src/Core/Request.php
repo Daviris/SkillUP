@@ -35,4 +35,9 @@ class Request
         $request->uri = rtrim($uri, '/') ?: '/';
         return $request;
     }
+
+    public function setRouteParams(array $params): void
+    {
+        $this->routeParams = $params;
+    }
 }
