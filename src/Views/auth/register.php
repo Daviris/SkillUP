@@ -42,7 +42,7 @@
                 </div>
                 <div class="mb-5">
                     <label for="password_confirmation" class="block text-amber-400 text-sm font-medium mb-1">Confirmar contraseña</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation"
+                    <input type="password" name="password_confirmacion" id="password_confirmacion"
                            class="w-full px-4 py-2 bg-gray-700 border-2 border-amber-600 rounded text-gray-200 placeholder-gray-400 focus:outline-none focus:border-amber-400 transition"
                            placeholder="••••••••" required>
                 </div>
