@@ -21,11 +21,6 @@ Database::init($config);
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Quitar el prefijo /skillup/public automáticamente
-$scriptDir = dirname($_SERVER['SCRIPT_NAME']); // ej: /skillup/public
-if ($scriptDir !== '/' && strpos($uri, $scriptDir) === 0) {
-    $uri = substr($uri, strlen($scriptDir));
-}
 // Si queda vacía, es la raíz
 if (empty($uri)) {
     $uri = '/';
