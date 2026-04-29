@@ -42,11 +42,11 @@
 </div>
 
 <!-- Paginación -->
-<?php if ($lastPage > 1): ?>
+<?php if ($ultimaPag > 1): ?>
 <div class="mt-8 flex justify-center space-x-2">
-    <?php for ($i = 1; $i <= $lastPage; $i++): ?>
+    <?php for ($i = 1; $i <= $ultimaPag; $i++): ?>
         <a href="/cursos?page=<?= $i ?>&<?= http_build_query(['modalidad' => $modalidad ?? '', 'precio_max' => $precio_max ?? '']) ?>"
-           class="px-4 py-2 border <?= $i === $currentPage ? 'bg-amber-700 border-amber-500 text-white' : 'bg-gray-700 border-gray-600 text-gray-200 hover:bg-amber-800' ?> rounded">
+           class="px-4 py-2 border <?= $i === $paginaActual ? 'bg-amber-700 border-amber-500 text-white' : 'bg-gray-700 border-gray-600 text-gray-200 hover:bg-amber-800' ?> rounded">
             <?= $i ?>
         </a>
     <?php endfor; ?>

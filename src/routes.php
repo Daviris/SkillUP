@@ -30,5 +30,5 @@ $router->get('/instructor', [\App\Controllers\InstructorController::class, 'inde
 $router->get('/instructor/crear', [\App\Controllers\InstructorController::class, 'create']);
 $router->post('/instructor/guardar', [\App\Controllers\InstructorController::class, 'store']);
 $router->get('/instructor/editar/{id}', [\App\Controllers\InstructorController::class, 'edit']);
-$router->post('instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
+$router->post('/instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
 $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController::class, 'delete']);
