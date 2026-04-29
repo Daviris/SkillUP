@@ -43,6 +43,84 @@ class InstructorController
     // Guarda el curso.
     public function store(Request $request): void
     {
-        
+        $this->verificarInstructor();
+
+        $data = [
+            'id_instructor' => $_SESSION['usuario']['id'],
+            'titulo' => $request->input('titulo'),
+            'descripcion' => $request->input('descripcion'),
+            'precio' => $request->input('precio'),
+            'modalidad' => $request->input('modalidad'),
+        ];
+
+        Curso::create($data);
+
+        $_SESSION['mensaje'] = 'Curso creado correctamente.';
+        header('Location: /instructor');
+        exit;
+    }
+
+    // Editar curso.
+
+    public function edit(Request $request): void
+    {
+        $this->verificarInstructor();
+
+        $id = (int) $request->param('id');
+        $curso = Curso::find($id);
+
+        if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            echo "No tienes permiso para editar este curso";
+            exit;
+        }
+
+        View::render('instructor/form', [
+            'title' => 'Editar Curso',
+            'accion' => 'Actualizar',
+            'curso' => $curso,
+        ]);
+    }
+
+    // Actualizar curso editado.
+    public  function update(Request $request): void
+    {
+        $this->verificarInstructor();
+
+        $id = (int) $request->param('id');
+        $curso = Curso::find($id);
+
+        if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            exit;
+        }
+
+        Curso::update($id, [
+            'titulo' => $request->input('titulo'),
+            'descripcion' => $request->input('descripcion'),
+            'precio' => $request->input('precio'),
+            'modalidad' => $request->input('modalidad'),
+        ]);
+
+        $_SESSION['mensaje'] = 'Curso actualizado correctamente.';
+        header('Location: /instructor');
+        exit;
+    }
+
+    // Eliminar un curso.
+    public function delete(Request $request): void
+    {
+        $this->verificarInstructor();
+
+        $id = (int) $request->param('id');
+        $curso = Curso::find($id);
+
+        if ($curso && $curso['id_instructor'] == $_SESSION['usuario']['id']) {
+            Curso::delete($id);
+            $_SESSION['mensaje'] = 'Curso eliminado correctamente.';
+        }
+
+        header('Location: /instructor');
+        exit;
     }
 }
