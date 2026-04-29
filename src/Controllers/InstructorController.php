@@ -11,7 +11,7 @@ class InstructorController
     // Verificar si el usuario es instructor.
     private function verificarInstructor(): void
     {
-        if(!isset($_SESSION['usuario']) || $_SESSION['usuari']['rol'] !== "instructor") {
+        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== "instructor") {
             header('Location: /login');
             exit;
         }
@@ -22,7 +22,7 @@ class InstructorController
     {
         $this->verificarInstructor();
 
-        $cursos = Curso::whereAll('id_instructor', $_SESSION['usuario']['id']);
+        $cursos = Curso::whereAll('id_instructor', (string) $_SESSION['usuario']['id']);
         View::render('instructor/index', [
             'title' => 'Panel de instructor',
             'cursos' => $cursos,

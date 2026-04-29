@@ -40,7 +40,7 @@ abstract class Model
         $stmt = $pdo->prepare('SELECT * FROM ' . static::$table . " WHERE $column = :value ORDER BY created_at DESC");
         $stmt->execute(['value' => $value]);
         $result = $stmt->fetchAll();
-        return $result ?: null;
+        return $result;
     }
 
     public static function create(array $data): int
