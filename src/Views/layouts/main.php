@@ -21,6 +21,11 @@
                     <a href="/cursos" class="hover:text-amber-400 transition font-medium">Cursos</a>
                     <?php if (isset($_SESSION['usuario'])): ?>
                         <span class="text-amber-300"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                        <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
+                            <a href="/instructor" class="bg-amber-800 hover:bg-amber-700 text-white px-3 py-1 rounded border border-amber-600 text-sm font-medium transition">
+                                Panel
+                            </a>
+                        <?php endif; ?>
                         <a href="/logout" class="bg-red-800 hover:bg-red-700 text-white px-3 py-1 rounded border border-red-600 text-sm font-medium transition">Salir</a>
                     <?php else: ?>
                         <a href="/login" class="hover:text-amber-400 transition">Login</a>

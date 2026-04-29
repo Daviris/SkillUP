@@ -34,6 +34,15 @@ abstract class Model
         return $result ?: null;
     }
 
+    public static function whereAll(string $column, string $value): array
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare('SELECT * FROM ' . static::$table . " WHERE $column = :value ORDER BY created_at DESC");
+        $stmt->execute(['value' => $value]);
+        $result = $stmt->fetchAll();
+        return $result ?: null;
+    }
+
     public static function create(array $data): int
     {
         $pdo = Database::getConnection();
