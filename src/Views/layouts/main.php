@@ -20,6 +20,22 @@
                 <div class="flex items-center space-x-6 text-gray-200">
                     <a href="/cursos" class="hover:text-amber-400 transition font-medium">Cursos</a>
                     <?php if (isset($_SESSION['usuario'])): ?>
+                        <?php
+                            $count = 0;
+                            if (!empty($_SESSION['carrito']['items'])) {
+                                $count = count($_SESSION['carrito']['items']);
+                            }
+                        ?>
+                        <a href="/carrito" class="relative hover:text-amber-400 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <?php if ($count > 0): ?>
+                            <span class="absolute -top-2 -right-2 bg-red-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border border-amber-500">
+                                <?= $count ?>
+                            </span>
+                        <?php endif; ?>
+                        </a>
                         <span class="text-amber-300"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                         <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
                             <a href="/instructor" class="bg-amber-800 hover:bg-amber-700 text-white px-3 py-1 rounded border border-amber-600 text-sm font-medium transition">
