@@ -21,11 +21,12 @@ $router->get('/carrito/eliminar/{id}', [\App\Controllers\CarritoController::clas
 $router->get('/carrito/vaciar', [\App\Controllers\CarritoController::class, 'vaciar']);
 
 // Checkout
-$router->get('/pedido/checkout', [\App\Controllers\PedidoController::class, 'checkout']);
+
 $router->get('/pedido/confirmacion/{id}', [\App\Controllers\PedidoController::class, 'confirmacion']);
+$router->get('/checkout', [\App\Controllers\PedidoController::class, 'formularioCheckout']);
+$router->post('/checkout/procesar', [\App\Controllers\PedidoController::class, 'procesarCheckout']);
 
 // Panel de Instructor
-
 $router->get('/instructor', [\App\Controllers\InstructorController::class, 'index']);
 $router->get('/instructor/crear', [\App\Controllers\InstructorController::class, 'create']);
 $router->post('/instructor/guardar', [\App\Controllers\InstructorController::class, 'store']);

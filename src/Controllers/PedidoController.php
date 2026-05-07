@@ -22,33 +22,37 @@ class PedidoController
             exit;
         }
 
-        $pdo = Database::getConnection();
-        $usuarioId = $_SESSION['usuario']['id'];
         $items = $_SESSION['carrito']['items'];
-        $total = 0;
+        $cursosValidos = [];
 
         // Calcular total y que los cursos existen
-        $cursosValido = [];
         foreach ($items as $cursoId => $item) {
             $curso = Curso::find((int)$cursoId);
             if ($curso) {
-                $subtotal = $curso['precio'] * $item['cantidad'];
-                $total += $subtotal;
-                $cursosValidados[] = [
+                $cursosValidos[] = [
                     'id' => $curso['id'],
                     'precio' => $curso['precio'],
-                    'cantidad' => $item['cantidad'],
+                    'cantidad' => $item['cantidad'] ?? 1,
                 ];
+            } else {
+                unset($_SESSION['carrito']['items'][$idCurso]);
             }
         }
 
         if (empty($cursosValidos)) {
-            $_SESSION['mensaje'] = 'No se pudo procesar el pedido.';
+            $_SESSION['mensaje'] = 'Los cursos de tu mochila ya no están disponibles.';
             header('Location: /carrito');
             exit;
         }
 
         // Crear el pedido
+        $pdo = Database::getConnection();
+        $usuarioId = $_SESSION['usuario']['id'];
+        $total = 0;
+        foreach ($cursosValidos as $cv) {
+            $total += $cv['precio'] * $cv['cantidad'];
+        }
+
         $stmt = $pdo->prepare("INSERT INTO pedidos (usuario_id, fecha, total, estado) VALUES (:usuario, NOW(), :total, 'completado')");
         $stmt->execute([
             'usuario' => $usuarioId,
@@ -105,5 +109,23 @@ class PedidoController
             'pedido' => $pedido,
             'detalles' => $detalles,
         ]);
+    }
+
+    public function formularioCheckout(Request $request): void
+    {
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: /login');
+            exit;
+        }
+        if (empty($_SESSION['carrito']['items'])) {
+            header('Location: /carrito');
+            exit;
+        }
+        View::render('pedido/checkout', ['title' => 'Checkout']);
+    }
+
+    public function procesarCheckout(Request $request): void
+    {
+        $this->checkout($request);
     }
 }

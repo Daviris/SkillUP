@@ -45,7 +45,7 @@
                             <a href="/carrito/vaciar" class="text-sm text-gray-400 hover:text-red-400 transition mr-3">
                                 Vaciar mochila
                             </a>
-                            <a href="/pedido/checkout" class="inline-block bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded border border-yellow-600 shadow transition">
+                            <a href="/checkout" class="inline-block bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded border border-yellow-600 shadow transition">
                                 Comprar
                             </a>
                         </td>
