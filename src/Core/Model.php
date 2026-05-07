@@ -46,6 +46,8 @@ abstract class Model
     public static function create(array $data): int
     {
         $pdo = Database::getConnection();
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
         $columns = implode(', ', array_keys($data));
         $placeholders = ':' . implode(', :', array_keys($data));
         $stmt = $pdo->prepare("INSERT INTO " . static::$table . " ($columns) VALUES ($placeholders)");
@@ -56,6 +58,7 @@ abstract class Model
     public static function update(int $id, array $data): void
     {
         $pdo = Database::getConnection();
+        $data['updated_at'] = date('Y-m-d H:i:s');
         $sets = [];
         foreach ($data as $columna => $valor) {
             $sets[] = "$columna = :$columna";
