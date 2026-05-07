@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Request;
 use App\Core\View;
 use App\Models\Curso;
+use App\Models\Pedido;
 
 class CarritoController
 {
@@ -62,6 +63,14 @@ class CarritoController
                 $_SESSION['mensaje'] = 'Este curso ya está en tu mochila';
                 header('Location: /carrito');
                 exit;
+            }
+
+            if (isset($_SESSION['usuario'])) {
+                if (Pedido::usuarioTieneCurso($_SESSION['usuario']['id'], $idCurso)) {
+                    $_SESSION['mensaje'] = 'Ya has adquirido este curso.';
+                    header('Location: /carrito');
+                    exit;
+                }
             }
 
             $_SESSION['carrito']['items'][$idCurso] = [

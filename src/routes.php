@@ -6,6 +6,7 @@ $router->get('/', [\App\Controllers\HomeController::class, 'index']);
 // Cursos
 $router->get('/cursos', [\App\Controllers\CursoController::class, 'index']);
 $router->get('/cursos/{id}', [\App\Controllers\CursoController::class, 'show']);
+$router->get('/mis-cursos', [\App\Controllers\MisCursosController::class, 'index']);
 
 // Autenticación
 $router->get('/login', [\App\Controllers\AuthController::class, 'formularioLogin']);

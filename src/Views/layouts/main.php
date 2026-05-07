@@ -36,6 +36,9 @@
                             </span>
                         <?php endif; ?>
                         </a>
+                        <?php if ($_SESSION['usuario']['rol'] === 'alumno'): ?>
+                            <a href="/mis-cursos" class="hover:text-amber-400 transition font-medium">Mis Cursos</a>
+                        <?php endif; ?>
                         <span class="text-amber-300"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                         <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
                             <a href="/instructor" class="bg-amber-800 hover:bg-amber-700 text-white px-3 py-1 rounded border border-amber-600 text-sm font-medium transition">

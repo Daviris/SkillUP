@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Request;
 use App\Core\View;
 use App\Models\Curso;
+use App\Models\Pedido;
 
 class CursoController
 {
@@ -32,6 +33,10 @@ class CursoController
     {
         $id = (int) $request->param('id');
         $curso = Curso::buscarConClases($id);
+        $yaComprado = false;
+        if (isset($_SESSION['usuario'])) {
+            $yaComprado = Pedido::usuarioTieneCurso($_SESSION['usuario']['id'], $id);
+        }
 
         if (!$curso) {
             http_response_code(404);
@@ -42,6 +47,7 @@ class CursoController
         View::render('cursos/show', [
             'title' => $curso['titulo'],
             'curso' => $curso,
+            'yaComprado' => $yaComprado,
         ]);
     }
 }
