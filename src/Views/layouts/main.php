@@ -8,6 +8,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- CSS puro personalizado -->
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Aseguramos que el dropdown esté oculto inicialmente */
+        .dropdown-menu {
+            display: none;
+        }
+        .dropdown-menu.open {
+            display: block;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans antialiased">
     <div class="min-h-screen flex flex-col">
@@ -19,7 +28,9 @@
                 </a>
                 <div class="flex items-center space-x-6 text-gray-200">
                     <a href="/cursos" class="hover:text-amber-400 transition font-medium">Cursos</a>
+
                     <?php if (isset($_SESSION['usuario'])): ?>
+                        <!-- Icono del carrito -->
                         <?php
                             $count = 0;
                             if (!empty($_SESSION['carrito']['items'])) {
@@ -27,28 +38,39 @@
                             }
                         ?>
                         <a href="/carrito" class="relative hover:text-amber-400 transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        <?php if ($count > 0): ?>
-                            <span class="absolute -top-2 -right-2 bg-red-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border border-amber-500">
-                                <?= $count ?>
-                            </span>
-                        <?php endif; ?>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            <?php if ($count > 0): ?>
+                                <span class="absolute -top-2 -right-2 bg-red-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border border-amber-500">
+                                    <?= $count ?>
+                                </span>
+                            <?php endif; ?>
                         </a>
-                        <?php if ($_SESSION['usuario']['rol'] === 'alumno'): ?>
-                            <a href="/mis-cursos" class="hover:text-amber-400 transition font-medium">Mis Cursos</a>
-                        <?php endif; ?>
-                        <span class="text-amber-300"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-                        <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
-                            <a href="/instructor" class="bg-amber-800 hover:bg-amber-700 text-white px-3 py-1 rounded border border-amber-600 text-sm font-medium transition">
-                                Panel
-                            </a>
-                        <?php endif; ?>
-                        <a href="/logout" class="bg-red-800 hover:bg-red-700 text-white px-3 py-1 rounded border border-red-600 text-sm font-medium transition">Salir</a>
+
+                        <!-- Dropdown del usuario -->
+                        <div class="relative">
+                            <button id="userMenuButton" class="flex items-center space-x-2 text-amber-300 hover:text-amber-200 transition font-medium focus:outline-none">
+                                <span><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div id="userDropdown" class="dropdown-menu absolute right-0 mt-2 w-56 bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl z-50">
+                                <div class="py-2">
+                                    <a href="/perfil" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Mi Perfil</a>
+                                    <?php if ($_SESSION['usuario']['rol'] === 'alumno'): ?>
+                                        <a href="/mis-cursos" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Mis Cursos</a>
+                                    <?php endif; ?>
+                                    <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
+                                        <a href="/instructor" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Panel Instructor</a>
+                                    <?php endif; ?>
+                                    <hr class="border-gray-600 my-1">
+                                    <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition">Cerrar sesión</a>
+                                </div>
+                            </div>
+                        </div>
                     <?php else: ?>
-                        <a href="/login" class="hover:text-amber-400 transition">Login</a>
-                        <a href="/register" class="bg-amber-700 hover:bg-amber-600 text-white px-4 py-2 rounded border border-amber-500 shadow transition">Registro</a>
+                        <a href="/login" class="hover:text-amber-400 transition font-medium">Login</a>
+                        <a href="/register" class="bg-amber-700 hover:bg-amber-600 text-white px-4 py-2 rounded border border-amber-500 shadow transition font-medium">Registro</a>
                     <?php endif; ?>
                 </div>
             </nav>
@@ -68,5 +90,26 @@
             &copy; <?= date('Y') ?> SkillUP - TFG DAW
         </footer>
     </div>
+
+    <!-- Script para el dropdown -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var button = document.getElementById('userMenuButton');
+            var dropdown = document.getElementById('userDropdown');
+            if (button && dropdown) {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('open');
+                });
+                // Cerrar el dropdown al hacer clic fuera
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('open');
+                });
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 </body>
 </html>

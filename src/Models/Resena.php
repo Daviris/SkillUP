@@ -8,9 +8,7 @@ class Resena extends Model
 {
     protected static string $table = 'resenas';
 
-    /**
-     * Obtiene todas las reseñas de un curso con el nombre del alumno.
-     */
+    // Obtiene todas las reseñas de un curso con el nombre del alumno.
     public static function delCurso(int $cursoId): array
     {
         $pdo = Database::getConnection();
@@ -23,9 +21,7 @@ class Resena extends Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Busca una reseña por usuario y curso.
-     */
+    // Busca una reseña por usuario y curso.
     public static function buscarPorUsuarioYCurso(int $usuarioId, int $cursoId): ?array
     {
         $pdo = Database::getConnection();
@@ -35,10 +31,7 @@ class Resena extends Model
         return $result ?: null;
     }
 
-    /**
-     * Calcula la reputación del instructor (media de todas las reseñas de sus cursos)
-     * y actualiza el campo reputacion en la tabla usuarios.
-     */
+    // Calcula reputación
     public static function actualizarReputacionInstructor(int $instructorId): void
     {
         $pdo = Database::getConnection();
@@ -51,5 +44,13 @@ class Resena extends Model
 
         $pdo->prepare("UPDATE usuarios SET reputacion = :rep WHERE id = :id")
             ->execute(['rep' => round($promedio ?? 0, 2), 'id' => $instructorId]);
+    }
+
+    public static function delUsuario(int $usuarioId): array
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT r.*, c.titulo AS curso_titulo FROM resenas r JOIN cursos c ON r.curso_id = c.id WHERE r.usuario_id = :uid ORDER BY r.fecha DESC");
+        $stmt->execute(['uid' => $usuarioId]);
+        return $stmt->fetchAll();
     }
 }
