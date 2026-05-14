@@ -99,6 +99,12 @@
                 </div>
                 <?php if (!empty($resena['comentario'])): ?>
                     <p class="text-gray-300 text-sm"><?= htmlspecialchars($resena['comentario']) ?></p>
+                    <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['id'] == $resena['usuario_id']): ?>
+                        <div class="mt-2 flex space-x-3">
+                            <a href="/resena/editar/<?= $resena['id'] ?>" class="text-amber-400 hover:text-amber-300 text-sm">Editar</a>
+                            <a href="/resena/eliminar/<?= $resena['id'] ?>" onclick="return confirm('¿Eliminar esta reseña?')" class="text-red-400 hover:text-red-300 text-sm">Eliminar</a>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <p class="text-xs text-gray-500 mt-1"><?= date('d/m/Y', strtotime($resena['fecha'])) ?></p>
             </li>

@@ -59,6 +59,9 @@ $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController
 
 // Reseñas
 $router->post('/resena/guardar', [\App\Controllers\ResenaController::class, 'store']);
+$router->get('/resena/editar/{id}', [\App\Controllers\ResenaController::class, 'edit']);
+$router->post('/resena/actualizar/{id}', [\App\Controllers\ResenaController::class, 'update']);
+$router->get('/resena/eliminar/{id}', [\App\Controllers\ResenaController::class, 'delete']);
 
 // Perfil de usuario
 $router->get('/perfil', [\App\Controllers\PerfilController::class, 'index']);
