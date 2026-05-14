@@ -56,3 +56,6 @@ $router->post('/instructor/guardar', [\App\Controllers\InstructorController::cla
 $router->get('/instructor/editar/{id}', [\App\Controllers\InstructorController::class, 'edit']);
 $router->post('/instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
 $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController::class, 'delete']);
+
+// Reseñas
+$router->post('/resena/guardar', [\App\Controllers\ResenaController::class, 'store']);

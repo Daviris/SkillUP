@@ -86,5 +86,21 @@ try {
             CONSTRAINT `entregas_alumno_id_foreign` FOREIGN KEY (`alumno_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
             CONSTRAINT `entregas_archivo_id_foreign` FOREIGN KEY (`archivo_id`) REFERENCES `archivos` (`id`) ON DELETE SET NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        // Tabla de reseñas
+        $pdo->exec("CREATE TABLE IF NOT EXISTS `resenas` (
+            `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `usuario_id` bigint(20) UNSIGNED NOT NULL,
+            `curso_id` bigint(20) UNSIGNED NOT NULL,
+            `puntuacion` tinyint(3) UNSIGNED NOT NULL CHECK (puntuacion BETWEEN 1 AND 5),
+            `comentario` text DEFAULT NULL,
+            `fecha` datetime DEFAULT current_timestamp(),
+            `created_at` datetime DEFAULT current_timestamp(),
+            `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `resenas_usuario_curso` (`usuario_id`, `curso_id`),
+            CONSTRAINT `resenas_usuario_fk` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+            CONSTRAINT `resenas_curso_fk` FOREIGN KEY (`curso_id`) REFERENCES `cursos` (`id`) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     }
 }
