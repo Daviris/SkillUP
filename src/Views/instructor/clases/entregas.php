@@ -21,11 +21,29 @@
                 </div>
                 <div class="text-right">
                     <?php if ($entrega['nota'] !== null): ?>
-                        <p class="text-yellow-400 font-bold">Nota: <?= $entrega['nota'] ?></p>
-                        <?php if ($entrega['feedback_instructor']): ?>
-                            <p class="text-sm text-gray-300">Feedback: <?= htmlspecialchars($entrega['feedback_instructor']) ?></p>
-                        <?php endif; ?>
+                        <div id="nota-mostrada-<?= $entrega['id'] ?>">
+                            <p class="text-yellow-400 font-bold">Nota: <?= $entrega['nota'] ?></p>
+                            <?php if ($entrega['feedback_instructor']): ?>
+                                <p class="text-sm text-gray-300">Feedback: <?= htmlspecialchars($entrega['feedback_instructor']) ?></p>
+                            <?php endif; ?>
+                            <button onclick="toggleEdicion(<?= $entrega['id'] ?>)" class="mt-2 text-amber-400 hover:text-amber-300 text-sm font-medium">
+                                Editar nota
+                            </button>
+                        </div>
+                        <!-- Formulario de edición (oculto por defecto) -->
+                        <div id="form-edicion-<?= $entrega['id'] ?>" class="hidden mt-2">
+                            <form action="/instructor/entregas/actualizar" method="POST" class="space-y-2">
+                                <input type="hidden" name="entrega_id" value="<?= $entrega['id'] ?>">
+                                <input type="number" step="0.01" name="nota" value="<?= $entrega['nota'] ?>" class="w-20 px-2 py-1 bg-gray-700 border border-amber-600 rounded text-gray-200" required>
+                                <textarea name="feedback" rows="2" placeholder="Feedback" class="w-40 px-2 py-1 bg-gray-700 border border-amber-600 rounded text-gray-200"><?= htmlspecialchars($entrega['feedback_instructor'] ?? '') ?></textarea>
+                                <div class="flex space-x-2">
+                                    <button type="submit" class="bg-green-700 hover:bg-green-600 text-white text-sm font-bold py-1 px-3 rounded">Guardar</button>
+                                    <button type="button" onclick="toggleEdicion(<?= $entrega['id'] ?>)" class="bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold py-1 px-3 rounded">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
                     <?php else: ?>
+                        <!-- Formulario para calificar (sin cambios) -->
                         <form action="/instructor/entregas/calificar" method="POST" class="inline-block">
                             <input type="hidden" name="entrega_id" value="<?= $entrega['id'] ?>">
                             <div class="flex items-center space-x-2">
@@ -46,5 +64,13 @@
     </div>
     <?php endif; ?>
 </div>
+
+<script>
+function toggleEdicion(id) {
+    document.getElementById('nota-mostrada-' + id).classList.toggle('hidden');
+    document.getElementById('form-edicion-' + id).classList.toggle('hidden');
+}
+</script>
+
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/../../layouts/main.php'; ?>

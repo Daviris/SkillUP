@@ -296,4 +296,35 @@ class InstructorClaseController
         header('Location: /instructor/clases/' . $entrega['clase_id'] . '/entregas');
         exit;
     }
+
+    public function actualizarNota(Request $request): void
+    {
+        $this->verificarInstructor();
+        $entregaId = (int) $request->input('entrega_id');
+        $nota = $request->input('nota');
+        $feedback = $request->input('feedback', '');
+
+        $entrega = Tarea::find($entregaId);
+        if (!$entrega) {
+            http_response_code(404);
+            exit;
+        }
+
+        // Verificar que la tarea pertenece al instructor
+        $clase = Clase::find($entrega['clase_id']);
+        $curso = Curso::find($clase['curso_id']);
+        if ($curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            exit;
+        }
+
+        Tarea::update($entregaId, [
+            'nota' => $nota,
+            'feedback_instructor' => $feedback,
+        ]);
+
+        $_SESSION['mensaje'] = 'Nota y feedback actualizados.';
+        header('Location: /instructor/clases/' . $entrega['clase_id'] . '/entregas');
+        exit;
+    }
 }

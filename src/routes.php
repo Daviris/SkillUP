@@ -28,6 +28,7 @@ $router->get('/archivo/descargar/{id}', [\App\Controllers\ArchivoController::cla
 $router->get('/tarea/editar/{id}', [\App\Controllers\TareaController::class, 'editar']);
 $router->post('/tarea/actualizar/{id}', [\App\Controllers\TareaController::class, 'actualizar']);
 $router->get('/tarea/eliminar/{id}', [\App\Controllers\TareaController::class, 'eliminar']);
+$router->post('/instructor/entregas/actualizar', [\App\Controllers\InstructorClaseController::class, 'actualizarNota']);
 
 // Autenticación
 $router->get('/login', [\App\Controllers\AuthController::class, 'formularioLogin']);
