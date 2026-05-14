@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'SkillUP' ?></title>
-    <!-- Tailwind CSS CDN (desarrollo) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- CSS puro personalizado -->
     <link rel="stylesheet" href="/css/styles.css">
     <style>
-        /* Aseguramos que el dropdown esté oculto inicialmente */
         .dropdown-menu {
             display: none;
         }
@@ -63,6 +60,9 @@
                                     <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
                                         <a href="/instructor" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Panel Instructor</a>
                                     <?php endif; ?>
+                                    <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                                        <a href="/admin" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Panel Admin</a>
+                                    <?php endif; ?>
                                     <hr class="border-gray-600 my-1">
                                     <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition">Cerrar sesión</a>
                                 </div>
@@ -91,7 +91,6 @@
         </footer>
     </div>
 
-    <!-- Script para el dropdown -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var button = document.getElementById('userMenuButton');
@@ -101,7 +100,6 @@
                     e.stopPropagation();
                     dropdown.classList.toggle('open');
                 });
-                // Cerrar el dropdown al hacer clic fuera
                 document.addEventListener('click', function() {
                     dropdown.classList.remove('open');
                 });

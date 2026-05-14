@@ -186,5 +186,11 @@ class Migrator
                 $pdo->exec("ALTER TABLE clases ADD $campo $definicion");
             }
         }
+
+        // Crear un admin por defecto si no hay ninguno
+        $stmt = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE rol = 'admin'");
+        if ((int) $stmt->fetchColumn() === 0) {
+            $pdo->exec("INSERT INTO usuarios (nombre, email, password, rol, reputacion) VALUES ('Administrador', 'admin@skillup.com', '" . password_hash('admin123', PASSWORD_DEFAULT) . "', 'admin', 0)");
+        }
     }
 }

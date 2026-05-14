@@ -67,3 +67,19 @@ $router->get('/resena/eliminar/{id}', [\App\Controllers\ResenaController::class,
 $router->get('/perfil', [\App\Controllers\PerfilController::class, 'index']);
 $router->get('/perfil/editar', [\App\Controllers\PerfilController::class, 'edit']);
 $router->post('/perfil/actualizar', [\App\Controllers\PerfilController::class, 'update']);
+
+// Administrador
+$router->get('/admin', [\App\Controllers\AdminController::class, 'dashboard']);
+$router->get('/admin/usuarios', [\App\Controllers\AdminController::class, 'usuarios']);
+$router->get('/admin/usuarios/editar/{id}', [\App\Controllers\AdminController::class, 'editarUsuario']);
+$router->post('/admin/usuarios/actualizar/{id}', [\App\Controllers\AdminController::class, 'actualizarUsuario']);
+$router->get('/admin/usuarios/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarUsuario']);
+$router->get('/admin/cursos', [\App\Controllers\AdminController::class, 'cursos']);
+$router->get('/admin/cursos/editar/{id}', [\App\Controllers\AdminController::class, 'editarCurso']);
+$router->post('/admin/cursos/actualizar/{id}', [\App\Controllers\AdminController::class, 'actulizarCurso']);
+$router->get('/admin/cursos/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarCurso']);
+$router->get('/admin/pedidos', [\App\Controllers\AdminController::class, 'pedidos']);
+$router->post('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
+$router->get('/admin/pedidos/ver/{id}', [\App\Controllers\AdminController::class, 'verPedido']);
+$router->get('/admin/resenas', [\App\Controllers\AdminController::class, 'resenas']);
+$router->get('/admin/resenas/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarResena']);

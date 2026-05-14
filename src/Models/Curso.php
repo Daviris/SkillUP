@@ -74,4 +74,12 @@ class Curso extends Model
         $curso['clases'] = $clases;
         return $curso;
     }
+
+    // Obtener todos los instructores
+    public static function todosInstructores(): array
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->query("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id ORDER BY c.created_at DESC");
+        return $stmt->fetchAll();
+    }
 }
