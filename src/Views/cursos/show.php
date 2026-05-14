@@ -39,8 +39,23 @@
                 <li class="p-4 hover:bg-gray-700/50 transition">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="font-medium text-amber-300"><?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?></span>
-                            <p class="text-sm text-gray-400 mt-1"><?= htmlspecialchars($clase['contenido']) ?></p>
+                            <span class="font-medium text-amber-300">
+                                <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
+                            </span>
+                            <span class="text-xs text-gray-500 ml-2">(<?= ucfirst($clase['tipo']) ?>)</span>
+                            <?php if ($clase['tipo'] === 'teoria' && !empty($clase['contenido_texto'])): ?>
+                                <p class="text-sm text-gray-400 mt-1">
+                                    <?= htmlspecialchars(substr($clase['contenido_texto'], 0, 80)) ?>...
+                                </p>
+                            <?php elseif ($clase['tipo'] === 'archivo' && !empty($clase['archivo_id'])): ?>
+                                <p class="text-sm text-gray-400 mt-1">Material descargable</p>
+                            <?php elseif ($clase['tipo'] === 'tarea' && !empty($clase['criterios_evaluacion'])): ?>
+                                <p class="text-sm text-gray-400 mt-1">
+                                    <?= htmlspecialchars(substr($clase['criterios_evaluacion'], 0, 80)) ?>...
+                                </p>
+                            <?php else: ?>
+                                <p class="text-sm text-gray-500 mt-1 italic">Sin descripción</p>
+                            <?php endif; ?>
                         </div>
                         <span class="text-sm text-gray-400 whitespace-nowrap ml-4"><?= $clase['duracion'] ?> min</span>
                     </div>
