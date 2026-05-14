@@ -24,6 +24,11 @@ $router->get('/mis-cursos/clase/{id}', [\App\Controllers\AlumnoCursoController::
 $router->post('/archivo/subir', [\App\Controllers\ArchivoController::class, 'subir']);
 $router->get('/archivo/descargar/{id}', [\App\Controllers\ArchivoController::class, 'descargar']);
 
+// Tareas
+$router->get('/tarea/editar/{id}', [\App\Controllers\TareaController::class, 'editar']);
+$router->post('/tarea/actualizar/{id}', [\App\Controllers\TareaController::class, 'actualizar']);
+$router->get('/tarea/eliminar/{id}', [\App\Controllers\TareaController::class, 'eliminar']);
+
 // Autenticación
 $router->get('/login', [\App\Controllers\AuthController::class, 'formularioLogin']);
 $router->post('/login', [\App\Controllers\AuthController::class, 'login']);

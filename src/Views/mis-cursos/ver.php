@@ -108,6 +108,19 @@
                                                 </p>
                                             <?php endif; ?>
                                         </div>
+                                    <?php else: ?>
+                                        <!-- Opciones para modificar/eliminar (solo si no calificada) -->
+                                        <div class="mt-4 pt-3 border-t border-green-600 flex space-x-4">
+                                            <a href="/tarea/editar/<?= $entrega['id'] ?>"
+                                               class="text-amber-400 hover:text-amber-300 text-sm font-medium">
+                                                Modificar
+                                            </a>
+                                            <a href="/tarea/eliminar/<?= $entrega['id'] ?>"
+                                               onclick="return confirm('¿Estás seguro de eliminar esta entrega?')"
+                                               class="text-red-400 hover:text-red-300 text-sm font-medium">
+                                                Eliminar
+                                            </a>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
                             <?php else: ?>
