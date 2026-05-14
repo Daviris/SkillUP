@@ -18,6 +18,9 @@ Session::start();
 
 $config = require_once __DIR__ . '/../config/database.php';
 Database::init($config);
+// Auto-migración de las tablas
+require_once __DIR__ .'/../src/Core/Migrator.php';
+\App\Core\Migrator::run();
 
 // Construir Request manualmente con ajuste de subdirectorio
 $method = $_SERVER['REQUEST_METHOD'];
