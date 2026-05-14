@@ -18,7 +18,7 @@ $router->post('/instructor/clases/actualizar/{id}', [\App\Controllers\Instructor
 $router->get('/instructor/clases/eliminar/{id}', [\App\Controllers\InstructorClaseController::class, 'delete']);
 $router->get('/instructor/clases/{id}/entregas', [\App\Controllers\InstructorClaseController::class, 'verEntregas']);
 $router->post('/instructor/entregas/calificar', [\App\Controllers\InstructorClaseController::class, 'calificarEntrega']);
-$router->get('/mis-cursos/clase/{id}', [\App\Controllers\AlumnoCursoController::class, 'verClase']);
+$router->get('/mis-cursos/clase/{id}', [\App\Controllers\ClaseIndividualController::class, 'mostrar']);
 
 // Subida/Descarga de archivos
 $router->post('/archivo/subir', [\App\Controllers\ArchivoController::class, 'subir']);
