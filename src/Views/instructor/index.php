@@ -28,6 +28,7 @@
                         <div class="flex space-x-3">
                             <a href="/instructor/editar/<?= $c['id'] ?>" class="text-amber-400 hover:text-amber-300 font-medium transition">Editar</a>
                             <a href="/instructor/eliminar/<?= $c['id'] ?>" onclick="return confirm('¿Eliminar este curso?')" class="text-red-400 hover:text-red-300 font-medium transition">Eliminar</a>
+                            <a href="/instructor/cursos/<?= $c['id'] ?>/clases" class="text-amber-400 hover:underline">Clases</a>
                         </div>
                     </td>
                 </tr>
