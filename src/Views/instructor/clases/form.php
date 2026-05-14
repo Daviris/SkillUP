@@ -26,11 +26,6 @@ if (!empty($clase['fecha_limite'])) {
                     <input type="number" name="duracion" value="<?= htmlspecialchars($clase['duracion'] ?? 0) ?>" required
                            class="w-full px-4 py-2 bg-gray-700 border-2 border-amber-600 rounded text-gray-200 focus:outline-none focus:border-amber-400">
                 </div>
-                <div>
-                    <label class="block text-amber-400 text-sm mb-1">Orden</label>
-                    <input type="number" name="orden" value="<?= htmlspecialchars($clase['orden'] ?? 0) ?>" required
-                           class="w-full px-4 py-2 bg-gray-700 border-2 border-amber-600 rounded text-gray-200 focus:outline-none focus:border-amber-400">
-                </div>
             </div>
 
             <div class="mb-4">

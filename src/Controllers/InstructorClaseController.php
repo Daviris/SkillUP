@@ -36,7 +36,7 @@ class InstructorClaseController
             exit;
         }
         
-        $clases = Clase::whereAll('curso_id', (string) $cursoId);
+        $clases = Clase::porCurso($cursoId);
         View::render('instructor/clases/index', [
             'title' => 'Clases de ' . $curso['titulo'],
             'curso' => $curso,
@@ -77,16 +77,13 @@ class InstructorClaseController
         }
 
         $tipo = $request->input('tipo');
-        $orden = $request->input('orden');
 
         // Asignar automáticamente el orden si se deja vacío
-        if ($orden === '' || $orden === null) {
-            $pdo = \App\Core\Database::getConnection();
-            $stmt = $pdo->prepare("SELECT MAX(orden) FROM clases WHERE curso_id = :curso_id");
-            $stmt->execute(['curso_id' => $cursoId]);
-            $max = $stmt->fetchColumn();
-            $orden = ($max !== false) ? (int)$max + 1 : 1;
-        }
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->prepare("SELECT MAX(orden) FROM clases WHERE curso_id = :curso_id");
+        $stmt->execute(['curso_id' => $cursoId]);
+        $max = $stmt->fetchColumn();
+        $orden = ($max !== false) ? (int)$max + 1 : 1;
 
         $data = [
             'curso_id' => $cursoId,
@@ -177,7 +174,6 @@ class InstructorClaseController
     $data = [
         'titulo'   => $request->input('titulo'),
         'duracion' => $request->input('duracion'),
-        'orden'    => $request->input('orden'),
         'tipo'     => $request->input('tipo'),
     ];
 
