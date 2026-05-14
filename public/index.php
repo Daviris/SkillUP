@@ -12,6 +12,8 @@ use App\Core\Router;
 use App\Core\Session;
 use App\Core\Database;
 
+set_exception_handler([\App\Core\ExceptionHandler::class, 'handlerException']);
+
 Session::start();
 
 $config = require_once __DIR__ . '/../config/database.php';
