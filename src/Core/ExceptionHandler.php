@@ -6,6 +6,7 @@ class ExceptionHandler
 {
     public static function handleException(\Throwable $exception): void
     {
+        // Guardar el error en un log
         $logDir = __DIR__ . '/../../storage/logs';
         if (!is_dir($logDir)) {
             mkdir($logDir, 0777, true);
@@ -15,12 +16,14 @@ class ExceptionHandler
         $mensaje .= $exception->getMessage() . ' en ' . $exception->getFile() . ' línea ' . $exception->getLine() . "\n";
         file_put_contents($logFile, $mensaje, FILE_APPEND);
 
+        // Limpiar salidas previas
         while (ob_get_level()) {
             ob_end_clean();
         }
 
         http_response_code(500);
 
+        // Mostrar vista de error
         if (class_exists('App\\Core\\View')) {
             try {
                 View::render('error/500', ['message' => $exception->getMessage()]);

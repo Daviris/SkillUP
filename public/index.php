@@ -12,7 +12,7 @@ use App\Core\Router;
 use App\Core\Session;
 use App\Core\Database;
 
-set_exception_handler([\App\Core\ExceptionHandler::class, 'handlerException']);
+set_exception_handler([\App\Core\ExceptionHandler::class, 'handleException']);
 
 Session::start();
 
