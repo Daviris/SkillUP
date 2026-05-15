@@ -1,48 +1,57 @@
 <?php ob_start(); ?>
-<div class="bg-gray-800 rounded-lg border-2 border-amber-700 shadow-xl p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-4xl font-bold text-amber-300" style="font-family: 'VT323', monospace;">
-            <?= htmlspecialchars($curso['titulo']) ?> - Clases
-        </h1>
-        <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" 
-           class="bg-amber-700 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded border border-amber-500 shadow transition">
-            + Nueva clase
-        </a>
+<div style="max-width:1000px; margin:0 auto;">
+    <!-- Cabecera -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <div>
+            <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.25rem;">
+                <?= htmlspecialchars($curso['titulo']) ?>
+            </h1>
+            <p style="color:#9ca3af;">Gestión de clases</p>
+        </div>
+        <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary">+ Nueva clase</a>
     </div>
 
-    <?php if (!empty($clases)): ?>
-    <ul class="divide-y divide-amber-700 border border-amber-700 rounded-lg">
-        <?php foreach ($clases as $clase): ?>
-        <li class="p-4 hover:bg-gray-700/50 flex justify-between items-center">
-            <div>
-                <span class="text-amber-300 font-medium">
-                    <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
-                </span>
-                <span class="text-xs text-gray-400 ml-2">(<?= ucfirst($clase['tipo']) ?>)</span>
-                <?php if ($clase['tipo'] === 'tarea' && !empty($clase['fecha_limite'])): ?>
-                    <span class="text-xs text-red-400 ml-2">
-                        (Límite: <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>)
-                    </span>
-                <?php endif; ?>
-            </div>
-            <div class="space-x-2">
-                <a href="/instructor/clases/editar/<?= $clase['id'] ?>" 
-                   class="text-amber-400 hover:text-amber-300">Editar</a>
-                <a href="/instructor/clases/eliminar/<?= $clase['id'] ?>" 
-                   onclick="return confirm('¿Eliminar esta clase?')" 
-                   class="text-red-400 hover:text-red-300">Eliminar</a>
-                <?php if ($clase['tipo'] === 'tarea'): ?>
-                <a href="/instructor/clases/<?= $clase['id'] ?>/entregas" 
-                   class="text-green-400 hover:text-green-300">Ver entregas</a>
-                <?php endif; ?>
-            </div>
-        </li>
-        <?php endforeach; ?>
-    </ul>
-    <?php else: ?>
-    <div class="text-center py-12 bg-gray-900/50 rounded-lg border border-dashed border-amber-700">
-        <p class="text-gray-400">No hay clases aún.</p>
+    <!-- Migas de pan -->
+    <div style="margin-bottom:2rem; color:#9ca3af; font-size:0.9rem;">
+        <a href="/instructor" style="color:#fbbf24;">Panel Instructor</a> /
+        <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
     </div>
+
+    <!-- Listado de clases -->
+    <?php if (!empty($clases)): ?>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+            <?php foreach ($clases as $clase): ?>
+                <div class="card" style="padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.25rem;">
+                            <span style="color:#fbbf24; font-weight:600; font-size:1.1rem;">
+                                <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
+                            </span>
+                            <span class="badge badge-amber"><?= ucfirst($clase['tipo']) ?></span>
+                            <span style="color:#9ca3af; font-size:0.85rem;"><?= $clase['duracion'] ?> min</span>
+                        </div>
+                        <?php if ($clase['tipo'] === 'tarea' && !empty($clase['fecha_limite'])): ?>
+                            <p style="color:#ef4444; font-size:0.8rem; margin-top:0.25rem;">
+                                Límite: <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                    <div style="display:flex; gap:0.75rem;">
+                        <a href="/instructor/clases/editar/<?= $clase['id'] ?>" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="/instructor/clases/eliminar/<?= $clase['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta clase?')">Eliminar</a>
+                        <?php if ($clase['tipo'] === 'tarea'): ?>
+                            <a href="/instructor/clases/<?= $clase['id'] ?>/entregas" class="btn btn-secondary btn-sm">Entregas</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <div class="card" style="padding:3rem; text-align:center;">
+            <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+            <p style="color:#cbd5e1; font-size:1.1rem;">No hay clases todavía.</p>
+            <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary" style="margin-top:1.5rem;">Añadir primera clase</a>
+        </div>
     <?php endif; ?>
 </div>
 <?php $content = ob_get_clean(); ?>
