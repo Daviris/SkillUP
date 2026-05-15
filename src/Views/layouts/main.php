@@ -10,12 +10,17 @@
 <body>
     <header class="main-header">
         <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0;">
-            <a href="/" class="header-logo">⚡ SkillUP</a>
-            <nav class="header-links">
-                <a href="/cursos">📚 Cursos</a>
+            <!-- Bloque izquierdo: Logo + Cursos -->
+            <div style="display:flex; align-items:center; gap:2rem;">
+                <a href="/" class="header-logo" style="margin:0;">⚡ SkillUP</a>
+                <a href="/cursos" style="color:#d1d5db; font-weight:500; font-size:1rem; transition:color 0.2s;">📚 Cursos</a>
+            </div>
+
+            <!-- Bloque derecho: Carrito + Usuario o Login/Register -->
+            <div style="display:flex; align-items:center; gap:1.5rem;">
                 <?php if (isset($_SESSION['usuario'])): ?>
                     <?php $cartCount = !empty($_SESSION['carrito']['items']) ? count($_SESSION['carrito']['items']) : 0; ?>
-                    <a href="/carrito" style="position:relative;">
+                    <a href="/carrito" style="position:relative; color:#d1d5db;">
                         🛒
                         <?php if ($cartCount > 0): ?>
                             <span class="badge badge-red" style="position:absolute; top:-12px; right:-12px; font-size:0.7rem; min-width:1.5rem; height:1.5rem; display:flex; align-items:center; justify-content:center;"><?= $cartCount ?></span>
@@ -41,39 +46,20 @@
                         </div>
                     </div>
                 <?php else: ?>
-                    <a href="/login">🔐 Login</a>
-                    <a href="/register" class="btn btn-primary">✨ Registro</a>
+                    <a href="/login" style="color:#d1d5db; font-weight:500;">🔐 Login</a>
+                    <a href="/register" class="btn btn-primary" style="padding:0.5rem 1.2rem;">✨ Registro</a>
                 <?php endif; ?>
-            </nav>
+            </div>
         </div>
     </header>
 
     <main class="container" style="padding-top:2rem; padding-bottom:3rem; flex:1;">
+        <!-- Mensajes flash (se mantiene igual) -->
         <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
-            <div id="toast-container" class="toast-container"></div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const container = document.getElementById('toast-container');
-                    const toast = document.createElement('div');
-                    toast.className = 'toast toast-success';
-                    toast.innerHTML = '<span><?= htmlspecialchars($mensaje) ?></span><button class="toast-close">&times;</button>';
-                    container.appendChild(toast);
-
-                    // Cerrar al hacer clic en el botón
-                    toast.querySelector('.toast-close').addEventListener('click', function() {
-                        toast.style.animation = 'fadeOut 0.3s ease-in forwards';
-                        setTimeout(() => toast.remove(), 300);
-                    });
-
-                    // Autocierre a los 5 segundos
-                    setTimeout(() => {
-                        if (toast.parentNode) {
-                            toast.style.animation = 'fadeOut 0.3s ease-in forwards';
-                            setTimeout(() => toast.remove(), 300);
-                        }
-                    }, 5000);
-                });
-            </script>
+            <div class="flash-container">
+                <span><?= htmlspecialchars($mensaje) ?></span>
+                <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+            </div>
             <?php unset($_SESSION['mensaje']); ?>
         <?php endif; ?>
         <?= $content ?? '' ?>
