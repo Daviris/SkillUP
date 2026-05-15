@@ -45,7 +45,7 @@ $router->get('/carrito/vaciar', [\App\Controllers\CarritoController::class, 'vac
 
 // Checkout
 
-$router->get('/pedido/confirmacion/{id}', [\App\Controllers\PedidoController::class, 'confirmacion']);
+$router->get('/pedidos/confirmacion/{id}', [\App\Controllers\PedidoController::class, 'confirmacion']);
 $router->get('/checkout', [\App\Controllers\PedidoController::class, 'formularioCheckout']);
 $router->post('/checkout/procesar', [\App\Controllers\PedidoController::class, 'procesarCheckout']);
 

@@ -73,9 +73,8 @@ class PedidoController
 
         // Vaciar carrito
         $_SESSION['carrito'] = [];
-        $_SESSION['mensaje'] = 'Tu pedido #' . $pedidoId . 'ha sido registrado';
-
-        header('Location: /pedido/confirmacion/' . $pedidoId);
+        
+        header('Location: /pedidos/confirmacion/' . $pedidoId);
         exit;
     }
 
@@ -104,7 +103,7 @@ class PedidoController
         $stmtDetalles->execute(['pedido' => $pedidoId]);
         $detalles = $stmtDetalles->fetchAll();
 
-        View::render('pedido/confirmacion', [
+        View::render('pedidos/confirmacion', [
             'title' => 'Pedido completado',
             'pedido' => $pedido,
             'detalles' => $detalles,
@@ -121,7 +120,7 @@ class PedidoController
             header('Location: /carrito');
             exit;
         }
-        View::render('pedido/checkout', ['title' => 'Checkout']);
+        View::render('pedidos/checkout', ['title' => 'Checkout']);
     }
 
     public function procesarCheckout(Request $request): void
