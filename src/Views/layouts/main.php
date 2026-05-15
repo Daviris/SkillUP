@@ -4,110 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'SkillUP' ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        .dropdown-menu {
-            display: none;
-        }
-        .dropdown-menu.open {
-            display: block;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans antialiased">
-    <div class="min-h-screen flex flex-col">
-        <!-- Header RPG -->
-        <header class="bg-gray-900 border-b-4 border-amber-700 shadow-lg">
-            <nav class="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
-                <a href="/" class="text-3xl font-bold tracking-wider text-amber-400 hover:text-amber-300 transition" style="font-family: 'VT323', monospace;">
-                    SkillUP
-                </a>
-                <div class="flex items-center space-x-6 text-gray-200">
-                    <a href="/cursos" class="hover:text-amber-400 transition font-medium">Cursos</a>
-
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <!-- Icono del carrito -->
-                        <?php
-                            $count = 0;
-                            if (!empty($_SESSION['carrito']['items'])) {
-                                $count = count($_SESSION['carrito']['items']);
-                            }
-                        ?>
-                        <a href="/carrito" class="relative hover:text-amber-400 transition">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <?php if ($count > 0): ?>
-                                <span class="absolute -top-2 -right-2 bg-red-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border border-amber-500">
-                                    <?= $count ?>
-                                </span>
+<body>
+    <header class="main-header">
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0;">
+            <a href="/" class="header-logo">⚡ SkillUP</a>
+            <nav class="header-links">
+                <a href="/cursos">📚 Cursos</a>
+                <?php if (isset($_SESSION['usuario'])): ?>
+                    <?php $cartCount = !empty($_SESSION['carrito']['items']) ? count($_SESSION['carrito']['items']) : 0; ?>
+                    <a href="/carrito" style="position:relative;">
+                        🛒
+                        <?php if ($cartCount > 0): ?>
+                            <span class="badge badge-red" style="position:absolute; top:-12px; right:-12px; font-size:0.7rem; min-width:1.5rem; height:1.5rem; display:flex; align-items:center; justify-content:center;"><?= $cartCount ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" id="userMenuButton">
+                            <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?> ▾
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="/perfil">👤 Mi Perfil</a>
+                            <?php if ($_SESSION['usuario']['rol'] === 'alumno'): ?>
+                                <a href="/mis-cursos">📖 Mis Cursos</a>
                             <?php endif; ?>
-                        </a>
-
-                        <!-- Dropdown del usuario -->
-                        <div class="relative">
-                            <button id="userMenuButton" class="flex items-center space-x-2 text-amber-300 hover:text-amber-200 transition font-medium focus:outline-none">
-                                <span><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                            </button>
-                            <div id="userDropdown" class="dropdown-menu absolute right-0 mt-2 w-56 bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl z-50">
-                                <div class="py-2">
-                                    <a href="/perfil" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Mi Perfil</a>
-                                    <?php if ($_SESSION['usuario']['rol'] === 'alumno'): ?>
-                                        <a href="/mis-cursos" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Mis Cursos</a>
-                                    <?php endif; ?>
-                                    <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
-                                        <a href="/instructor" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Panel Instructor</a>
-                                    <?php endif; ?>
-                                    <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
-                                        <a href="/admin" class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-amber-400 transition">Panel Admin</a>
-                                    <?php endif; ?>
-                                    <hr class="border-gray-600 my-1">
-                                    <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition">Cerrar sesión</a>
-                                </div>
-                            </div>
+                            <?php if ($_SESSION['usuario']['rol'] === 'instructor'): ?>
+                                <a href="/instructor">🧙 Panel Instructor</a>
+                            <?php endif; ?>
+                            <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                                <a href="/admin">🛡️ Panel Admin</a>
+                            <?php endif; ?>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" style="color:#ef4444;">🚪 Cerrar sesión</a>
                         </div>
-                    <?php else: ?>
-                        <a href="/login" class="hover:text-amber-400 transition font-medium">Login</a>
-                        <a href="/register" class="bg-amber-700 hover:bg-amber-600 text-white px-4 py-2 rounded border border-amber-500 shadow transition font-medium">Registro</a>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php else: ?>
+                    <a href="/login">🔐 Login</a>
+                    <a href="/register" class="btn btn-primary">✨ Registro</a>
+                <?php endif; ?>
             </nav>
-        </header>
+        </div>
+    </header>
 
-        <main class="flex-grow container mx-auto px-4 py-8">
-            <?php if (($mensaje = $_SESSION['mensaje'] ?? null)): ?>
-                <div class="bg-green-900/50 border border-green-600 text-green-200 px-4 py-3 rounded mb-6">
-                    <?= htmlspecialchars($mensaje) ?>
-                </div>
-                <?php unset($_SESSION['mensaje']); ?>
-            <?php endif; ?>
-            <?= $content ?? '' ?>
-        </main>
+    <main class="container" style="padding-top:2rem; padding-bottom:3rem; flex:1;">
+        <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
+            <div class="flash-container">
+                <span><?= htmlspecialchars($mensaje) ?></span>
+                <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+            </div>
+            <?php unset($_SESSION['mensaje']); ?>
+        <?php endif; ?>
+        <?= $content ?? '' ?>
+    </main>
 
-        <footer class="bg-gray-800 text-white text-center py-4 text-sm">
-            &copy; <?= date('Y') ?> SkillUP - TFG DAW
-        </footer>
-    </div>
+    <footer style="background:#1e293b; border-top:1px solid #334155; color:#94a3b8; text-align:center; padding:1.2rem; font-size:0.9rem;">
+        &copy; <?= date('Y') ?> SkillUP — TFG DAW
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var button = document.getElementById('userMenuButton');
-            var dropdown = document.getElementById('userDropdown');
-            if (button && dropdown) {
-                button.addEventListener('click', function(e) {
+        // Dropdown funcional
+        (function() {
+            const btn = document.getElementById('userMenuButton');
+            const menu = document.getElementById('userDropdown');
+            if (btn && menu) {
+                btn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    dropdown.classList.toggle('open');
+                    menu.classList.toggle('open');
                 });
                 document.addEventListener('click', function() {
-                    dropdown.classList.remove('open');
+                    menu.classList.remove('open');
                 });
-                dropdown.addEventListener('click', function(e) {
+                menu.addEventListener('click', function(e) {
                     e.stopPropagation();
                 });
             }
-        });
+        })();
     </script>
 </body>
 </html>
