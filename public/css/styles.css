@@ -315,13 +315,16 @@ main {
     overflow-x: auto;
     border: 1px solid #b45309;
     border-radius: 0.5rem;
+    width: 100%;
 }
 
-.table {
+.table-container table {
     width: 100%;
-    border-collapse: collapse;
-    background-color: #1f2937;
+    min-width: 600px;
+    table-layout: auto;
 }
+
+
 
 th {
     background-color: rgba(180, 83, 9, 0.25);

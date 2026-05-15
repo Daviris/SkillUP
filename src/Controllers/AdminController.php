@@ -49,21 +49,52 @@ class AdminController
         View::render('admin/usuarios', ['title' => 'Usuarios', 'usuarios' => $usuarios]);
     }
 
+    public function actualizarUsuario(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+
+        $nombre = trim($request->input('nombre', ''));
+        $email = trim($request->input('email', ''));
+        $rol = $request->input('rol', 'alumno');
+
+        if (empty($nombre) || empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['mensaje'] = 'El nombre y un email válido son obligatorios.';
+            header('Location: /admin/usuarios/editar/' . $id);
+            exit;
+        }
+
+        if (!in_array($rol, ['alumno', 'instructor', 'admin'])) {
+            $rol = 'alumno';
+        }
+
+        $data = [
+            'nombre' => $nombre,
+            'email' => $email,
+            'rol' => $rol,
+        ];
+
+        if (!empty($request->input('password'))) {
+            $data['password'] = password_hash($request->input('password'), PASSWORD_DEFAULT);
+        }
+
+        Usuario::update($id, $data);
+        $_SESSION['mensaje'] = 'Usuario actualizado correctamente.';
+        header('Location: /admin/usuarios');
+        exit;
+    }
+
     public function editarUsuario(Request $request): void
     {
         $this->verificarAdmin();
         $id = (int) $request->param('id');
-        $data = [
-            'nombre' => $request->input('nombre'),
-            'email' => $request->input('email'),
-            'rol' => $request->input('rol'),
-        ];
-        if (!empty($request->input('password'))) {
-            $data['password'] = password_hash($request->input('password'), PASSWORD_DEFAULT);
+        $usuario = Usuario::find($id);
+        if (!$usuario) {
+            http_response_code(404);
+            echo "Usuario no encontrado.";
+            exit;
         }
-        Usuario::update($id, $data);
-        header('Location: /admin/usuarios');
-        exit;
+        View::render('admin/editar_usuario', ['title' => 'Editar usuario', 'usuario' => $usuario]);
     }
 
     public function eliminarUsuario(Request $request): void
@@ -122,7 +153,9 @@ class AdminController
     public function pedidos(Request $request): void
     {
         $this->verificarAdmin();
-        $pedidos = Pedido::all();
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->query("SELECT p.*, u.nombre AS usuario_nombre FROM pedidos p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha DESC");
+        $pedidos = $stmt->fetchAll();
         View::render('admin/pedidos', ['title' => 'Pedidos', 'pedidos' => $pedidos]);
     }
 
@@ -169,7 +202,9 @@ class AdminController
     public function resenas(Request $request): void
     {
         $this->verificarAdmin();
-        $resenas = Resena::all();
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->query("SELECT r.*, u.nombre AS alumno_nombre, c.titulo AS curso_titulo FROM resenas r JOIN usuarios u ON r.usuario_id = u.id JOIN cursos c ON r.curso_id = c.id ORDER BY r.fecha DESC");
+        $resenas = $stmt->fetchAll();
         View::render('admin/resenas', ['title' => 'Reseñas', 'resenas' => $resenas]);
     }
 

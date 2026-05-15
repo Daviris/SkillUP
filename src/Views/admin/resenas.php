@@ -1,23 +1,32 @@
 <?php ob_start(); ?>
-<h1 class="text-3xl font-bold text-amber-300 mb-6">Reseñas</h1>
-<div class="overflow-x-auto">
-    <table class="min-w-full bg-gray-800 border border-amber-700 rounded-lg">
-        <thead class="bg-amber-900/50">
+<h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:2rem;">Reseñas</h1>
+
+<div class="table-container">
+    <table>
+        <thead>
             <tr>
-                <th class="py-2 px-4 text-left text-amber-300">Curso</th>
-                <th class="py-2 px-4 text-left text-amber-300">Usuario</th>
-                <th class="py-2 px-4 text-left text-amber-300">Puntuación</th>
-                <th class="py-2 px-4 text-left text-amber-300">Acciones</th>
+                <th>Alumno</th>
+                <th>Curso</th>
+                <th>Puntuación</th>
+                <th>Comentario</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($resenas as $r): ?>
-            <tr class="border-b border-gray-700">
-                <td class="py-2 px-4"><?= $r['curso_id'] ?></td>
-                <td class="py-2 px-4"><?= $r['usuario_id'] ?></td>
-                <td class="py-2 px-4"><?= str_repeat('★', $r['puntuacion']) ?></td>
-                <td class="py-2 px-4">
-                    <a href="/admin/resenas/eliminar/<?= $r['id'] ?>" onclick="return confirm('¿Eliminar esta reseña?')" class="text-red-400 hover:underline">Eliminar</a>
+            <?php foreach ($resenas as $resena): ?>
+            <tr>
+                <td><?= htmlspecialchars($resena['alumno_nombre'] ?? 'ID: ' . $resena['usuario_id']) ?></td>
+                <td><?= htmlspecialchars($resena['curso_titulo'] ?? 'ID: ' . $resena['curso_id']) ?></td>
+                <td style="color:#fbbf24;">
+                    <?= str_repeat('★', $resena['puntuacion']) ?><?= str_repeat('☆', 5 - $resena['puntuacion']) ?>
+                </td>
+                <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    <?= htmlspecialchars($resena['comentario'] ?? '') ?>
+                </td>
+                <td><?= date('d/m/Y', strtotime($resena['fecha'])) ?></td>
+                <td>
+                    <a href="/admin/resenas/eliminar/<?= $resena['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta reseña?')">Eliminar</a>
                 </td>
             </tr>
             <?php endforeach; ?>

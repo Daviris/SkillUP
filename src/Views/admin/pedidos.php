@@ -1,35 +1,41 @@
 <?php ob_start(); ?>
-<h1 class="text-3xl font-bold text-amber-300 mb-6">Pedidos</h1>
+<h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:2rem;">Pedidos</h1>
 
-<div class="overflow-x-auto">
-    <table class="min-w-full bg-gray-800 border border-amber-700 rounded-lg">
-        <thead class="bg-amber-900/50">
+<div class="table-container">
+    <table>
+        <thead>
             <tr>
-                <th class="py-2 px-4 text-left text-amber-300">ID</th>
-                <th class="py-2 px-4 text-left text-amber-300">Usuario</th>
-                <th class="py-2 px-4 text-left text-amber-300">Total</th>
-                <th class="py-2 px-4 text-left text-amber-300">Fecha</th>
-                <th class="py-2 px-4 text-left text-amber-300">Estado</th>
-                <th class="py-2 px-4 text-left text-amber-300">Acciones</th>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Total</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($pedidos as $pedido): ?>
-            <tr class="border-b border-gray-700 hover:bg-gray-700/50">
-                <td class="py-2 px-4"><?= $pedido['id'] ?></td>
-                <td class="py-2 px-4"><?= htmlspecialchars($pedido['usuario_id'] ?? '') ?></td>
-                <td class="py-2 px-4 text-amber-300"><?= number_format($pedido['total'], 2) ?> €</td>
-                <td class="py-2 px-4"><?= date('d/m/Y', strtotime($pedido['fecha'])) ?></td>
-                <td class="py-2 px-4"><?= $pedido['estado'] ?></td>
-                <td class="py-2 px-4 space-x-2">
-                    <a href="/admin/pedidos/ver/<?= $pedido['id'] ?>" class="text-amber-400 hover:underline">Ver</a>
-                    <form action="/admin/pedidos/cambiar-estado/<?= $pedido['id'] ?>" method="POST" class="inline">
-                        <select name="estado" onchange="this.form.submit()" class="bg-gray-700 border border-amber-600 rounded px-2 py-1 text-gray-200">
-                            <option value="pendiente" <?= $pedido['estado'] == 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                            <option value="completado" <?= $pedido['estado'] == 'completado' ? 'selected' : '' ?>>Completado</option>
-                            <option value="cancelado" <?= $pedido['estado'] == 'cancelado' ? 'selected' : '' ?>>Cancelado</option>
-                        </select>
-                    </form>
+            <tr>
+                <td>#<?= $pedido['id'] ?></td>
+                <td><?= htmlspecialchars($pedido['usuario_nombre'] ?? $pedido['usuario_id']) ?></td>
+                <td style="color:#fbbf24; font-weight:600;"><?= number_format($pedido['total'], 2) ?> €</td>
+                <td><?= date('d/m/Y', strtotime($pedido['fecha'])) ?></td>
+                <td>
+                    <span class="badge <?= $pedido['estado'] === 'completado' ? 'badge-green' : ($pedido['estado'] === 'cancelado' ? 'badge-red' : 'badge-amber') ?>">
+                        <?= $pedido['estado'] ?>
+                    </span>
+                </td>
+                <td>
+                    <div style="display:flex; gap:0.5rem; align-items:center;">
+                        <a href="/admin/pedidos/ver/<?= $pedido['id'] ?>" class="btn btn-primary btn-sm">Ver</a>
+                        <form action="/admin/pedidos/cambiar-estado/<?= $pedido['id'] ?>" method="POST" style="display:inline;">
+                            <select name="estado" onchange="this.form.submit()" class="form-select" style="width:auto; padding:0.3rem 0.5rem; font-size:0.85rem;">
+                                <option value="pendiente" <?= $pedido['estado'] === 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
+                                <option value="completado" <?= $pedido['estado'] === 'completado' ? 'selected' : '' ?>>Completado</option>
+                                <option value="cancelado" <?= $pedido['estado'] === 'cancelado' ? 'selected' : '' ?>>Cancelado</option>
+                            </select>
+                        </form>
+                    </div>
                 </td>
             </tr>
             <?php endforeach; ?>
