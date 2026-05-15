@@ -50,10 +50,30 @@
 
     <main class="container" style="padding-top:2rem; padding-bottom:3rem; flex:1;">
         <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
-            <div class="flash-container">
-                <span><?= htmlspecialchars($mensaje) ?></span>
-                <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
-            </div>
+            <div id="toast-container" class="toast-container"></div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const container = document.getElementById('toast-container');
+                    const toast = document.createElement('div');
+                    toast.className = 'toast toast-success';
+                    toast.innerHTML = '<span><?= htmlspecialchars($mensaje) ?></span><button class="toast-close">&times;</button>';
+                    container.appendChild(toast);
+
+                    // Cerrar al hacer clic en el botón
+                    toast.querySelector('.toast-close').addEventListener('click', function() {
+                        toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                        setTimeout(() => toast.remove(), 300);
+                    });
+
+                    // Autocierre a los 5 segundos
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                            setTimeout(() => toast.remove(), 300);
+                        }
+                    }, 5000);
+                });
+            </script>
             <?php unset($_SESSION['mensaje']); ?>
         <?php endif; ?>
         <?= $content ?? '' ?>

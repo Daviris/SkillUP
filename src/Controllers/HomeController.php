@@ -9,6 +9,15 @@ class HomeController
 {
     public function index(Request $request): void
     {
-        View::render('home', ['title' => 'SkillUP']);
+        $totalCursos = count(\App\Models\Curso::all());
+        $totalAlumnos = count(\App\Models\Usuario::whereAll('rol', 'alumno'));
+        $totalInstructores = count(\App\Models\Usuario::whereAll('rol', 'instructor'));
+
+        View::render('home', [
+            'title' => 'SkillUP - Sube de nivel',
+            'totalCursos' => $totalCursos,
+            'totalAlumnos' => $totalAlumnos,
+            'totalInstructores' => $totalInstructores,
+        ]);
     }
 }
