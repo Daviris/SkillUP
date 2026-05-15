@@ -1,91 +1,126 @@
 <?php ob_start(); ?>
-<div class="max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold text-amber-300 mb-6" style="font-family: 'VT323', monospace;">Mi Perfil</h1>
+<div style="max-width:900px; margin:0 auto;">
+    <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:2rem;">👤 Mi Perfil</h1>
 
-    <div class="bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl p-6 mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl text-amber-400">Información personal</h2>
-            <a href="/perfil/editar" class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded border border-amber-500 shadow transition">Editar</a>
-        </div>
-        <div class="grid grid-cols-2 gap-4 text-gray-200">
-            <p><span class="text-amber-400">Nombre:</span> <?= htmlspecialchars($usuario['nombre']) ?></p>
-            <p><span class="text-amber-400">Email:</span> <?= htmlspecialchars($usuario['email']) ?></p>
-            <p><span class="text-amber-400">Rol:</span> <?= ucfirst($usuario['rol']) ?></p>
-            <?php if ($usuario['rol'] === 'instructor'): ?>
-                <p><span class="text-amber-400">Reputación:</span> <?= number_format($usuario['reputacion'], 2) ?> / 5</p>
-            <?php endif; ?>
+    <!-- Información básica -->
+    <div class="card" style="padding:2rem; margin-bottom:2rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:0.5rem;">
+                    <?= htmlspecialchars($usuario['nombre']) ?>
+                </h2>
+                <p style="color:#cbd5e1;"><?= htmlspecialchars($usuario['email']) ?></p>
+                <p style="color:#9ca3af; margin-top:0.25rem;">Rol: <?= ucfirst($usuario['rol']) ?></p>
+                <?php if ($usuario['rol'] === 'instructor'): ?>
+                    <p style="color:#9ca3af;">Reputación: <?= number_format($usuario['reputacion'] ?? 0, 1) ?> / 5</p>
+                <?php endif; ?>
+            </div>
+            <a href="/perfil/editar" class="btn btn-primary">Editar perfil</a>
         </div>
     </div>
 
+    <!-- Sección para Alumno -->
     <?php if ($usuario['rol'] === 'alumno'): ?>
-        <!-- Historial de pedidos -->
-        <div class="bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl p-6 mb-8">
-            <h2 class="text-2xl text-amber-400 mb-4">Historial de compras</h2>
+        <!-- Pedidos -->
+        <div class="card" style="padding:2rem; margin-bottom:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">🛒 Historial de pedidos</h2>
             <?php if (!empty($pedidos)): ?>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-gray-900/50 border border-amber-700 rounded-lg">
-                        <thead class="bg-amber-900/50">
+                <div class="table-container">
+                    <table style="width:100%;">
+                        <thead>
                             <tr>
-                                <th class="py-3 px-4 text-left text-sm font-medium text-amber-300">Pedido #</th>
-                                <th class="py-3 px-4 text-left text-sm font-medium text-amber-300">Fecha</th>
-                                <th class="py-3 px-4 text-left text-sm font-medium text-amber-300">Total</th>
-                                <th class="py-3 px-4 text-left text-sm font-medium text-amber-300">Estado</th>
+                                <th>Curso</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-amber-700">
+                        <tbody>
                             <?php foreach ($pedidos as $pedido): ?>
-                            <tr class="hover:bg-gray-700/50 transition">
-                                <td class="py-3 px-4"><?= $pedido['id'] ?></td>
-                                <td class="py-3 px-4"><?= date('d/m/Y H:i', strtotime($pedido['fecha'])) ?></td>
-                                <td class="py-3 px-4 text-amber-300 font-bold">€<?= number_format($pedido['total'], 2) ?></td>
-                                <td class="py-3 px-4"><?= ucfirst($pedido['estado']) ?></td>
+                            <tr>
+                                <td><?= htmlspecialchars($pedido['curso_titulo']) ?></td>
+                                <td><?= date('d/m/Y', strtotime($pedido['fecha'])) ?></td>
+                                <td style="color:#fbbf24;"><?= number_format($pedido['total'], 2) ?> €</td>
+                                <td><span class="badge badge-green"><?= $pedido['estado'] ?></span></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
             <?php else: ?>
-                <p class="text-gray-400">Aún no has realizado ninguna compra.</p>
+                <p style="color:#9ca3af;">No has realizado ningún pedido.</p>
             <?php endif; ?>
         </div>
 
-        <!-- Reseñas escritas -->
-        <div class="bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl p-6">
-            <h2 class="text-2xl text-amber-400 mb-4">Tus reseñas</h2>
-            <?php if (!empty($resenas)): ?>
-                <ul class="divide-y divide-gray-600 border border-amber-700 rounded-lg">
-                    <?php foreach ($resenas as $resena): ?>
-                    <li class="p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="font-medium text-amber-300"><?= htmlspecialchars($resena['curso_titulo']) ?></span>
-                            <span class="text-yellow-400 font-bold"><?= str_repeat('★', $resena['puntuacion']) ?><?= str_repeat('☆', 5 - $resena['puntuacion']) ?></span>
-                        </div>
-                        <?php if (!empty($resena['comentario'])): ?>
-                            <p class="text-gray-300 text-sm"><?= htmlspecialchars($resena['comentario']) ?></p>
-                        <?php endif; ?>
-                        <p class="text-xs text-gray-500 mt-1"><?= date('d/m/Y', strtotime($resena['fecha'])) ?></p>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p class="text-gray-400">Aún no has escrito ninguna reseña.</p>
-            <?php endif; ?>
-        </div>
-    <?php elseif ($usuario['rol'] === 'instructor'): ?>
-        <!-- Cursos publicados -->
-        <div class="bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl p-6">
-            <h2 class="text-2xl text-amber-400 mb-4">Mis cursos publicados</h2>
-            <?php if (!empty($cursos)): ?>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <?php foreach ($cursos as $curso): ?>
-                        <div class="bg-gray-700 p-4 rounded-lg border border-amber-600">
-                            <h3 class="text-amber-300 font-semibold"><?= htmlspecialchars($curso['titulo']) ?></h3>
-                            <p class="text-gray-400 text-sm">€<?= number_format($curso['precio'], 2) ?></p>
+        <!-- Cursos comprados -->
+        <div class="card" style="padding:2rem; margin-bottom:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">📖 Cursos comprados</h2>
+            <?php if (!empty($cursosComprados)): ?>
+                <div class="grid-3">
+                    <?php foreach ($cursosComprados as $curso): ?>
+                        <div class="card" style="padding:1rem;">
+                            <h3 style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($curso['titulo']) ?></h3>
+                            <p style="color:#9ca3af; font-size:0.9rem; margin-top:0.5rem;"><?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></p>
+                            <a href="/mis-cursos/ver/<?= $curso['id'] ?>" class="btn btn-primary btn-sm" style="margin-top:0.75rem;">Ver clases</a>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <p class="text-gray-400">Aún no has publicado ningún curso.</p>
+                <p style="color:#9ca3af;">No has comprado ningún curso todavía.</p>
+            <?php endif; ?>
+        </div>
+
+        <!-- Reseñas escritas -->
+        <div class="card" style="padding:2rem; margin-bottom:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">⭐ Reseñas que has escrito</h2>
+            <?php if (!empty($resenas)): ?>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                    <?php foreach ($resenas as $resena): ?>
+                        <div style="background:#111827; border:1px solid #374151; border-radius:0.5rem; padding:1rem;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+                                <span style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($resena['curso_titulo'] ?? 'Curso') ?></span>
+                                <span style="color:#fbbf24;"><?= str_repeat('★', $resena['puntuacion']) ?><?= str_repeat('☆', 5 - $resena['puntuacion']) ?></span>
+                            </div>
+                            <?php if (!empty($resena['comentario'])): ?>
+                                <p style="color:#cbd5e1; font-size:0.95rem;"><?= htmlspecialchars($resena['comentario']) ?></p>
+                            <?php endif; ?>
+                            <p style="color:#6b7280; font-size:0.8rem; margin-top:0.5rem;"><?= date('d/m/Y', strtotime($resena['fecha'])) ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p style="color:#9ca3af;">No has escrito ninguna reseña.</p>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Sección para Instructor -->
+    <?php if ($usuario['rol'] === 'instructor'): ?>
+        <div class="card" style="padding:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">🧙 Mis cursos publicados</h2>
+            <?php if (!empty($cursos)): ?>
+                <div class="table-container">
+                    <table style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Precio</th>
+                                <th>Modalidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($cursos as $curso): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($curso['titulo']) ?></td>
+                                <td style="color:#fbbf24;"><?= number_format($curso['precio'], 2) ?> €</td>
+                                <td><?= ucfirst($curso['modalidad']) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <p style="color:#9ca3af;">Aún no has publicado ningún curso.</p>
             <?php endif; ?>
         </div>
     <?php endif; ?>

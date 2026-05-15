@@ -30,7 +30,7 @@ class PerfilController
         if ($rol === 'alumno') {
             // Historial de pedidos
             $pdo = \App\Core\Database::getConnection();
-            $stmt = $pdo->prepare("SELECT * FROM pedidos WHERE usuario_id = :uid ORDER BY fecha DESC");
+            $stmt = $pdo->prepare("SELECT p.*, dp.curso_id, c.titulo AS curso_titulo FROM pedidos p JOIN detalle_pedido dp ON p.id = dp.pedido_id JOIN cursos c ON dp.curso_id = c.id WHERE p.usuario_id = :uid ORDER BY p.fecha DESC");
             $stmt->execute(['uid' => $usuarioId]);
             $pedidos = $stmt->fetchAll();
 
