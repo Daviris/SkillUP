@@ -501,6 +501,120 @@ tr:hover td {
     padding: 2rem;
 }
 
+/* ========== ANIMACIONES ========== */
+
+/* Animación de aparición suave */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Animación de pulso para botones */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Animación de flotación */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Animación de brillo */
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+    50% { text-shadow: 0 0 25px rgba(251, 191, 36, 0.9), 0 0 50px rgba(251, 191, 36, 0.4); }
+}
+
+/* Animación para el carrusel */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Clases de animación */
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Retrasos para animaciones en secuencia */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1.0s; }
+
+/* Partículas decorativas */
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #fbbf24;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Carrusel mejorado */
+.carousel-slide.active {
+    animation: slideIn 0.6s ease-out;
+}
+
+/* Efecto hover en tarjetas mejorado */
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(180, 83, 9, 0.3);
+}
+
+/* Contador animado */
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+.count-animate {
+    animation: countUp 0.6s ease-out;
+}
+
 /* ========== MISC ========== */
 
 .text-center {
