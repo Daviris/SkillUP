@@ -1,19 +1,23 @@
 <?php ob_start(); ?>
-<div class="max-w-2xl mx-auto text-center py-12">
-    <div class="bg-gray-800 border-4 border-red-700 rounded-lg p-8 shadow-2xl">
-        <h1 class="text-5xl font-bold text-red-400 mb-4" style="font-family: 'VT323', monospace;">
+<div style="max-width:600px; margin:4rem auto; text-align:center;">
+    <div class="card" style="padding:3rem 2rem;">
+        <p style="font-size:5rem; margin-bottom:1rem;">💥</p>
+        <h1 class="font-rpg" style="font-size:2.5rem; color:#ef4444; margin-bottom:0.5rem;">
             ¡Error crítico!
         </h1>
-        <div class="h-1 w-16 bg-red-700 mx-auto mb-6"></div>
-        <p class="text-gray-300 mb-4">Algo salió mal en nuestras mazmorras técnicas.</p>
-        <?php if (($message ?? '') !== ''): ?>
-            <div class="bg-gray-900 p-4 rounded border border-red-600 mb-4">
-                <p class="text-red-300 text-sm font-mono"><?= htmlspecialchars($message) ?></p>
+        <p style="color:#cbd5e1; margin-bottom:1.5rem;">
+            Algo salió mal en nuestras mazmorras técnicas.
+        </p>
+
+        <?php if (!empty($message)): ?>
+            <div style="background:#111827; border:1px solid #374151; border-radius:0.5rem; padding:1rem; margin-bottom:1.5rem; text-align:left;">
+                <p style="color:#ef4444; font-family:monospace; font-size:0.9rem; word-break:break-word;">
+                    <?= htmlspecialchars($message) ?>
+                </p>
             </div>
         <?php endif; ?>
-        <a href="/" class="inline-block bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded border border-amber-500 shadow transition">
-            Volver a la taberna
-        </a>
+
+        <a href="/" class="btn btn-primary">🏠 Volver a la taberna</a>
     </div>
 </div>
 <?php $content = ob_get_clean(); ?>
