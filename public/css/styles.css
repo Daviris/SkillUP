@@ -93,8 +93,6 @@ a:hover {
     background-color: rgba(180, 83, 9, 0.15);
 }
 
-/* ========== DROPDOWN USUARIO ========== */
-
 /* ========== DROPDOWN ========== */
 .dropdown {
     position: relative;
@@ -171,14 +169,14 @@ main {
 
 /* ========== MENSAJES FLASH ========== */
 
-.flash {
+.flash-message {
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
     font-weight: 500;
 }
 
-.flash-exito {
+.flash-success {
     background-color: rgba(6, 95, 70, 0.5);
     border: 1px solid #047857;
     color: #d1fae5;
@@ -232,43 +230,43 @@ main {
     gap: 0.5rem;
 }
 
-.btn-primario {
+.btn-primary {
     background-color: #b45309;
     color: #ffff;
     border-color: #d97706;
 }
 
-.btn-primario:hover {
+.btn-primary:hover {
     background-color: #d97706;
 }
 
-.btn-secundario {
+.btn-secondary {
     background-color: #374151;
     color: #e5e7eb;
     border-color: #4b5563;
 }
 
-.btn-secundario:hover {
+.btn-secondary:hover {
     background-color: #4b5563;
 }
 
-.btn-peligro {
+.btn-danger {
     background-color: #7f1d1d;
     color: #ffff;
     border-color: #b91c1c;
 }
 
-.btn-peligro:hover {
+.btn-danger:hover {
     background-color: #b91c1c;
 }
 
-.btn-exito {
+.btn-success {
     background-color: #065f46;
     color: #ffff;
     border-color: #047857;
 }
 
-.btn-exito:hover {
+.btn-success:hover {
     background-color: #047857;
 }
 
@@ -455,7 +453,7 @@ tr:hover td {
     transition: background 0.2s;
 }
 
-.carouseñ-dot.active {
+.carousel-dot.active {
     background-color: #fbbf24;
 }
 
