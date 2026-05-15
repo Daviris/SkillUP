@@ -1,25 +1,39 @@
 <?php ob_start(); ?>
-<div class="max-w-xl mx-auto">
-    <div class="bg-gray-800 border-2 border-amber-700 rounded-lg shadow-xl p-6">
-        <h1 class="text-3xl font-bold text-amber-300 mb-6" style="font-family: 'VT323', monospace;">Editar reseña</h1>
+<div style="max-width:500px; margin:3rem auto;">
+    <div class="card" style="padding:2rem;">
+        <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; text-align:center; margin-bottom:1.5rem;">
+            Editar Reseña
+        </h1>
+
+        <?php if (!empty($_SESSION['errores'])): ?>
+            <div class="flash-message flash-error" style="margin-bottom:1.5rem;">
+                <ul style="list-style:none; padding:0; margin:0;">
+                    <?php foreach ($_SESSION['errores'] as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <?php unset($_SESSION['errores']); ?>
+        <?php endif; ?>
+
         <form action="/resena/actualizar/<?= $resena['id'] ?>" method="POST">
-            <div class="mb-4">
-                <label class="block text-amber-400 text-sm mb-1">Puntuación</label>
-                <select name="puntuacion" required class="w-full px-4 py-2 bg-gray-700 border border-amber-600 rounded text-gray-200">
-                    <?php for ($i = 5; $i >= 1; $i--): ?>
-                        <option value="<?= $i ?>" <?= $resena['puntuacion'] == $i ? 'selected' : '' ?>>
-                            <?= str_repeat('★', $i) ?><?= str_repeat('☆', 5 - $i) ?> (<?= $i ?>)
-                        </option>
-                    <?php endfor; ?>
+            <div class="form-group">
+                <label class="form-label">Puntuación (1-5)</label>
+                <select name="puntuacion" class="form-select" required>
+                    <option value="5" <?= $resena['puntuacion'] == 5 ? 'selected' : '' ?>>★★★★★ (5)</option>
+                    <option value="4" <?= $resena['puntuacion'] == 4 ? 'selected' : '' ?>>★★★★☆ (4)</option>
+                    <option value="3" <?= $resena['puntuacion'] == 3 ? 'selected' : '' ?>>★★★☆☆ (3)</option>
+                    <option value="2" <?= $resena['puntuacion'] == 2 ? 'selected' : '' ?>>★★☆☆☆ (2)</option>
+                    <option value="1" <?= $resena['puntuacion'] == 1 ? 'selected' : '' ?>>★☆☆☆☆ (1)</option>
                 </select>
             </div>
-            <div class="mb-4">
-                <label class="block text-amber-400 text-sm mb-1">Comentario</label>
-                <textarea name="comentario" rows="4" class="w-full px-4 py-2 bg-gray-700 border border-amber-600 rounded text-gray-200"><?= htmlspecialchars($resena['comentario'] ?? '') ?></textarea>
+            <div class="form-group">
+                <label class="form-label">Comentario</label>
+                <textarea name="comentario" class="form-textarea" rows="4"><?= htmlspecialchars($resena['comentario'] ?? '') ?></textarea>
             </div>
-            <div class="flex justify-end space-x-3">
-                <a href="/cursos/<?= $resena['curso_id'] ?>" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded border border-gray-500 transition">Cancelar</a>
-                <button type="submit" class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded border border-amber-500 shadow transition">Actualizar</button>
+            <div style="display:flex; gap:1rem; margin-top:1.5rem;">
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a href="/perfil" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>

@@ -29,19 +29,19 @@
                     <table style="width:100%;">
                         <thead>
                             <tr>
-                                <th>Curso</th>
                                 <th>Fecha</th>
                                 <th>Total</th>
                                 <th>Estado</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($pedidos as $pedido): ?>
                             <tr>
-                                <td><?= htmlspecialchars($pedido['curso_titulo']) ?></td>
                                 <td><?= date('d/m/Y', strtotime($pedido['fecha'])) ?></td>
                                 <td style="color:#fbbf24;"><?= number_format($pedido['total'], 2) ?> €</td>
                                 <td><span class="badge badge-green"><?= $pedido['estado'] ?></span></td>
+                                <td><a href="/pedido/confirmacion/<?= $pedido['id'] ?>" style="color:#fbbf24; font-size:0.9rem;">Ver</a></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -85,6 +85,10 @@
                                 <p style="color:#cbd5e1; font-size:0.95rem;"><?= htmlspecialchars($resena['comentario']) ?></p>
                             <?php endif; ?>
                             <p style="color:#6b7280; font-size:0.8rem; margin-top:0.5rem;"><?= date('d/m/Y', strtotime($resena['fecha'])) ?></p>
+                            <div style="margin-top:0.75rem; display:flex; gap:0.75rem;">
+                                <a href="/resena/editar/<?= $resena['id'] ?>" class="btn btn-primary btn-sm">Editar</a>
+                                <a href="/resena/eliminar/<?= $resena['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta reseña?')">Eliminar</a>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
