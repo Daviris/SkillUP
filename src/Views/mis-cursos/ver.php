@@ -1,71 +1,91 @@
 <?php ob_start(); ?>
-<div class="max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold text-amber-300 mb-6" style="font-family: 'VT323', monospace;">
-        <?= htmlspecialchars($curso['titulo']) ?>
-    </h1>
+<div style="max-width:900px; margin:0 auto;">
+    <!-- Migas de pan -->
+    <div style="margin-bottom:1.5rem; color:#9ca3af; font-size:0.9rem;">
+        <a href="/mis-cursos" style="color:#fbbf24;">Mis Cursos</a> /
+        <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
+    </div>
 
+    <!-- Cabecera del curso -->
+    <div class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem;">
+            <?= htmlspecialchars($curso['titulo']) ?>
+        </h1>
+        <p style="color:#cbd5e1; margin-bottom:1rem;"><?= htmlspecialchars($curso['descripcion']) ?></p>
+        <div style="display:flex; gap:2rem; color:#9ca3af; font-size:0.9rem;">
+            <span>Instructor: <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></span>
+            <span><?= count($curso['clases'] ?? []) ?> clases</span>
+            <span><?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min total</span>
+        </div>
+    </div>
+
+    <!-- Listado de clases -->
     <?php if (!empty($curso['clases'])): ?>
-        <div class="space-y-4">
+        <div style="display:flex; flex-direction:column; gap:1rem;">
             <?php foreach ($curso['clases'] as $clase): ?>
-                <a href="/mis-cursos/clase/<?= $clase['id'] ?>" 
-                   class="block bg-gray-800 border-2 border-amber-700 rounded-lg p-5 hover:bg-gray-700 transition">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h2 class="text-xl font-semibold text-amber-300">
-                                <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
-                            </h2>
-                            <p class="text-gray-400 text-sm mt-1"><?= $clase['duracion'] ?> minutos</p>
+                <a href="/mis-cursos/clase/<?= $clase['id'] ?>" class="card" style="display:flex; justify-content:space-between; align-items:center; padding:1.25rem 1.5rem; text-decoration:none; transition:transform 0.15s;">
+                    <div>
+                        <h3 style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">
+                            <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
+                        </h3>
+                        <div style="display:flex; align-items:center; gap:0.75rem; color:#9ca3af; font-size:0.85rem;">
+                            <span class="badge badge-amber" style="font-size:0.7rem;"><?= ucfirst($clase['tipo']) ?></span>
+                            <span><?= $clase['duracion'] ?> min</span>
                         </div>
-                        <span class="px-3 py-1 bg-amber-700 text-white rounded-full text-xs font-bold">
-                            <?= ucfirst($clase['tipo']) ?>
-                        </span>
                     </div>
+                    <span style="color:#fbbf24; font-size:1.2rem;">→</span>
                 </a>
             <?php endforeach; ?>
         </div>
-        <!-- Sección de reseñas (desde Mis Cursos) -->
-        <div class="mt-8 pt-6 border-t border-amber-700">
-            <h2 class="text-2xl font-semibold mb-4 text-amber-400">Reseñas de alumnos</h2>
+    <?php else: ?>
+        <div class="card" style="padding:3rem; text-align:center;">
+            <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+            <p style="color:#cbd5e1; font-size:1.1rem;">Este curso aún no tiene clases publicadas.</p>
+        </div>
+    <?php endif; ?>
 
-            <?php
-                $resenas = \App\Models\Resena::delCurso($curso['id']);
-            ?>
+    <!-- Reseñas y formulario -->
+    <div style="margin-top:3rem; border-top:1px solid #374151; padding-top:2rem;">
+        <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">⭐ Reseñas de alumnos</h2>
 
-            <?php if (!empty($resenas)): ?>
-                <ul class="divide-y divide-gray-600 border border-amber-700 rounded-lg bg-gray-900/50 mb-6">
-                    <?php foreach ($resenas as $resena): ?>
-                    <li class="p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="font-medium text-amber-300">
-                                <?= htmlspecialchars($resena['alumno_nombre']) ?>
-                            </span>
-                            <span class="text-yellow-400 font-bold">
+        <?php
+            $resenas = \App\Models\Resena::delCurso($curso['id']);
+        ?>
+
+        <?php if (!empty($resenas)): ?>
+            <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:2rem;">
+                <?php foreach ($resenas as $resena): ?>
+                    <div class="card" style="padding:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.5rem;">
+                            <span style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($resena['alumno_nombre']) ?></span>
+                            <span style="color:#fbbf24;">
                                 <?= str_repeat('★', $resena['puntuacion']) ?><?= str_repeat('☆', 5 - $resena['puntuacion']) ?>
                             </span>
                         </div>
                         <?php if (!empty($resena['comentario'])): ?>
-                            <p class="text-gray-300 text-sm"><?= htmlspecialchars($resena['comentario']) ?></p>
+                            <p style="color:#cbd5e1; font-size:0.95rem;"><?= htmlspecialchars($resena['comentario']) ?></p>
                         <?php endif; ?>
-                        <p class="text-xs text-gray-500 mt-1"><?= date('d/m/Y', strtotime($resena['fecha'])) ?></p>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p class="text-gray-400 mb-6">Aún no hay reseñas.</p>
-            <?php endif; ?>
+                        <p style="color:#6b7280; font-size:0.8rem; margin-top:0.5rem;"><?= date('d/m/Y', strtotime($resena['fecha'])) ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p style="color:#9ca3af; margin-bottom:2rem;">Aún no hay reseñas para este curso.</p>
+        <?php endif; ?>
 
-            <!-- Formulario de reseña (solo si no ha reseñado) -->
+        <!-- Formulario de reseña (solo si el alumno no ha reseñado aún) -->
+        <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'alumno'): ?>
             <?php
                 $yaReseno = \App\Models\Resena::buscarPorUsuarioYCurso($_SESSION['usuario']['id'], $curso['id']);
             ?>
             <?php if (!$yaReseno): ?>
-                <div class="bg-gray-800 p-4 rounded-lg border border-amber-700">
-                    <h3 class="text-amber-400 font-semibold mb-3">Deja tu reseña</h3>
+                <div class="card" style="padding:1.5rem;">
+                    <h3 class="font-rpg" style="font-size:1.3rem; color:#fbbf24; margin-bottom:1rem;">Deja tu reseña</h3>
                     <form action="/resena/guardar" method="POST">
                         <input type="hidden" name="curso_id" value="<?= $curso['id'] ?>">
-                        <div class="mb-3">
-                            <label class="block text-amber-400 text-sm mb-1">Puntuación (1-5)</label>
-                            <select name="puntuacion" required class="w-full px-4 py-2 bg-gray-700 border border-amber-600 rounded text-gray-200">
+                        <div class="form-group">
+                            <label class="form-label">Puntuación (1-5)</label>
+                            <select name="puntuacion" class="form-select" required>
                                 <option value="5">★★★★★ (5)</option>
                                 <option value="4">★★★★☆ (4)</option>
                                 <option value="3">★★★☆☆ (3)</option>
@@ -73,22 +93,18 @@
                                 <option value="1">★☆☆☆☆ (1)</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="block text-amber-400 text-sm mb-1">Comentario (opcional)</label>
-                            <textarea name="comentario" rows="3" class="w-full px-4 py-2 bg-gray-700 border border-amber-600 rounded text-gray-200"></textarea>
+                        <div class="form-group">
+                            <label class="form-label">Comentario (opcional)</label>
+                            <textarea name="comentario" class="form-textarea" rows="3"></textarea>
                         </div>
-                        <button type="submit" class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded border border-amber-500 shadow transition">
-                            Enviar reseña
-                        </button>
+                        <button type="submit" class="btn btn-primary">Enviar reseña</button>
                     </form>
                 </div>
             <?php else: ?>
-                <p class="mt-4 text-sm text-gray-400">Ya has reseñado este curso.</p>
+                <p style="color:#9ca3af; margin-top:1rem;">Ya has reseñado este curso.</p>
             <?php endif; ?>
-        </div>
-    <?php else: ?>
-        <p class="text-gray-400">Este curso aún no tiene clases.</p>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
 </div>
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/../layouts/main.php'; ?>
