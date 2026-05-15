@@ -34,7 +34,7 @@
 
             <div class="form-group">
                 <label class="form-label">Confirmar contraseña</label>
-                <input type="password" name="password_confirmation" class="form-input" placeholder="••••••••" required>
+                <input type="password" name="password_confirmacion" class="form-input" placeholder="••••••••" required>
             </div>
 
             <div class="form-group">
