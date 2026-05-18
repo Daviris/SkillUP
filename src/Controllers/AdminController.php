@@ -185,7 +185,14 @@ class AdminController
     {
         $this->verificarAdmin();
         $id = (int) $request->param('id');
-        $pedido = Pedido::find($id);
+
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->prepare("SELECT p.*, u.nombre AS usuario_nombre, u.email AS usuario_email 
+                            FROM pedidos p 
+                            JOIN usuarios u ON p.usuario_id = u.id 
+                            WHERE p.id = :id");
+        $stmt->execute(['id' => $id]);
+        $pedido = $stmt->fetch();
 
         if (!$pedido) {
             http_response_code(404);
@@ -193,18 +200,14 @@ class AdminController
             exit;
         }
 
-        $pdo = \App\Core\Database::getConnection();
-        $stmt = $pdo->prepare("SELECT dp.*, c.titulo FROM detalle_pedido dp JOIN cursos c ON dp.curso_id = c.id WHERE dp.pedido_id = :pedido");
-        $stmt->execute(['pedido' => $id]);
-        $detalles = $stmt->fetchAll();
-
-        $usuario = Usuario::find($pedido['usuario_id']);
+        $stmtDetalles = $pdo->prepare("SELECT dp.*, c.titulo FROM detalle_pedido dp JOIN cursos c ON dp.curso_id = c.id WHERE dp.pedido_id = :pedido");
+        $stmtDetalles->execute(['pedido' => $id]);
+        $detalles = $stmtDetalles->fetchAll();
 
         View::render('admin/ver_pedido', [
-            'title' => 'Pedido #' . $pedido['id'],
-            'pedido' => $pedido,
+            'title'    => 'Pedido #' . $pedido['id'],
+            'pedido'   => $pedido,
             'detalles' => $detalles,
-            'usuario' => $usuario,
         ]);
     }
 

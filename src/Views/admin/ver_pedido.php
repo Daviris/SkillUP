@@ -3,13 +3,13 @@
     Pedido #<?= $pedido['id'] ?>
 </h1>
 
-<!-- Datos del usuario -->
+<!-- Datos del cliente -->
 <div class="card" style="margin-bottom:2rem; padding:1.5rem;">
     <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">Cliente</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; color:#e5e7eb;">
         <div>
             <span style="color:#fbbf24;">Nombre:</span>
-            <?= htmlspecialchars($pedido['usuario_nombre'] ?? 'No disponible') ?>
+            <?= htmlspecialchars($pedido['usuario_nombre'] ?? 'Desconocido') ?>
         </div>
         <div>
             <span style="color:#fbbf24;">Email:</span>
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<!-- Datos del pedido -->
+<!-- Resumen del pedido -->
 <div class="card" style="margin-bottom:2rem; padding:1.5rem;">
     <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">Resumen del pedido</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; color:#e5e7eb; margin-bottom:1.5rem;">
@@ -40,13 +40,11 @@
 
     <h3 style="color:#fbbf24; margin-bottom:0.5rem;">Cursos adquiridos</h3>
     <div class="table-container">
-        <table>
+        <table style="width:100%;">
             <thead>
                 <tr>
                     <th>Curso</th>
                     <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,8 +52,6 @@
                 <tr>
                     <td><?= htmlspecialchars($detalle['titulo']) ?></td>
                     <td style="color:#fbbf24;"><?= number_format($detalle['precio'], 2) ?> €</td>
-                    <td><?= $detalle['cantidad'] ?></td>
-                    <td style="color:#fbbf24;"><?= number_format($detalle['precio'] * $detalle['cantidad'], 2) ?> €</td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
