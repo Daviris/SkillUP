@@ -92,7 +92,7 @@ class Curso extends Model
     // Cuenta alumnos para curso presencial
     public static function contarCompradores(int $cursoId): int
     {
-        $pdo = \App\Core\Database::getConnection();
+        $pdo = Database::getConnection();
         $stmt = $pdo->prepare("SELECT COUNT(*) 
                             FROM detalle_pedido dp 
                             JOIN pedidos p ON dp.pedido_id = p.id 

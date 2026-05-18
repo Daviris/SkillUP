@@ -26,7 +26,7 @@ class CarritoController
 
         $cursosEnCarrito = [];
         foreach ($items as $cursoId => $item) {
-            $curso = Curso::find($cursoId);
+            $curso = Curso::buscarConClases($cursoId);
             if ($curso) {
                 $curso['cantidad'] = $item['cantidad'];
                 $curso['precio_unitario'] = $item['precio_unitario'];
