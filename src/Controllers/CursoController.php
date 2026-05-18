@@ -104,7 +104,7 @@ class CursoController
 
         // Añadir conteo de compradores para los cursos presenciales.
         foreach ($data['cursos'] as &$curso) {
-            if ($curso['modaldiad'] === 'presencial' && isset($curso['plazas'])) {
+            if ($curso['modalidad'] === 'presencial' && isset($curso['plazas'])) {
                 $curso['compradores'] = Curso::contarCompradores($curso['id']);
             }
         }
