@@ -57,6 +57,15 @@ class CarritoController
                 exit;
             }
 
+            if ($curso['modalidad'] === 'presencial') {
+                $compradores = Curso::contarCompradores($curso['id']);
+                if (isset($curso['plazas']) && $compradores >= $curso['plazas']) {
+                    $_SESSION['mensaje'] = 'No quedan plazas disponibles.';
+                    header('Location: /cursos/' . $idCurso);
+                    exit;
+                }
+            }
+
             $this->iniciarCarrito();
 
             if (isset($_SESSION['carrito']['items'][$idCurso])) {

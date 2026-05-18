@@ -44,17 +44,22 @@ class InstructorController
     public function store(Request $request): void
     {
         $this->verificarInstructor();
-
         $data = [
             'id_instructor' => $_SESSION['usuario']['id'],
-            'titulo' => $request->input('titulo'),
-            'descripcion' => $request->input('descripcion'),
-            'precio' => $request->input('precio'),
-            'modalidad' => $request->input('modalidad'),
+            'titulo'        => $request->input('titulo'),
+            'descripcion'   => $request->input('descripcion'),
+            'precio'        => $request->input('precio'),
+            'modalidad'     => $request->input('modalidad'),
         ];
 
-        Curso::create($data);
+        if ($data['modalidad'] === 'presencial') {
+            $data['fecha']     = $request->input('fecha') ?: null;
+            $data['hora']      = $request->input('hora') ?: null;
+            $data['ubicacion'] = $request->input('ubicacion') ?: null;
+            $data['plazas']    = $request->input('plazas') ?: null;
+        }
 
+        Curso::create($data);
         $_SESSION['mensaje'] = 'Curso creado correctamente.';
         header('Location: /instructor');
         exit;
@@ -83,25 +88,31 @@ class InstructorController
     }
 
     // Actualizar curso editado.
-    public  function update(Request $request): void
+    public function update(Request $request): void
     {
         $this->verificarInstructor();
-
         $id = (int) $request->param('id');
         $curso = Curso::find($id);
-
         if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
             http_response_code(403);
             exit;
         }
 
-        Curso::update($id, [
-            'titulo' => $request->input('titulo'),
+        $data = [
+            'titulo'      => $request->input('titulo'),
             'descripcion' => $request->input('descripcion'),
-            'precio' => $request->input('precio'),
-            'modalidad' => $request->input('modalidad'),
-        ]);
+            'precio'      => $request->input('precio'),
+            'modalidad'   => $request->input('modalidad'),
+        ];
 
+        if ($data['modalidad'] === 'presencial') {
+            $data['fecha']     = $request->input('fecha') ?: null;
+            $data['hora']      = $request->input('hora') ?: null;
+            $data['ubicacion'] = $request->input('ubicacion') ?: null;
+            $data['plazas']    = $request->input('plazas') ?: null;
+        }
+
+        Curso::update($id, $data);
         $_SESSION['mensaje'] = 'Curso actualizado correctamente.';
         header('Location: /instructor');
         exit;
@@ -122,5 +133,33 @@ class InstructorController
 
         header('Location: /instructor');
         exit;
+    }
+
+    // Mostrar asistentes si el curso es presencial.
+    public function verAsistentes(Request $request): void
+    {
+        $this->verificarInstructor();
+        $id = (int) $request->param('id');
+        $curso = Curso::find($id);
+        if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            exit;
+        }
+
+        // Obtener los alumnos que han comprado este curso
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->prepare("SELECT u.id, u.nombre, u.email, p.fecha 
+                            FROM detalle_pedido dp
+                            JOIN pedidos p ON dp.pedido_id = p.id
+                            JOIN usuarios u ON p.usuario_id = u.id
+                            WHERE dp.curso_id = :curso AND p.estado = 'completado'");
+        $stmt->execute(['curso' => $id]);
+        $asistentes = $stmt->fetchAll();
+
+        View::render('instructor/asistentes', [
+            'title'      => 'Asistentes de ' . $curso['titulo'],
+            'curso'      => $curso,
+            'asistentes' => $asistentes,
+        ]);
     }
 }

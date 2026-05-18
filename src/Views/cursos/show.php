@@ -15,7 +15,9 @@
             <ul style="list-style:none; padding:0; color:#e5e7eb; line-height:2;">
                 <li>
                     <span style="color:#fbbf24;">Instructor:</span>
-                    <a href="/instructor/<?= $curso['id_instructor'] ?>" style="color:#fbbf24; text-decoration:underline;"> <?= htmlspecialchars($curso['instructor_nombre']) ?></a>
+                    <a href="/instructor/<?= $curso['id_instructor'] ?>" style="color:#fbbf24; text-decoration:underline;">
+                        <?= htmlspecialchars($curso['instructor_nombre']) ?>
+                    </a>
                     <?php
                         $instructor = \App\Models\Usuario::find($curso['id_instructor']);
                         $reputacion = $instructor['reputacion'] ?? 0;
@@ -27,16 +29,44 @@
                 </li>
                 <li><span style="color:#fbbf24;">Modalidad:</span> <?= ucfirst($curso['modalidad']) ?></li>
                 <li><span style="color:#fbbf24;">Precio:</span> <span style="color:#fbbf24; font-weight:bold;"><?= number_format($curso['precio'], 2) ?> €</span></li>
-                <li><span style="color:#fbbf24;">Duración total:</span> <?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min</li>
-                <li><span style="color:#fbbf24;">Clases:</span> <?= count($curso['clases'] ?? []) ?></li>
+                <?php if ($curso['modalidad'] === 'online'): ?>
+                    <li><span style="color:#fbbf24;">Duración total:</span> <?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min</li>
+                    <li><span style="color:#fbbf24;">Clases:</span> <?= count($curso['clases'] ?? []) ?></li>
+                <?php else: ?>
+                    <?php if (!empty($curso['fecha'])): ?>
+                        <li><span style="color:#fbbf24;">Fecha:</span> <?= date('d/m/Y', strtotime($curso['fecha'])) ?></li>
+                    <?php endif; ?>
+                    <?php if (!empty($curso['hora'])): ?>
+                        <li><span style="color:#fbbf24;">Hora:</span> <?= $curso['hora'] ?></li>
+                    <?php endif; ?>
+                    <?php if (!empty($curso['ubicacion'])): ?>
+                        <li><span style="color:#fbbf24;">Ubicación:</span> <?= htmlspecialchars($curso['ubicacion']) ?></li>
+                    <?php endif; ?>
+                    <?php if (isset($curso['plazas'])): ?>
+                        <li>
+                            <span style="color:#fbbf24;">Plazas:</span>
+                            <?php if ($completo): ?>
+                                <span style="color:#ef4444;">Completo (<?= $curso['plazas'] ?>/<?= $curso['plazas'] ?>)</span>
+                            <?php else: ?>
+                                <?= ($curso['compradores'] ?? 0) . '/' . $curso['plazas'] ?>
+                            <?php endif; ?>
+                        </li>
+                    <?php endif; ?>
+                <?php endif; ?>
             </ul>
 
             <!-- Botón de compra o estado -->
             <div style="margin-top:1.5rem;">
                 <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'alumno' && !$yaComprado): ?>
-                    <a href="/carrito/agregar/<?= $curso['id'] ?>" class="btn btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
-                        Añadir a la mochila
-                    </a>
+                    <?php if ($completo): ?>
+                        <div class="flash-message flash-error" style="text-align:center;">
+                            No quedan plazas disponibles.
+                        </div>
+                    <?php else: ?>
+                        <a href="/carrito/agregar/<?= $curso['id'] ?>" class="btn btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+                            Añadir a la mochila
+                        </a>
+                    <?php endif; ?>
                 <?php elseif (isset($_SESSION['usuario']) && $yaComprado): ?>
                     <div class="flash-message flash-success" style="text-align:center;">
                         Ya has adquirido este curso.
@@ -49,38 +79,65 @@
             </div>
         </div>
 
-        <!-- Contenido del curso (clases) -->
+        <!-- Contenido del curso (clases o información presencial) -->
         <div>
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Contenido del curso</h2>
-            <?php if (!empty($curso['clases'])): ?>
-                <div style="border:1px solid #b45309; border-radius:0.5rem; overflow:hidden;">
-                    <?php foreach ($curso['clases'] as $clase): ?>
-                        <div style="padding:1rem; border-bottom:1px solid #374151; display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <span style="color:#fbbf24; font-weight:600;">
-                                    <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
-                                </span>
-                                <span class="badge badge-amber" style="margin-left:0.5rem;"><?= ucfirst($clase['tipo']) ?></span>
-                                <?php if ($clase['tipo'] === 'teoria' && !empty($clase['contenido_texto'])): ?>
-                                    <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">
-                                        <?= htmlspecialchars(substr($clase['contenido_texto'], 0, 80)) ?>...
-                                    </p>
-                                <?php elseif ($clase['tipo'] === 'archivo' && !empty($clase['archivo_id'])): ?>
-                                    <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">Material descargable</p>
-                                <?php elseif ($clase['tipo'] === 'tarea' && !empty($clase['criterios_evaluacion'])): ?>
-                                    <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">
-                                        <?= htmlspecialchars(substr($clase['criterios_evaluacion'], 0, 80)) ?>...
-                                    </p>
-                                <?php else: ?>
-                                    <p style="color:#6b7280; margin-top:0.25rem; font-size:0.9rem;">Sin descripción</p>
-                                <?php endif; ?>
+            <?php if ($curso['modalidad'] === 'online'): ?>
+                <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Contenido del curso</h2>
+                <?php if (!empty($curso['clases'])): ?>
+                    <div style="border:1px solid #b45309; border-radius:0.5rem; overflow:hidden;">
+                        <?php foreach ($curso['clases'] as $clase): ?>
+                            <div style="padding:1rem; border-bottom:1px solid #374151; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <span style="color:#fbbf24; font-weight:600;">
+                                        <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
+                                    </span>
+                                    <span class="badge badge-amber" style="margin-left:0.5rem;"><?= ucfirst($clase['tipo']) ?></span>
+                                    <?php if ($clase['tipo'] === 'teoria' && !empty($clase['contenido_texto'])): ?>
+                                        <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">
+                                            <?= htmlspecialchars(substr($clase['contenido_texto'], 0, 80)) ?>...
+                                        </p>
+                                    <?php elseif ($clase['tipo'] === 'archivo' && !empty($clase['archivo_id'])): ?>
+                                        <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">Material descargable</p>
+                                    <?php elseif ($clase['tipo'] === 'tarea' && !empty($clase['criterios_evaluacion'])): ?>
+                                        <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">
+                                            <?= htmlspecialchars(substr($clase['criterios_evaluacion'], 0, 80)) ?>...
+                                        </p>
+                                    <?php else: ?>
+                                        <p style="color:#6b7280; margin-top:0.25rem; font-size:0.9rem;">Sin descripción</p>
+                                    <?php endif; ?>
+                                </div>
+                                <span style="color:#9ca3af; font-size:0.9rem;"><?= $clase['duracion'] ?> min</span>
                             </div>
-                            <span style="color:#9ca3af; font-size:0.9rem;"><?= $clase['duracion'] ?> min</span>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p style="color:#9ca3af;">Este curso aún no tiene clases publicadas.</p>
+                <?php endif; ?>
             <?php else: ?>
-                <p style="color:#9ca3af;">Este curso aún no tiene clases publicadas.</p>
+                <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Información de la sesión</h2>
+                <div class="card" style="padding:1.5rem;">
+                    <ul style="list-style:none; padding:0; color:#e5e7eb; line-height:2;">
+                        <?php if (!empty($curso['fecha'])): ?>
+                            <li><span style="color:#fbbf24;">Fecha:</span> <?= date('d/m/Y', strtotime($curso['fecha'])) ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($curso['hora'])): ?>
+                            <li><span style="color:#fbbf24;">Hora:</span> <?= $curso['hora'] ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($curso['ubicacion'])): ?>
+                            <li><span style="color:#fbbf24;">Ubicación:</span> <?= htmlspecialchars($curso['ubicacion']) ?></li>
+                        <?php endif; ?>
+                        <?php if (isset($curso['plazas'])): ?>
+                            <li>
+                                <span style="color:#fbbf24;">Plazas:</span>
+                                <?php if ($completo): ?>
+                                    <span style="color:#ef4444;">Completo (<?= $curso['plazas'] ?>/<?= $curso['plazas'] ?>)</span>
+                                <?php else: ?>
+                                    <?= ($curso['compradores'] ?? 0) . '/' . $curso['plazas'] ?>
+                                <?php endif; ?>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
             <?php endif; ?>
         </div>
     </div>

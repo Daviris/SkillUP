@@ -14,33 +14,71 @@
         <p style="color:#cbd5e1; margin-bottom:1rem;"><?= htmlspecialchars($curso['descripcion']) ?></p>
         <div style="display:flex; gap:2rem; color:#9ca3af; font-size:0.9rem;">
             <span>Instructor: <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></span>
-            <span><?= count($curso['clases'] ?? []) ?> clases</span>
-            <span><?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min total</span>
+            <span>Modalidad: <?= ucfirst($curso['modalidad']) ?></span>
+            <?php if ($curso['modalidad'] === 'online'): ?>
+                <span><?= count($curso['clases'] ?? []) ?> clases</span>
+                <span><?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min total</span>
+            <?php else: ?>
+                <?php if (!empty($curso['fecha'])): ?>
+                    <span><?= date('d/m/Y', strtotime($curso['fecha'])) ?></span>
+                <?php endif; ?>
+                <?php if (!empty($curso['hora'])): ?>
+                    <span><?= $curso['hora'] ?></span>
+                <?php endif; ?>
+                <?php if (!empty($curso['ubicacion'])): ?>
+                    <span><?= htmlspecialchars($curso['ubicacion']) ?></span>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 
-    <!-- Listado de clases -->
-    <?php if (!empty($curso['clases'])): ?>
-        <div style="display:flex; flex-direction:column; gap:1rem;">
-            <?php foreach ($curso['clases'] as $clase): ?>
-                <a href="/mis-cursos/clase/<?= $clase['id'] ?>" class="card" style="display:flex; justify-content:space-between; align-items:center; padding:1.25rem 1.5rem; text-decoration:none; transition:transform 0.15s;">
-                    <div>
-                        <h3 style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">
-                            <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
-                        </h3>
-                        <div style="display:flex; align-items:center; gap:0.75rem; color:#9ca3af; font-size:0.85rem;">
-                            <span class="badge badge-amber" style="font-size:0.7rem;"><?= ucfirst($clase['tipo']) ?></span>
-                            <span><?= $clase['duracion'] ?> min</span>
+    <!-- Contenido según modalidad -->
+    <?php if ($curso['modalidad'] === 'online'): ?>
+        <!-- Listado de clases -->
+        <?php if (!empty($curso['clases'])): ?>
+            <div style="display:flex; flex-direction:column; gap:1rem;">
+                <?php foreach ($curso['clases'] as $clase): ?>
+                    <a href="/mis-cursos/clase/<?= $clase['id'] ?>" class="card" style="display:flex; justify-content:space-between; align-items:center; padding:1.25rem 1.5rem; text-decoration:none; transition:transform 0.15s;">
+                        <div>
+                            <h3 style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">
+                                <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
+                            </h3>
+                            <div style="display:flex; align-items:center; gap:0.75rem; color:#9ca3af; font-size:0.85rem;">
+                                <span class="badge badge-amber" style="font-size:0.7rem;"><?= ucfirst($clase['tipo']) ?></span>
+                                <span><?= $clase['duracion'] ?> min</span>
+                            </div>
                         </div>
-                    </div>
-                    <span style="color:#fbbf24; font-size:1.2rem;">→</span>
-                </a>
-            <?php endforeach; ?>
-        </div>
+                        <span style="color:#fbbf24; font-size:1.2rem;">→</span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="card" style="padding:3rem; text-align:center;">
+                <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+                <p style="color:#cbd5e1; font-size:1.1rem;">Este curso aún no tiene clases publicadas.</p>
+            </div>
+        <?php endif; ?>
     <?php else: ?>
-        <div class="card" style="padding:3rem; text-align:center;">
-            <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
-            <p style="color:#cbd5e1; font-size:1.1rem;">Este curso aún no tiene clases publicadas.</p>
+        <!-- Información presencial -->
+        <div class="card" style="padding:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Información de la sesión</h2>
+            <ul style="list-style:none; padding:0; color:#e5e7eb; line-height:2;">
+                <?php if (!empty($curso['fecha'])): ?>
+                    <li><span style="color:#fbbf24;">Fecha:</span> <?= date('d/m/Y', strtotime($curso['fecha'])) ?></li>
+                <?php endif; ?>
+                <?php if (!empty($curso['hora'])): ?>
+                    <li><span style="color:#fbbf24;">Hora:</span> <?= $curso['hora'] ?></li>
+                <?php endif; ?>
+                <?php if (!empty($curso['ubicacion'])): ?>
+                    <li><span style="color:#fbbf24;">Ubicación:</span> <?= htmlspecialchars($curso['ubicacion']) ?></li>
+                <?php endif; ?>
+                <?php if (!empty($curso['plazas'])): ?>
+                    <li><span style="color:#fbbf24;">Plazas disponibles:</span> <?= $curso['plazas'] ?></li>
+                <?php endif; ?>
+            </ul>
+            <?php if (empty($curso['fecha']) && empty($curso['hora']) && empty($curso['ubicacion'])): ?>
+                <p style="color:#9ca3af;">El instructor aún no ha definido los detalles de la sesión presencial.</p>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 

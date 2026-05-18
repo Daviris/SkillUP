@@ -22,6 +22,7 @@ $router->post('/instructor/guardar', [\App\Controllers\InstructorController::cla
 $router->get('/instructor/editar/{id}', [\App\Controllers\InstructorController::class, 'edit']);
 $router->post('/instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
 $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController::class, 'delete']);
+$router->get('/instructor/ver-asistentes/{id}', [\App\Controllers\InstructorController::class, 'verAsistentes']);
 
 // Clases
 $router->get('/instructor/cursos/{curso_id}/clases', [\App\Controllers\InstructorClaseController::class, 'index']);

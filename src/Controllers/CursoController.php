@@ -33,6 +33,12 @@ class CursoController
     {
         $id = (int) $request->param('id');
         $curso = Curso::buscarConClases($id);
+        $completo = false;
+        if ($curso['modalidad'] === 'presencial' && isset($curso['plazas'])) {
+            $compradores = Curso::contarCompradores($curso['id']);
+            $completo = $compradores >= $curso['plazas'];
+            $curso['compradores'] = $compradores;
+        }
         $yaComprado = false;
         if (isset($_SESSION['usuario'])) {
             $yaComprado = Pedido::usuarioTieneCurso($_SESSION['usuario']['id'], $id);
@@ -48,6 +54,7 @@ class CursoController
             'title' => $curso['titulo'],
             'curso' => $curso,
             'yaComprado' => $yaComprado,
+            'completo' => $completo,
         ]);
     }
 

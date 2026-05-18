@@ -20,7 +20,9 @@
                         <th>Título</th>
                         <th>Modalidad</th>
                         <th>Precio</th>
-                        <th>Clases</th>
+                        <th>
+                            Clases / Asistentes
+                        </th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -31,9 +33,15 @@
                         <td><?= ucfirst($c['modalidad']) ?></td>
                         <td style="color:#fbbf24;"><?= number_format($c['precio'], 2) ?> €</td>
                         <td>
-                            <a href="/instructor/cursos/<?= $c['id'] ?>/clases" style="color:#fbbf24;">
-                                <?= $c['total_clases'] ?? 'Gestionar' ?>
-                            </a>
+                            <?php if ($c['modalidad'] === 'online'): ?>
+                                <a href="/instructor/cursos/<?= $c['id'] ?>/clases" style="color:#fbbf24;">
+                                    Gestionar clases
+                                </a>
+                            <?php else: ?>
+                                <a href="/instructor/ver-asistentes/<?= $c['id'] ?>" class="btn btn-secondary btn-sm">
+                                    Ver asistentes
+                                </a>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <div style="display:flex; gap:0.5rem;">

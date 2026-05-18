@@ -47,6 +47,12 @@ class Curso extends Model
         $stmt->execute();
         $cursos = $stmt->fetchAll();
 
+        foreach ($cursos as &$curso) {
+            if ($curso['modalidad'] === 'presencial') {
+                $curso['compradores'] = self::contarCompradores($curso['id']);
+            }
+        }
+
         return [
             'cursos' => $cursos,
             'total' => $total,
@@ -81,5 +87,17 @@ class Curso extends Model
         $pdo = Database::getConnection();
         $stmt = $pdo->query("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id ORDER BY c.created_at DESC");
         return $stmt->fetchAll();
+    }
+
+    // Cuenta alumnos para curso presencial
+    public static function contarCompradores(int $cursoId): int
+    {
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->prepare("SELECT COUNT(*) 
+                            FROM detalle_pedido dp 
+                            JOIN pedidos p ON dp.pedido_id = p.id 
+                            WHERE dp.curso_id = :cid AND p.estado = 'completado'");
+        $stmt->execute(['cid' => $cursoId]);
+        return (int) $stmt->fetchColumn();
     }
 }

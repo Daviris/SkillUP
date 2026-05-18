@@ -187,6 +187,20 @@ class Migrator
             }
         }
 
+        // Añadir campos para cursos presenciales si no existen
+        $camposPresenciales = [
+            'fecha'       => "DATE DEFAULT NULL AFTER `modalidad`",
+            'hora'        => "TIME DEFAULT NULL AFTER `fecha`",
+            'ubicacion'   => "VARCHAR(255) DEFAULT NULL AFTER `hora`",
+            'plazas'      => "INT(11) DEFAULT NULL AFTER `ubicacion`",
+        ];
+        foreach ($camposPresenciales as $campo => $definicion) {
+            $stmt = $pdo->query("SHOW COLUMNS FROM cursos LIKE '$campo'");
+            if ($stmt->rowCount() == 0) {
+                $pdo->exec("ALTER TABLE cursos ADD COLUMN $campo $definicion");
+            }
+        }
+
         // Crear un admin por defecto si no hay ninguno
         $stmt = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE rol = 'admin'");
         if ((int) $stmt->fetchColumn() === 0) {

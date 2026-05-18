@@ -21,7 +21,7 @@
         </div>
     </form>
 
-    <!-- Grid de cursos (3 columnas fijas) -->
+    <!-- Grid de cursos -->
     <?php if (!empty($cursos)): ?>
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem;">
             <?php foreach ($cursos as $curso): ?>
@@ -33,10 +33,19 @@
                         </p>
                     </div>
                     <div style="font-size:0.9rem; color:#9ca3af; margin-bottom:0.5rem;">
-                        <p><span style="color:#fbbf24;">Instructor:</span> 
-                            <a href="/instructor/<?= $curso['id_instructor'] ?>" style="color:#fbbf24; text-decoration:underline;"> <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></a>
-                        </p>
+                        <p><span style="color:#fbbf24;">Instructor:</span> <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></p>
                         <p><span style="color:#fbbf24;">Modalidad:</span> <?= ucfirst($curso['modalidad']) ?></p>
+                        <?php if ($curso['modalidad'] === 'presencial'): ?>
+                            <?php if (!empty($curso['fecha'])): ?>
+                                <p><span style="color:#fbbf24;">Fecha:</span> <?= date('d/m/Y', strtotime($curso['fecha'])) ?> <?= $curso['hora'] ?? '' ?></p>
+                            <?php endif; ?>
+                            <?php if (isset($curso['plazas'])): ?>
+                                <p>
+                                    <span style="color:#fbbf24;">Plazas:</span>
+                                    <?= ($curso['compradores'] ?? 0) >= $curso['plazas'] ? '<span style="color:#ef4444;">Completo</span>' : ($curso['compradores'] ?? 0) . '/' . $curso['plazas'] ?>
+                                </p>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-size:1.3rem; font-weight:bold; color:#fbbf24;">
