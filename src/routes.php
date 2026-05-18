@@ -91,3 +91,7 @@ $router->get('/admin/resenas/eliminar/{id}', [\App\Controllers\AdminController::
 $router->get('/admin/pedidos', [\App\Controllers\AdminController::class, 'pedidos']);
 $router->post('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
 $router->get('/admin/pedidos/ver/{id}', [\App\Controllers\AdminController::class, 'verPedido']);
+
+// JavaScript
+$router->get('/api/cursos', [\App\Controllers\CursoController::class, 'apiIndex']);
+$router->get('/api/curso/{id}', [\App\Controllers\CursoController::class, 'apiShow']);

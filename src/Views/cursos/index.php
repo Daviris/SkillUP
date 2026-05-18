@@ -3,7 +3,7 @@
     <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:1.5rem;">Catálogo de Cursos</h1>
 
     <!-- Filtros -->
-    <form method="GET" action="/cursos" class="card" style="display:flex; gap:1.5rem; align-items:end; margin-bottom:2rem; padding:1.5rem; flex-wrap:wrap;">
+    <form method="GET" action="/cursos" id="catalog-form" class="card" style="display:flex; gap:1.5rem; align-items:end; margin-bottom:2rem; padding:1.5rem; flex-wrap:wrap;">
         <div style="flex:1; min-width:200px;">
             <label class="form-label">Modalidad</label>
             <select name="modalidad" class="form-select">
@@ -23,7 +23,7 @@
 
     <!-- Grid de cursos -->
     <?php if (!empty($cursos)): ?>
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem;">
+        <div id="cursos-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem;">
             <?php foreach ($cursos as $curso): ?>
                 <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
                     <div>

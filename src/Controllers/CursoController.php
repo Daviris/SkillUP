@@ -88,4 +88,44 @@ class CursoController
             'totalResenas' => $totalResenas,
         ]);
     }
+
+    public function apiIndex(Request $request): void
+    {
+        $modalidad = $request->input('modalidad');
+        $precioMax = $request->input('precio_max');
+        $page = (int) $request->input('page', 1);
+
+        $data = Curso::listar(
+            $modalidad ?: null,
+            $precioMax !== null ? (float) $precioMax : null,
+            12,
+            $page
+        );
+
+        // Añadir conteo de compradores para los cursos presenciales.
+        foreach ($data['cursos'] as &$curso) {
+            if ($curso['modaldiad'] === 'presencial' && isset($curso['plazas'])) {
+                $curso['compradores'] = Curso::contarCompradores($curso['id']);
+            }
+        }
+        unset($curso);
+
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
+    }
+
+    public function apiShow(Request $request): void
+    {
+        $id = (int) $request->param('id');
+        $curso = Curso::buscarConClases($id);
+        if (!$curso) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Curso no encontrado']);
+            exit;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($curso);
+        exit;
+    }
 }

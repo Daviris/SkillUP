@@ -69,24 +69,6 @@
         &copy; <?= date('Y') ?> SkillUP — TFG DAW
     </footer>
 
-    <script>
-        // Dropdown funcional
-        (function() {
-            const btn = document.getElementById('userMenuButton');
-            const menu = document.getElementById('userDropdown');
-            if (btn && menu) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    menu.classList.toggle('open');
-                });
-                document.addEventListener('click', function() {
-                    menu.classList.remove('open');
-                });
-                menu.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            }
-        })();
-    </script>
+    <script src="/js/app.js"></script>
 </body>
 </html>
