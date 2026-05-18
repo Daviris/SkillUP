@@ -33,7 +33,7 @@ class InstructorController
     public function create(Request $request): void
     {
         $this->verificarInstructor();
-        View::render('instructor/form', [
+        View::render('instructor/formCurso', [
             'title' => 'Crear Curso',
             'accion' => 'Crear',
             'curso' => null,
@@ -75,7 +75,7 @@ class InstructorController
             exit;
         }
 
-        View::render('instructor/form', [
+        View::render('instructor/formCurso', [
             'title' => 'Editar Curso',
             'accion' => 'Actualizar',
             'curso' => $curso,

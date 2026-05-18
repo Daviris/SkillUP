@@ -55,7 +55,7 @@ class InstructorClaseController
             echo "No autorizado.";
             exit;
         }
-        View::render('instructor/clases/form', [
+        View::render('instructor/clases/formClase', [
             'title' => 'Nueva clase',
             'accion' => 'Crear',
             'curso_id' => $cursoId,
@@ -147,7 +147,7 @@ class InstructorClaseController
             echo "No autorizado.";
             exit;
         }
-        View::render('instructor/clases/form', [
+        View::render('instructor/clases/formClase', [
             'title' => 'Editar clase',
             'accion' => 'Actualizar',
             'clase' => $clase,
