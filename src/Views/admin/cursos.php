@@ -2,13 +2,14 @@
 <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:2rem;">Cursos</h1>
 
 <div class="table-container">
-    <table>
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>Título</th>
                 <th>Instructor</th>
                 <th>Precio</th>
                 <th>Modalidad</th>
+                <th>Rating</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,7 +25,19 @@
                     </span>
                 </td>
                 <td>
+                    <?php
+                    // Calcular media de reseñas para este curso
+                    $media = $curso['media_resenas'] ?? 0;
+                    $totalResenas = $curso['total_resenas'] ?? 0;
+                    ?>
+                    <span style="color:#fbbf24;">
+                        <?= str_repeat('★', (int) round($media)) ?><?= str_repeat('☆', 5 - (int) round($media)) ?>
+                    </span>
+                    <span style="color:#9ca3af; font-size:0.8rem;">(<?= number_format($media, 1) ?>)</span>
+                </td>
+                <td>
                     <div style="display:flex; gap:0.5rem;">
+                        <a href="/admin/cursos/<?= $curso['id'] ?>/resenas" class="btn btn-secondary btn-sm">Reseñas</a>
                         <a href="/admin/cursos/editar/<?= $curso['id'] ?>" class="btn btn-primary btn-sm">Editar</a>
                         <a href="/admin/cursos/eliminar/<?= $curso['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">Eliminar</a>
                     </div>

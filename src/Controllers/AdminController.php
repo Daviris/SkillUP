@@ -110,7 +110,17 @@ class AdminController
     public function cursos(Request $request): void
     {
         $this->verificarAdmin();
-        $cursos = Curso::todosInstructores();
+        $pdo = \App\Core\Database::getConnection();
+        // Obtener cursos con media de reseñas
+        $stmt = $pdo->query("SELECT c.*, u.nombre AS instructor_nombre, 
+                            AVG(r.puntuacion) AS media_resenas, 
+                            COUNT(r.id) AS total_resenas
+                            FROM cursos c 
+                            JOIN usuarios u ON c.id_instructor = u.id 
+                            LEFT JOIN resenas r ON c.id = r.curso_id 
+                            GROUP BY c.id 
+                            ORDER BY c.created_at DESC");
+        $cursos = $stmt->fetchAll();
         View::render('admin/cursos', ['title' => 'Cursos', 'cursos' => $cursos]);
     }
 
@@ -199,21 +209,45 @@ class AdminController
     }
 
     // ==================== RESEÑAS ====================
-    public function resenas(Request $request): void
+    public function verResenas(Request $request): void
     {
         $this->verificarAdmin();
-        $pdo = \App\Core\Database::getConnection();
-        $stmt = $pdo->query("SELECT r.*, u.nombre AS alumno_nombre, c.titulo AS curso_titulo FROM resenas r JOIN usuarios u ON r.usuario_id = u.id JOIN cursos c ON r.curso_id = c.id ORDER BY r.fecha DESC");
-        $resenas = $stmt->fetchAll();
-        View::render('admin/resenas', ['title' => 'Reseñas', 'resenas' => $resenas]);
+        $id = (int) $request->param('id');
+        $curso = Curso::find($id);
+        if (!$curso) {
+            http_response_code(404);
+            echo "Curso no encontrado.";
+            exit;
+        }
+
+        $resenas = Resena::delCurso($id);
+        $media = 0;
+        $totalResenas = count($resenas);
+        if ($totalResenas > 0) {
+            $suma = array_sum(array_column($resenas, 'puntuacion'));
+            $media = $suma / $totalResenas;
+        }
+
+        View::render('admin/ver_resenas', [
+            'title'        => 'Reseñas de ' . $curso['titulo'],
+            'curso'        => $curso,
+            'resenas'      => $resenas,
+            'media'        => $media,
+            'totalResenas' => $totalResenas,
+        ]);
     }
 
     public function eliminarResena(Request $request): void
     {
         $this->verificarAdmin();
         $id = (int) $request->param('id');
+        $cursoId = $request->input('curso_id') ?? $request->input('curso_id', 0);
         Resena::delete($id);
-        header('Location: /admin/resenas');
+        if ($cursoId) {
+            header('Location: /admin/cursos/' . $cursoId . '/resenas');
+        } else {
+            header('Location: /admin/cursos');
+        }
         exit;
     }
 }

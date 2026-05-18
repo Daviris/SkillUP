@@ -17,7 +17,6 @@
                 <a href="/admin/usuarios">👥 Usuarios</a>
                 <a href="/admin/cursos">📚 Cursos</a>
                 <a href="/admin/pedidos">🛒 Pedidos</a>
-                <a href="/admin/resenas">⭐ Reseñas</a>
                 <div class="dropdown-divider" style="margin:1rem 0;"></div>
                 <a href="/">🏠 Volver a SkillUP</a>
                 <a href="/logout" style="color:#ef4444;">🚪 Cerrar sesión</a>

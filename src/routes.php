@@ -80,8 +80,8 @@ $router->get('/admin/cursos', [\App\Controllers\AdminController::class, 'cursos'
 $router->get('/admin/cursos/editar/{id}', [\App\Controllers\AdminController::class, 'editarCurso']);
 $router->post('/admin/cursos/actualizar/{id}', [\App\Controllers\AdminController::class, 'actulizarCurso']);
 $router->get('/admin/cursos/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarCurso']);
+$router->get('/admin/cursos/{id}/resenas', [\App\Controllers\AdminController::class, 'verResenas']);
+$router->get('/admin/resenas/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarResena']);
 $router->get('/admin/pedidos', [\App\Controllers\AdminController::class, 'pedidos']);
 $router->post('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
 $router->get('/admin/pedidos/ver/{id}', [\App\Controllers\AdminController::class, 'verPedido']);
-$router->get('/admin/resenas', [\App\Controllers\AdminController::class, 'resenas']);
-$router->get('/admin/resenas/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarResena']);
