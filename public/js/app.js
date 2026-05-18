@@ -197,7 +197,7 @@ function mostrarUltimoCurso() {
  */
 function escapeHTML(texto) {
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = texto;
     return div.innerHTML;
 }
 
@@ -211,26 +211,46 @@ function escapeHTML(texto) {
 function inicializarCatalogoAjax() {
     const formulario = document.getElementById('catalog-form');
     const grid = document.getElementById('cursos-grid');
+
     if (!formulario || !grid) return;
 
     formulario.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData (formulario);
+        const formData = new FormData(formulario);
         const params = new URLSearchParams(formData).toString();
 
         try {
             const respuesta = await fetch(`/api/cursos?${params}`);
-            if (!respuesta.ok) throw new Error('Error del servidor');
-            const datos = await respuesta.json();
+            const texto = await respuesta.text(); // Obtenemos el texto sin procesar
+            
+            // Intentamos parsearlo a JSON
+            let datos;
+            try {
+                datos = JSON.parse(texto);
+            } catch (parseError) {
+                // Si falla, mostramos el texto crudo (posible warning de PHP)
+                console.error('No se pudo parsear la respuesta:', texto);
+                grid.innerHTML = `
+                    <div class="card text-center" style="padding:2rem; grid-column:1/-1;">
+                        <p style="color:#ef4444;">⚠️ Error del servidor</p>
+                        <pre style="color:#fbbf24; text-align:left; max-height:200px; overflow:auto;">${escapeHTML(texto)}</pre>
+                        <button class="btn btn-secondary btn-sm" onclick="location.reload()">Reintentar</button>
+                    </div>`;
+                return;
+            }
+
+            // Si se parsea correctamente, renderizamos los cursos
             renderizarCursos(datos.cursos);
+
         } catch (error) {
+            console.error('Error de red:', error);
             grid.innerHTML = `
                 <div class="card text-center" style="padding:2rem; grid-column:1/-1;">
-                    <p style="color:#ef4444;">⚠️ No se pudieron cargar los cursos. 
-                       <button class="btn btn-secondary btn-sm" onclick="location.reload()">Reintentar</button></p>
+                    <p style="color:#ef4444;">⚠️ No se pudieron cargar los cursos.</p>
+                    <button class="btn btn-secondary btn-sm" onclick="location.reload()">Reintentar</button>
                 </div>`;
         }
-    })
+    });
 }
 
 /**
@@ -284,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Último curso visitado
     guardarCursoVisitado();
     mostrarUltimoCurso();
+    inicializarCatalogoAjax();
 
     // --- Validación de los formularios ---
 

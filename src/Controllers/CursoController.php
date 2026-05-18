@@ -93,6 +93,8 @@ class CursoController
     {
         $modalidad = $request->input('modalidad');
         $precioMax = $request->input('precio_max');
+        if ($modalidad === '') $modalidad = null;
+        if ($precioMax === '') $precioMax = null;
         $page = (int) $request->input('page', 1);
 
         $data = Curso::listar(
@@ -109,6 +111,10 @@ class CursoController
             }
         }
         unset($curso);
+
+        if (ob_get_level()) {
+            ob_clean();
+        }
 
         header('Content-Type: application/json');
         echo json_encode($data);

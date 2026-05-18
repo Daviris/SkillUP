@@ -1,10 +1,5 @@
 <?php
 
-$router->get('/instructor/crear', function() {
-    echo "Ruta de prueba funcionando";
-    exit;
-});
-
 // Home
 $router->get('/', [\App\Controllers\HomeController::class, 'index']);
 
