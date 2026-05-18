@@ -19,22 +19,22 @@
         <form method="POST" action="/register">
             <div class="form-group">
                 <label class="form-label">Nombre completo</label>
-                <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['nombre'] ?? '') ?>" placeholder="Tu nombre" required>
+                <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['nombre'] ?? '') ?>" placeholder="Tu nombre">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Correo electrónico</label>
-                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['email'] ?? '') ?>" placeholder="ejemplo@correo.com" required>
+                <input type="text" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['email'] ?? '') ?>" placeholder="ejemplo@correo.com">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Contraseña (mínimo 8 caracteres)</label>
-                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                <input type="password" name="password" class="form-input" placeholder="••••••••">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Confirmar contraseña</label>
-                <input type="password" name="password_confirmacion" class="form-input" placeholder="••••••••" required>
+                <input type="password" name="password_confirmacion" class="form-input" placeholder="••••••••">
             </div>
 
             <div class="form-group">

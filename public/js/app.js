@@ -26,7 +26,7 @@ const Cookies = {
     set(nombre, valor, dias = 30) {
         const fecha = new Date();
         fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
-        document.cookie = `${nombre}=${encodeURIComponent(valor)};expires${fecha.toUTCString()};path=/`;
+        document.cookie = `${nombre}=${encodeURIComponent(valor)};expires=${fecha.toUTCString()};path=/`;
     },
 
     /**
@@ -71,10 +71,10 @@ function mostrarError(input, mensaje) {
     limpiarError(input);
     const error = document.createElement('span');
     error.className = 'field-error';
-    error.style.cssText = 'color:#ef4444; font-size:0.85rem; margin-top:0.25rem display:block;';
+    error.style.cssText = 'color:#ef4444; font-size:0.85rem; margin-top:0.25rem; display:block;';
     error.textContent = mensaje;
     input.parentNode.appendChild(error);
-    input.style.borderBlockColor = '#ef4444';
+    input.style.borderColor = '#ef4444';
 }
 
 /**
@@ -95,12 +95,16 @@ function limpiarError(input) {
  * @returns {boolean} true si es válido.
  */
 function validarCampo(input, tipo) {
-    const valor = input.valor.trim();
-    if (tipo === 'email' && !Regex.email.text('valor')) {
+    const valor = input.value.trim();
+    if (valor === '') {
+        mostrarError(input, 'Este campo es obligatorio.');
+        return false;
+    }
+    if (tipo === 'email' && !Regex.email.test(valor)) {
         mostrarError(input, 'El correo electrónico no es válido');
         return false;
     }
-    if (tipo === 'password' && !Regex.password.test('valor')) {
+    if (tipo === 'password' && !Regex.password.test(valor)) {
         mostrarError(input, 'La contraseña debe tener al menos 8 caracteres.');
         return false;
     }
@@ -173,7 +177,7 @@ function mostrarUltimoCurso() {
                     <div class="flash-message flash-success" style="margin-bottom:2rem;">
                         Último curso visitado: 
                         <a href="/cursos/${curso.id}" style="color:#fbbf24; font-weight:600;">
-                            ${escapeHtml(curso.titulo)}
+                            ${escapeHTML(curso.titulo)}
                         </a>
                     </div>`;
                 contenedor.style.display = 'block';
@@ -220,7 +224,7 @@ function inicializarCatalogoAjax() {
             const datos = await respuesta.json();
             renderizarCursos(datos.cursos);
         } catch (error) {
-            rid.innerHTML = `
+            grid.innerHTML = `
                 <div class="card text-center" style="padding:2rem; grid-column:1/-1;">
                     <p style="color:#ef4444;">⚠️ No se pudieron cargar los cursos. 
                        <button class="btn btn-secondary btn-sm" onclick="location.reload()">Reintentar</button></p>
@@ -248,11 +252,11 @@ function renderizarCursos(cursos) {
     grid.innerHTML = cursos.map(curso => `
         <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-                <h3 class="card-title">${escapeHtml(curso.titulo)}</h3>
-                <p class="card-text" style="margin-bottom:1rem;">${escapeHtml(curso.descripcion?.substring(0, 100) ?? '')}...</p>
+                <h3 class="card-title">${escapeHTML(curso.titulo)}</h3>
+                <p class="card-text" style="margin-bottom:1rem;">${escapeHTML(curso.descripcion?.substring(0, 100) ?? '')}...</p>
             </div>
             <div style="font-size:0.9rem; color:#9ca3af; margin-bottom:0.5rem;">
-                <p><span style="color:#fbbf24;">Instructor:</span> ${escapeHtml(curso.instructor_nombre ?? 'N/A')}</p>
+                <p><span style="color:#fbbf24;">Instructor:</span> ${escapeHTML(curso.instructor_nombre ?? 'N/A')}</p>
                 <p><span style="color:#fbbf24;">Modalidad:</span> ${curso.modalidad}</p>
                 ${curso.modalidad === 'presencial' && curso.plazas != null ? `
                     <p><span style="color:#fbbf24;">Plazas:</span> 
@@ -284,15 +288,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Validación de los formularios ---
 
     // Login
-    const loginForm = document.querySelector('form[action="login"]');
+    const loginForm = document.querySelector('form[action="/login"]');
     if (loginForm) {
         const email = loginForm.querySelector('input[name="email"]');
         const password = loginForm.querySelector('input[name="password"]');
 
-        email?.addEventListener('input', () => validarCampo(email, 'email'));
-        password?.addEventListener('input', () => validarCampo(password, 'password'));
-
         loginForm.addEventListener('submit', (e) => {
+            document.querySelectorAll('.field-error').forEach(el => el.remove());
             let valido = true;
             if (!validarCampo(email, 'email')) valido = false;
             if (!validarCampo(password, 'password')) valido = false;
@@ -306,17 +308,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const nombre = registerForm.querySelector('input[name="nombre"]');
         const email = registerForm.querySelector('input[name="email"]');
         const pass = registerForm.querySelector('input[name="password"]');
-        const pass2 = registerForm.querySelector('input[name="password_confirmation"]');
+        const pass2 = registerForm.querySelector('input[name="password_confirmacion"]');
 
-        nombre?.addEventListener('input', () => validarCampo(nombre, 'nombre'));
-        email?.addEventListener('input', () => validarCampo(email, 'email'));
-        pass?.addEventListener('input', () => validarCampo(pass, 'password'));
-        pass2?.addEventListener('input', () => {
+        registerForm.addEventListener('submit', (e) => {
+            document.querySelectorAll('.field-error').forEach(el => el.remove());
+            let valido = true;
+            if (!validarCampo(nombre, 'nombre')) valido = false;
+            if (!validarCampo(email, 'email')) valido = false;
+            if (!validarCampo(pass, 'password')) valido = false;
             if (pass.value !== pass2.value) {
                 mostrarError(pass2, 'Las contraseñas no coinciden.');
-            } else {
-                limpiarError(pass2);
+                valido = false;
             }
+            if (!valido) { e.preventDefault(); }
         });
     }
 

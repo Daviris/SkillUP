@@ -19,12 +19,12 @@
         <form method="POST" action="/login">
             <div class="form-group">
                 <label class="form-label">Correo electrónico</label>
-                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['email'] ?? '') ?>" placeholder="ejemplo@correo.com" required autofocus>
+                <input type="text" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['email'] ?? '') ?>" placeholder="ejemplo@correo.com" autofocus>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Contraseña</label>
-                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                <input type="password" name="password" class="form-input" placeholder="••••••••">
             </div>
 
             <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Entrar</button>
