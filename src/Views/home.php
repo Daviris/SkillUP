@@ -11,7 +11,7 @@
     </p>
 
     <!-- Carrusel con animación y retraso -->
-    <div class="carousel fade-in-up" id="homeCarousel" style="transition-delay:0.4s;">
+    <div class="carousel fade-in-up" id="homeCarousel" style="transition-delay:0.4s; min-width: 1000px;">
         <div class="carousel-slide active">
             <h2>🔥 Aprende a tu ritmo</h2>
             <p>Cursos online y presenciales con horarios flexibles</p>

@@ -323,4 +323,27 @@ class InstructorClaseController
         header('Location: /instructor/clases/' . $entrega['clase_id'] . '/entregas');
         exit;
     }
+
+    public function verClase(Request $request): void
+    {
+        $this->verificarInstructor();
+        $claseId = (int) $request->param('id');
+        $clase = Clase::find($claseId);
+        if (!$clase) {
+            http_response_code(404);
+            echo "Clase no encontrada.";
+            exit;
+        }
+        $curso = Curso::find($clase['curso_id']);
+        if ($curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            echo "No autorizado.";
+            exit;
+        }
+
+        View::render('instructor/clases/ver', [
+            'title' => $clase['titulo'],
+            'clase' => $clase,
+        ]);
+    }
 }

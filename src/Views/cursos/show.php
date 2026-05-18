@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-<div class="card" style="padding:2rem;">
+<div class="card" style="padding:2rem; max-width:1100px; margin:0 auto;">
     <!-- Título y descripción -->
     <div style="margin-bottom:2rem;">
         <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem;">
@@ -8,12 +8,23 @@
         <p style="color:#cbd5e1; line-height:1.6;"><?= htmlspecialchars($curso['descripcion']) ?></p>
     </div>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+    <div style="display:grid; grid-template-columns: minmax(300px, 1fr) 1fr; gap:2rem;">
         <!-- Detalles del curso -->
         <div>
             <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Detalles del curso</h2>
             <ul style="list-style:none; padding:0; color:#e5e7eb; line-height:2;">
-                <li><span style="color:#fbbf24;">Instructor:</span> <?= htmlspecialchars($curso['instructor_nombre']) ?></li>
+                <li>
+                    <span style="color:#fbbf24;">Instructor:</span>
+                    <a href="/instructor/<?= $curso['id_instructor'] ?>" style="color:#fbbf24; text-decoration:underline;"> <?= htmlspecialchars($curso['instructor_nombre']) ?></a>
+                    <?php
+                        $instructor = \App\Models\Usuario::find($curso['id_instructor']);
+                        $reputacion = $instructor['reputacion'] ?? 0;
+                    ?>
+                    <span style="color:#fbbf24; margin-left:0.5rem;">
+                        <?= str_repeat('★', (int) round($reputacion)) ?><?= str_repeat('☆', 5 - (int) round($reputacion)) ?>
+                        (<?= number_format($reputacion, 1) ?>)
+                    </span>
+                </li>
                 <li><span style="color:#fbbf24;">Modalidad:</span> <?= ucfirst($curso['modalidad']) ?></li>
                 <li><span style="color:#fbbf24;">Precio:</span> <span style="color:#fbbf24; font-weight:bold;"><?= number_format($curso['precio'], 2) ?> €</span></li>
                 <li><span style="color:#fbbf24;">Duración total:</span> <?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min</li>
@@ -21,19 +32,21 @@
             </ul>
 
             <!-- Botón de compra o estado -->
-            <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'alumno' && !$yaComprado): ?>
-                <a href="/carrito/agregar/<?= $curso['id'] ?>" class="btn btn-primary" style="margin-top:1.5rem;">
-                    Añadir a la mochila
-                </a>
-            <?php elseif (isset($_SESSION['usuario']) && $yaComprado): ?>
-                <div class="flash-message flash-success" style="margin-top:1.5rem;">
-                    Ya has adquirido este curso.
-                </div>
-            <?php elseif (!isset($_SESSION['usuario'])): ?>
-                <div style="margin-top:1.5rem; padding:1rem; background:#1e293b; border:1px solid #b45309; border-radius:0.5rem; color:#cbd5e1;">
-                    <a href="/login" style="color:#fbbf24; font-weight:500;">Inicia sesión</a> para comprar este curso.
-                </div>
-            <?php endif; ?>
+            <div style="margin-top:1.5rem;">
+                <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'alumno' && !$yaComprado): ?>
+                    <a href="/carrito/agregar/<?= $curso['id'] ?>" class="btn btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+                        Añadir a la mochila
+                    </a>
+                <?php elseif (isset($_SESSION['usuario']) && $yaComprado): ?>
+                    <div class="flash-message flash-success" style="text-align:center;">
+                        Ya has adquirido este curso.
+                    </div>
+                <?php elseif (!isset($_SESSION['usuario'])): ?>
+                    <div style="padding:1rem; background:#1e293b; border:1px solid #b45309; border-radius:0.5rem; color:#cbd5e1; text-align:center;">
+                        <a href="/login" style="color:#fbbf24; font-weight:500;">Inicia sesión</a> para comprar este curso.
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
 
         <!-- Contenido del curso (clases) -->

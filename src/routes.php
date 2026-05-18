@@ -8,6 +8,7 @@ $router->get('/cursos', [\App\Controllers\CursoController::class, 'index']);
 $router->get('/cursos/{id}', [\App\Controllers\CursoController::class, 'show']);
 $router->get('/mis-cursos', [\App\Controllers\MisCursosController::class, 'index']);
 $router->get('/mis-cursos/ver/{id}', [\App\Controllers\AlumnoCursoController::class, 'verCurso']);
+$router->get('/instructor/{id}', [\App\Controllers\CursoController::class, 'verInstructor']);
 
 // Clases
 $router->get('/instructor/cursos/{curso_id}/clases', [\App\Controllers\InstructorClaseController::class, 'index']);
@@ -19,6 +20,7 @@ $router->get('/instructor/clases/eliminar/{id}', [\App\Controllers\InstructorCla
 $router->get('/instructor/clases/{id}/entregas', [\App\Controllers\InstructorClaseController::class, 'verEntregas']);
 $router->post('/instructor/entregas/calificar', [\App\Controllers\InstructorClaseController::class, 'calificarEntrega']);
 $router->get('/mis-cursos/clase/{id}', [\App\Controllers\ClaseIndividualController::class, 'mostrar']);
+$router->get('/instructor/clases/ver/{id}', [\App\Controllers\InstructorClaseController::class, 'verClase']);
 
 // Subida/Descarga de archivos
 $router->post('/archivo/subir', [\App\Controllers\ArchivoController::class, 'subir']);

@@ -6,10 +6,13 @@ $clase    = $clase    ?? [];
 $curso_id = $curso_id ?? null;
 $accion   = $accion   ?? 'Crear';
 
-// Preparar la fecha límite formateada
-$fechaLimiteFormateada = '';
+// Preparar valores de fecha y hora por separado
+$fechaValor = '';
+$horaValor  = '23:59'; // hora por defecto
 if (!empty($clase['fecha_limite'])) {
-    $fechaLimiteFormateada = date('Y-m-d\TH:i', strtotime($clase['fecha_limite']));
+    $timestamp = strtotime($clase['fecha_limite']);
+    $fechaValor = date('Y-m-d', $timestamp);
+    $horaValor  = date('H:i', $timestamp);
 }
 
 // Construir la URL de cancelación
@@ -20,7 +23,7 @@ if (!empty($clase['curso_id'])) {
     $cancelUrl = '/instructor/cursos/' . $curso_id . '/clases';
 }
 ?>
-<div style="max-width:700px; margin:0 auto;">
+<div style="max-width:800px; margin:0 auto;">
     <div class="card" style="padding:2rem;">
         <h1 class="font-rpg" style="font-size:2.2rem; color:#fbbf24; margin-bottom:1.5rem;">
             <?= htmlspecialchars($accion) ?> clase
@@ -38,10 +41,6 @@ if (!empty($clase['curso_id'])) {
                 <div class="form-group">
                     <label class="form-label">Duración (min)</label>
                     <input type="number" name="duracion" class="form-input" value="<?= htmlspecialchars($clase['duracion'] ?? 0) ?>" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Orden</label>
-                    <input type="number" name="orden" class="form-input" value="<?= htmlspecialchars($clase['orden'] ?? '') ?>" placeholder="Auto">
                 </div>
             </div>
 
@@ -70,7 +69,10 @@ if (!empty($clase['curso_id'])) {
             <div id="campo-tarea" class="hidden">
                 <div class="form-group">
                     <label class="form-label">Fecha límite</label>
-                    <input type="datetime-local" name="fecha_limite" class="form-input" value="<?= $fechaLimiteFormateada ?>">
+                    <div style="display:flex; gap:1rem;">
+                        <input type="date" name="fecha_limite_fecha" class="form-input" value="<?= $fechaValor ?>">
+                        <input type="time" name="fecha_limite_hora" class="form-input" value="<?= $horaValor ?>">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Criterios de evaluación</label>

@@ -50,4 +50,35 @@ class CursoController
             'yaComprado' => $yaComprado,
         ]);
     }
+
+    public function verInstructor(Request $request): void
+    {
+        $id = (int) $request->param('id');
+        $instructor = \App\Models\Usuario::find($id);
+        if (!$instructor || $instructor['rol'] !== 'instructor') {
+            http_response_code(404);
+            echo "Instructor no encontrado.";
+            exit;
+        }
+
+        $cursos = Curso::whereAll('id_instructor', (string) $id);
+        $totalResenas = 0;
+        $sumaPuntuaciones = 0;
+        foreach ($cursos as $curso) {
+            $resenas = \App\Models\Resena::delCurso($curso['id']);
+            $totalResenas += count($resenas);
+            foreach ($resenas as $r) {
+                $sumaPuntuaciones += $r['puntuacion'];
+            }
+        }
+        $reputacion = $totalResenas > 0 ? round($sumaPuntuaciones / $totalResenas, 1) : 0;
+
+        View::render('instructor/perfil_publico', [
+            'title' => $instructor['nombre'],
+            'instructor' => $instructor,
+            'cursos' => $cursos,
+            'reputacion' => $reputacion,
+            'totalResenas' => $totalResenas,
+        ]);
+    }
 }
