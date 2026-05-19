@@ -307,7 +307,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Último curso visitado
     guardarCursoVisitado();
     mostrarUltimoCurso();
+
+
     inicializarCatalogoAjax();
+
+    const elementosAnimados = document.querySelectorAll('.fade-in-up');
+    elementosAnimados.forEach(el => el.classList.add('visible'));
 
     // --- Validación de los formularios ---
 

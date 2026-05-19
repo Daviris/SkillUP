@@ -72,40 +72,5 @@
     </div>
 </div>
 
-<script>
-// Carrusel con opacidad y altura fija
-(function() {
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots = document.querySelectorAll('.carousel-dot');
-    let current = 0;
-
-    function showSlide(index) {
-        slides.forEach(s => s.classList.remove('active'));
-        dots.forEach(d => d.classList.remove('active'));
-        slides[index].classList.add('active');
-        dots[index].classList.add('active');
-        current = index;
-    }
-
-    setInterval(() => {
-        let next = current + 1 >= slides.length ? 0 : current + 1;
-        showSlide(next);
-    }, 4000);
-
-    dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-            showSlide(parseInt(this.dataset.slide));
-        });
-    });
-})();
-
-// Animación de aparición progresiva
-window.addEventListener('DOMContentLoaded', function() {
-    const elements = document.querySelectorAll('.fade-in-up');
-    elements.forEach(function(el) {
-        el.classList.add('visible');
-    });
-});
-</script>
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/layouts/main.php'; ?>
