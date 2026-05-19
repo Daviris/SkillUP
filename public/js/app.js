@@ -665,6 +665,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Formulraio del perfil
+    const perfilForm = document.getElementById('perfil-form');
+    if (perfilForm) {
+        const nombre = perfilForm.querySelector('input[name="nombre"]');
+        const email = perfilForm.querySelector('input[name="email"]');
+        const password = perfilForm.querySelector('input[name="password"]');
+        const passwordConfirm = perfilForm.querySelector('input[name="password_confirmation"]');
+
+        perfilForm.addEventListener('submit', (e) => {
+            document.querySelectorAll('.field-error').forEach(el => el.remove());
+
+            let valido = true;
+
+            if (nombre.value.trim() === '') {
+                mostrarError(nombre, 'El nombre es obligatorio');
+                valido = false;
+            }
+            if (!Regex.email.text(email.value.trim())) {
+                mostrarError(email, 'El correo no es válido');
+                valido = false;
+            }
+            if (password.value.trim() !== '') {
+                if (password.value.trim().length < 8) {
+                    mostrarError(password, 'La contraseña debe tener al menos 8 caracteres');
+                    valido = false;
+                }
+                if (password.value !== passwordConfirm.value) {
+                    mostrarError(passwordConfirm, 'Las contraseñas no coinciden');
+                    valido = false;
+                }
+            }
+
+            if (!valido) {
+                e.preventDefault();
+            }
+        });
+    }
+
     // --- Dropdown del header ---
     const btn = document.getElementById('userMenuButton');
     const menu = document.getElementById('userDropdown');

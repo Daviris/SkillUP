@@ -5,25 +5,14 @@
             Editar Perfil
         </h1>
 
-        <?php if (!empty($_SESSION['errores'])): ?>
-            <div class="flash-message flash-error" style="margin-bottom:1.5rem;">
-                <ul style="list-style:none; padding:0; margin:0;">
-                    <?php foreach ($_SESSION['errores'] as $error): ?>
-                        <li><?= htmlspecialchars($error) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <?php unset($_SESSION['errores']); ?>
-        <?php endif; ?>
-
-        <form action="/perfil/actualizar" method="POST">
+        <form action="/perfil/actualizar" method="POST" id="perfil-form" novalidate>
             <div class="form-group">
                 <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($usuario['nombre']) ?>" required>
+                <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($usuario['nombre']) ?>">
             </div>
             <div class="form-group">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($usuario['email']) ?>" required>
+                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($usuario['email']) ?>">
             </div>
             <div class="form-group">
                 <label class="form-label">Nueva contraseña (dejar en blanco para no cambiarla)</label>
