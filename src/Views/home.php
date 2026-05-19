@@ -62,19 +62,19 @@
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
         <div class="stat-card">
             <div class="stat-icon">🗡️</div>
-            <div class="stat-number"><?= $totalCursos ?>+</div>
+            <div class="stat-number"><?= $totalCursos ?></div>
             <div class="stat-label">Misiones disponibles</div>
             <div class="stat-desc">Cursos para todos los niveles</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon">🧑‍🎓</div>
-            <div class="stat-number"><?= $totalAlumnos ?>+</div>
+            <div class="stat-number"><?= $totalAlumnos ?></div>
             <div class="stat-label">Aventureros activos</div>
             <div class="stat-desc">Alumnos forjando su leyenda</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon">🧙</div>
-            <div class="stat-number"><?= $totalInstructores ?>+</div>
+            <div class="stat-number"><?= $totalInstructores ?></div>
             <div class="stat-label">Maestros guías</div>
             <div class="stat-desc">Instructores con experiencia real</div>
         </div>
