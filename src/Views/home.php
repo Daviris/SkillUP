@@ -1,20 +1,42 @@
 <?php ob_start(); ?>
+<div class="hero-section fade-in-up" style="position: relative; overflow: visible; padding: 4rem 0 3rem; text-align: center;">
+    
+    <div style="max-width: 900px; margin: 0 auto; position: relative; z-index: 2;">
+        <!-- Logo / Icono principal -->
+        <div style="margin-bottom: 1.5rem;">
+            <span style="font-size: 4.5rem; filter: drop-shadow(0 0 20px rgba(251,191,36,0.5));">⚔️</span>
+        </div>
 
-<div id="ultimo-curso-visitado" style="display:none;"></div>
+        <!-- Título principal -->
+        <h1 class="font-rpg" style="font-size: 4.5rem; color: #fbbf24; margin-bottom: 0.5rem; text-shadow: 0 0 30px rgba(251,191,36,0.6), 0 4px 8px rgba(0,0,0,0.5); letter-spacing: 3px;">
+            SkillUP
+        </h1>
 
-<div class="text-center" style="padding:2rem 0;">
-    <!-- Título principal con animación -->
-    <h1 class="font-rpg fade-in-up" style="font-size:4rem; color:#fbbf24; text-shadow:0 0 15px rgba(251,191,36,0.6); margin-bottom:1rem;">
-        SkillUP
-    </h1>
+        <!-- Subtítulo -->
+        <p style="font-size: 1.4rem; color: #cbd5e1; margin-bottom: 0.75rem; font-weight: 300;">
+            Forja tu leyenda, conquista el conocimiento
+        </p>
+        <p style="font-size: 1.1rem; color: #94a3b8; margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto;">
+            Únete a la comunidad de aventureros que ya están subiendo de nivel con nuestros cursos online y presenciales.
+        </p>
 
-    <!-- Subtítulo con animación y retraso -->
-    <p class="fade-in-up" style="font-size:1.3rem; color:#cbd5e1; margin-bottom:2rem; transition-delay:0.2s;">
-        Sube de nivel aprendiendo nuevas habilidades
-    </p>
+        <!-- Botones de acción -->
+        <div style="display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/cursos" class="btn btn-primary" style="font-size: 1.15rem; padding: 0.9rem 2.5rem; box-shadow: 0 0 20px rgba(251,191,36,0.3);">
+                🗺️ Explorar cursos
+            </a>
+            <?php if (!isset($_SESSION['usuario'])): ?>
+                <a href="/register" class="btn btn-secondary" style="font-size: 1.15rem; padding: 0.9rem 2.5rem; border-color: #fbbf24; color: #fbbf24;">
+                    ✨ Crear cuenta gratuita
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
 
-    <!-- Carrusel con animación y retraso -->
-    <div class="carousel fade-in-up" id="homeCarousel" style="transition-delay:0.4s; min-width: 1000px;">
+<!-- Carrusel -->
+<div class="carousel fade-in-up" id="homeCarousel" style="transition-delay:0.4s;">
+    <div class="carousel-track">
         <div class="carousel-slide active">
             <h2>🔥 Aprende a tu ritmo</h2>
             <p>Cursos online y presenciales con horarios flexibles</p>
@@ -27,50 +49,57 @@
             <h2>📜 Certifícate</h2>
             <p>Obtén un diploma al finalizar cada curso</p>
         </div>
-        <div class="carousel-dots">
-            <span class="carousel-dot active" data-slide="0"></span>
-            <span class="carousel-dot" data-slide="1"></span>
-            <span class="carousel-dot" data-slide="2"></span>
-        </div>
     </div>
-
-    <!-- Botón con animación y retraso -->
-    <a href="/cursos" class="btn btn-primary fade-in-up" style="font-size:1.2rem; margin-top:1.5rem; transition-delay:0.6s;">
-        🔍 Explorar cursos
-    </a>
-
-    <!-- Estadísticas en tarjetas (dinámicas) -->
-    <div class="grid-3" style="margin-top:4rem;">
-        <div class="card text-center fade-in-up" style="transition-delay:0.8s;">
-            <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalCursos ?></p>
-            <p class="card-text">Cursos disponibles</p>
-        </div>
-        <div class="card text-center fade-in-up" style="transition-delay:1s;">
-            <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalAlumnos ?></p>
-            <p class="card-text">Alumnos aprendiendo</p>
-        </div>
-        <div class="card text-center fade-in-up" style="transition-delay:1.2s;">
-            <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalInstructores ?></p>
-            <p class="card-text">Instructores expertos</p>
-        </div>
+    <div class="carousel-dots">
+        <span class="carousel-dot active" data-slide="0"></span>
+        <span class="carousel-dot" data-slide="1"></span>
+        <span class="carousel-dot" data-slide="2"></span>
     </div>
+</div>
 
-    <!-- Características (antes de los números) -->
-    <div class="grid-3" style="margin-top:4rem;">
-        <div class="card text-center fade-in-up" style="transition-delay:1.4s;">
-            <h3 class="card-title">⏳ A tu ritmo</h3>
-            <p class="card-text">Accede cuando quieras</p>
+<!-- Estadísticas -->
+<div class="fade-in-up" style="max-width: 1100px; margin: 0 auto 4rem; padding: 0 1rem;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+        <div class="stat-card">
+            <div class="stat-icon">🗡️</div>
+            <div class="stat-number"><?= $totalCursos ?>+</div>
+            <div class="stat-label">Misiones disponibles</div>
+            <div class="stat-desc">Cursos para todos los niveles</div>
         </div>
-        <div class="card text-center fade-in-up" style="transition-delay:1.6s;">
-            <h3 class="card-title">👨‍🏫 Expertos</h3>
-            <p class="card-text">Instructores con experiencia real</p>
+        <div class="stat-card">
+            <div class="stat-icon">🧑‍🎓</div>
+            <div class="stat-number"><?= $totalAlumnos ?>+</div>
+            <div class="stat-label">Aventureros activos</div>
+            <div class="stat-desc">Alumnos forjando su leyenda</div>
         </div>
-        <div class="card text-center fade-in-up" style="transition-delay:1.8s;">
-            <h3 class="card-title">📜 Certificados</h3>
-            <p class="card-text">Valida tus conocimientos</p>
+        <div class="stat-card">
+            <div class="stat-icon">🧙</div>
+            <div class="stat-number"><?= $totalInstructores ?>+</div>
+            <div class="stat-label">Maestros guías</div>
+            <div class="stat-desc">Instructores con experiencia real</div>
         </div>
     </div>
 </div>
 
+<!-- Características con iconos SVG -->
+<div class="fade-in-up" style="max-width: 1100px; margin: 0 auto 2rem; padding: 0 1rem;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+        <div class="feature-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+            <h3 class="font-rpg" style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 0.5rem;">Acceso de por vida</h3>
+            <p style="color: #94a3b8; font-size: 0.95rem;">Tendrás acceso ilimitado al contenido para que puedas repasar siempre que quieras.</p>
+        </div>
+        <div class="feature-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏆</div>
+            <h3 class="font-rpg" style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 0.5rem;">Retos prácticos</h3>
+            <p style="color: #94a3b8; font-size: 0.95rem;">Cada curso incluye ejercicios y tareas para que pongas a prueba lo aprendido.</p>
+        </div>
+        <div class="feature-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">💬</div>
+            <h3 class="font-rpg" style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 0.5rem;">Comunidad activa</h3>
+            <p style="color: #94a3b8; font-size: 0.95rem;">Resuelve dudas y comparte experiencias con otros aventureros y con el instructor.</p>
+        </div>
+    </div>
+</div>
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/layouts/main.php'; ?>

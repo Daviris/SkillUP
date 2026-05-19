@@ -716,20 +716,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Carrusel Home ---
+    const track = document.querySelector('.carousel-track');
     const slides = document.querySelectorAll('.carousel-slide');
     const dots = document.querySelectorAll('.carousel-dot');
-    if (slides.length) {
+
+    if (track && slides.length) {
         let current = 0;
-        const mostrarSlide = (index) => {
-            slides.forEach(s => s.classList.remove('active'));
+        const total = slides.length;
+
+        const goTo = (index) => {
+            track.style.transform = `translateX(-${index * 100}%)`;
             dots.forEach(d => d.classList.remove('active'));
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
+            if (dots[index]) dots[index].classList.add('active');
             current = index;
         };
-        setInterval(() => mostrarSlide((current +1 ) % slides.length), 4000);
-        dots.forEach(dot => dot.addEventListener('click', (e) => {
-            mostrarSlide(parseInt(e.target.dataset.slide));
-        }));
+
+        setInterval(() => {
+            goTo((current + 1) % total);
+        }, 4000);
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.slide);
+                goTo(index);
+            });
+        });
     }
 });
