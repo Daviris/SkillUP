@@ -13,18 +13,21 @@ class CursoController
     {
         $modalidad = $request->input('modalidad');
         $precioMax = $request->input('precio_max');
+        $busqueda = $request->input('busqueda');
         $pag = (int) $request->input('pag', 1);
 
         $data = Curso::listar(
             $modalidad ?: null,
             $precioMax !== null ? (float) $precioMax : null,
             12,
-            $pag
+            $pag,
+            $busqueda ?: null
         );
 
         $data['title'] = 'Catálogo de cursos';
         $data['modalidad'] = $modalidad;
         $data['precio_max'] = $precioMax;
+        $data['busqueda'] = $busqueda;
 
         View::render('cursos/index', $data);
     }
@@ -93,15 +96,18 @@ class CursoController
     {
         $modalidad = $request->input('modalidad');
         $precioMax = $request->input('precio_max');
+        $busqueda = $request->input('busqueda');
         if ($modalidad === '') $modalidad = null;
         if ($precioMax === '') $precioMax = null;
+        if ($busqueda === '') $busqueda = null;
         $page = (int) $request->input('page', 1);
 
         $data = Curso::listar(
             $modalidad ?: null,
             $precioMax !== null ? (float) $precioMax : null,
             12,
-            $page
+            $page,
+            $busqueda
         );
 
         // Añadir conteo de compradores para los cursos presenciales.

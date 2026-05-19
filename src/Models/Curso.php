@@ -11,10 +11,10 @@ class Curso extends Model
     protected static string $primaryKey = 'id';
 
     // Paginación con filtros
-    public static function listar(?string $modalidad = null, ?float $precioMax = null, int $porPagina = 12, int $pagina = 1) : array
+    public static function listar(?string $modalidad = null, ?float $precioMax = null, int $porPagina = 12, int $pagina = 1, ?string $busqueda = null) : array
     {
         $pdo = Database::getConnection();
-        $sql = "SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE 1=1";
+        $sql = "SELECT c.*, u.nombre AS instructor_nombre, u.reputacion AS media_resenas FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE 1=1";
         $params = [];
 
         if ($modalidad) {
@@ -25,6 +25,11 @@ class Curso extends Model
             $sql .= " AND c.precio <= :precioMax";
             $params['precioMax'] = $precioMax;
         }
+        if ($busqueda) {
+            $sql .= " AND (c.titulo LIKE :busqueda OR c.descripcion LIKE :busqueda2)";
+            $params['busqueda'] = '%' . $busqueda . '%';
+            $params['busqueda2'] = '%' . $busqueda . '%';
+        }
 
         // Contar el total
         $countStmt = $pdo->prepare("SELECT COUNT(*) FROM ($sql) as total");
@@ -32,14 +37,12 @@ class Curso extends Model
         $total = (int) $countStmt->fetchColumn();
 
         // Paginación
-        $offset = ($pagina -1) * $porPagina;
-        $sql .= " LIMIT :limit OFFSET :offset";
+        $offset = ($pagina - 1) * $porPagina;
+        $sql .= " ORDER BY c.created_at DESC LIMIT :limit OFFSET :offset";
         $params['limit'] = $porPagina;
         $params['offset'] = $offset;
 
         $stmt = $pdo->prepare($sql);
-
-        // Asignar tipos
         foreach ($params as $key => $valor) {
             $paramType = is_int($valor) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
             $stmt->bindValue(":$key", $valor, $paramType);
@@ -47,6 +50,7 @@ class Curso extends Model
         $stmt->execute();
         $cursos = $stmt->fetchAll();
 
+        // Contar compradores para presenciales
         foreach ($cursos as &$curso) {
             if ($curso['modalidad'] === 'presencial') {
                 $curso['compradores'] = self::contarCompradores($curso['id']);

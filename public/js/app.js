@@ -176,14 +176,46 @@ function mostrarUltimoCurso() {
         .then(res => res.json())
         .then(curso => {
             if (curso && curso.titulo) {
-                contenedor.innerHTML = `
-                    <div class="flash-message flash-success" style="margin-bottom:2rem;">
-                        Último curso visitado: 
-                        <a href="/cursos/${curso.id}" style="color:#fbbf24; font-weight:600;">
+                // Limpiar el contenedor
+                contenedor.innerHTML = '';
+                contenedor.style.display = 'none';
+                
+                // Crear tarjeta estilizada
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'fade-in-up';
+                tarjeta.style.cssText = `
+                    background: linear-gradient(135deg, #1e293b, #0f172a);
+                    border: 1px solid #b45309;
+                    border-radius: 0.75rem;
+                    padding: 1rem 1.5rem;
+                    margin-bottom: 1.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    color: #e5e7eb;
+                    font-size: 0.95rem;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                `;
+                
+                tarjeta.innerHTML = `
+                    <span style="font-size: 1.5rem;">🕒</span>
+                    <div style="flex:1;">
+                        <span style="color:#94a3b8;">Último curso visitado:</span>
+                        <a href="/cursos/${curso.id}" style="color:#fbbf24; font-weight:600; margin-left:0.5rem; text-decoration:none; transition:color 0.2s;">
                             ${escapeHTML(curso.titulo)}
                         </a>
-                    </div>`;
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#6b7280; cursor:pointer; font-size:1.2rem; padding:0.25rem; transition:color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#6b7280'">✕</button>
+                `;
+                
+                contenedor.appendChild(tarjeta);
                 contenedor.style.display = 'block';
+                
+                // Forzar reflow y activar animación
+                void tarjeta.offsetWidth;
+                requestAnimationFrame(() => {
+                    tarjeta.classList.add('visible');
+                });
             }
         })
         .catch(() => {});
@@ -266,34 +298,62 @@ function renderizarCursos(cursos) {
 
     if (!cursos || cursos.length === 0) {
         grid.innerHTML = `
-            <div class="card text-center" style="padding:3rem; grid-column:1/-1;">
-                <p style="color:#9ca3af;">No se encontraron cursos.</p>
+            <div class="fade-in-up" style="text-align: center; padding: 4rem 2rem; background: #1e293b; border: 2px solid #334155; border-radius: 1rem; grid-column: 1 / -1;">
+                <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">📜</span>
+                <h3 style="font-size: 1.5rem; color: #fbbf24; margin-bottom: 0.5rem;">No se encontraron misiones</h3>
+                <p style="color: #94a3b8;">Prueba a ajustar los filtros o vuelve más tarde para nuevas aventuras.</p>
             </div>`;
         return;
     }
 
-    grid.innerHTML = cursos.map(curso => `
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-                <h3 class="card-title">${escapeHTML(curso.titulo)}</h3>
-                <p class="card-text" style="margin-bottom:1rem;">${escapeHTML(curso.descripcion?.substring(0, 100) ?? '')}...</p>
-            </div>
-            <div style="font-size:0.9rem; color:#9ca3af; margin-bottom:0.5rem;">
-                <p><span style="color:#fbbf24;">Instructor:</span> ${escapeHTML(curso.instructor_nombre ?? 'N/A')}</p>
-                <p><span style="color:#fbbf24;">Modalidad:</span> ${curso.modalidad}</p>
-                ${curso.modalidad === 'presencial' && curso.plazas != null ? `
-                    <p><span style="color:#fbbf24;">Plazas:</span> 
-                    ${curso.compradores >= curso.plazas ? '<span style="color:#ef4444;">Completo</span>' : curso.compradores + '/' + curso.plazas}</p>
-                ` : ''}
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:1.3rem; font-weight:bold; color:#fbbf24;">
-                    ${parseFloat(curso.precio).toFixed(2)} €
-                </span>
-                <a href="/cursos/${curso.id}" class="btn btn-primary btn-sm">Ver detalles</a>
-            </div>
-        </div>
-    `).join('');
+    grid.innerHTML = cursos.map((curso, index) => {
+        const modalidadColor = curso.modalidad === 'online' ? '#1e3a5f, #0f172a' : '#5f1e1e, #0f172a';
+        const modalidadIcon = curso.modalidad === 'online' ? '🌐' : '🏰';
+        const modalidadBadgeColor = curso.modalidad === 'online' ? '#065f46' : '#7f1d1d';
+        const plazasBadge = curso.plazas != null ? `
+            <span class="badge" style="position: absolute; top: 0.75rem; right: 0.75rem; background: ${(curso.compradores ?? 0) >= curso.plazas ? '#7f1d1d' : '#065f46'}; color: white; font-size: 0.7rem;">
+                ${(curso.compradores ?? 0) >= curso.plazas ? 'Completo' : (curso.compradores ?? 0) + '/' + curso.plazas + ' plazas'}
+            </span>` : '';
+
+        return `
+            <div class="course-card fade-in-up" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="course-cover" style="background: linear-gradient(135deg, ${modalidadColor}); height: 120px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border-radius: 0.75rem 0.75rem 0 0; position: relative; overflow: hidden;">
+                    ${modalidadIcon}
+                    <span class="badge" style="position: absolute; top: 0.75rem; left: 0.75rem; background: ${modalidadBadgeColor}; color: white; font-size: 0.7rem;">
+                        ${curso.modalidad === 'online' ? 'Online' : 'Presencial'}
+                    </span>
+                    ${plazasBadge}
+                </div>
+                <div style="padding: 1.25rem; background: #1e293b; border-radius: 0 0 0.75rem 0.75rem; border: 1px solid #334155; border-top: none; flex: 1; display: flex; flex-direction: column;">
+                    <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 0.5rem;">
+                        ${escapeHTML(curso.titulo)}
+                    </h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.75rem; line-height: 1.4;">
+                        ${escapeHTML((curso.descripcion ?? '').substring(0, 90))}...
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; font-size: 0.85rem;">
+                        <span style="color: #94a3b8;">
+                            🧙 ${escapeHTML(curso.instructor_nombre ?? 'N/A')}
+                        </span>
+                        <span style="color: #fbbf24;">
+                            ★ ${(curso.media_resenas ?? 0).toFixed(1)}
+                        </span>
+                    </div>
+                    <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: #fbbf24;">
+                            ${parseFloat(curso.precio).toFixed(2)} €
+                        </span>
+                        <a href="/cursos/${curso.id}" class="btn btn-primary btn-sm" style="background: linear-gradient(135deg, #b45309, #d97706); border: none;">
+                            Ver misión →
+                        </a>
+                    </div>
+                </div>
+            </div>`;
+    }).join('');
+
+    // Reaplicar animaciones
+    const nuevos = grid.querySelectorAll('.fade-in-up');
+    nuevos.forEach(el => el.classList.add('visible'));
 }
 
 /* ===========================================================
