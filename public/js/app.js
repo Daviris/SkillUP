@@ -112,6 +112,10 @@ function validarCampo(input, tipo) {
         mostrarError(input, 'El nombre debe tener al menos 2 caracteres.');
         return false;
     }
+    if (tipo === 'telefono' && input.value.trim() && !/^\+?\d{6,15}$/.test(input.value.trim())) {
+        mostrarError(input, 'Teléfono no válido');
+        return false;
+    }
     limpiarError(input);
     return true;
 }
@@ -353,6 +357,162 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Checkout por pasos ---
+    window.siguientePaso = (paso) => {
+        document.querySelectorAll('.paso').forEach(el => el.classList.add('hidden'));
+        document.getElementById('paso' + paso)?.classList.remove('hidden');
+        for (let i = 1; i <= 3; i++) {
+            const ind = document.getElementById('paso' + i + '-ind');
+            if (ind) ind.style.background = i <= paso ? '#b45309' : '#4b5563';
+        }
+    };
+
+    // Checkout
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+        // Función para validar que un campo no esté vacío
+        const validarNoVacio = (input, mensaje = 'Este campo es obligatorio') => {
+            if (input.value.trim() === '') {
+                mostrarError(input, mensaje);
+                return false;
+            }
+            limpiarError(input);
+            return true;
+        };
+
+        // Campos de cada paso
+        const camposPaso1 = [
+            checkoutForm.querySelector('input[name="nombre"]'),
+            checkoutForm.querySelector('input[name="email"]'),
+            checkoutForm.querySelector('input[name="telefono"]')
+        ];
+        const camposPaso2 = [
+            checkoutForm.querySelector('input[name="titular"]'),
+            checkoutForm.querySelector('input[name="tarjeta"]'),
+            checkoutForm.querySelector('input[name="caducidad"]'),
+            checkoutForm.querySelector('input[name="cvv"]')
+        ];
+
+        // Validar formato de tarjeta (16 dígitos)
+        const validarTarjeta = (input) => {
+            const valor = input.value.replace(/\s/g, '');
+            if (valor === '') {
+                mostrarError(input, 'Este campo es obligatorio');
+                return false;
+            }
+            if (!/^\d{16}$/.test(valor)) {
+                mostrarError(input, 'Número de tarjeta no válido (16 dígitos)');
+                return false;
+            }
+            limpiarError(input);
+            return true;
+        };
+
+        // Validar caducidad (MM/AA en el futuro)
+        const validarCaducidad = (input) => {
+            const valor = input.value.trim();
+            if (valor === '') {
+                mostrarError(input, 'Este campo es obligatorio');
+                return false;
+            }
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(valor)) {
+                mostrarError(input, 'Formato: MM/AA');
+                return false;
+            }
+            const [mes, ano] = valor.split('/');
+            const fechaActual = new Date();
+            const anoActual = fechaActual.getFullYear() % 100;
+            const mesActual = fechaActual.getMonth() + 1;
+            if (+ano < anoActual || (+ano === anoActual && +mes < mesActual)) {
+                mostrarError(input, 'La tarjeta ha caducado');
+                return false;
+            }
+            limpiarError(input);
+            return true;
+        };
+
+        // Validar CVV (3 dígitos)
+        const validarCvv = (input) => {
+            const valor = input.value.trim();
+            if (valor === '') {
+                mostrarError(input, 'Este campo es obligatorio');
+                return false;
+            }
+            if (!/^\d{3}$/.test(valor)) {
+                mostrarError(input, 'CVV no válido (3 dígitos)');
+                return false;
+            }
+            limpiarError(input);
+            return true;
+        };
+
+        // Validar un grupo de campos
+        const validarGrupo = (campos, paso) => {
+            let valido = true;
+            campos.forEach(input => {
+                if (!input) return;
+                if (input.name === 'email') {
+                    if (!validarCampo(input, 'email')) valido = false;
+                } else if (input.name === 'telefono') {
+                    if (input.value.trim() === '') {
+                        mostrarError(input, 'El teléfono es obligatorio');
+                        valido = false;
+                    } else if (!/^\+?\d{6,15}$/.test(input.value.trim())) {
+                        mostrarError(input, 'Teléfono no válido');
+                        valido = false;
+                    } else {
+                        limpiarError(input);
+                    }
+                } else if (input.name === 'tarjeta') {
+                    if (!validarTarjeta(input)) valido = false;
+                } else if (input.name === 'caducidad') {
+                    if (!validarCaducidad(input)) valido = false;
+                } else if (input.name === 'cvv') {
+                    if (!validarCvv(input)) valido = false;
+                } else {
+                    if (!validarNoVacio(input)) valido = false;
+                }
+            });
+            return valido;
+        };
+
+        // Sobrescribir la función global siguientePaso para incluir validación
+        const originalSiguientePaso = window.siguientePaso;
+        window.siguientePaso = (paso) => {
+            let puedeAvanzar = true;
+
+            if (paso === 2) {
+                puedeAvanzar = validarGrupo(camposPaso1, 1);
+            } else if (paso === 3) {
+                puedeAvanzar = validarGrupo(camposPaso2, 2);
+            }
+
+            if (!puedeAvanzar) return;
+
+            originalSiguientePaso(paso);
+        };
+
+        // Validación al enviar el formulario
+        checkoutForm.addEventListener('submit', (e) => {
+            document.querySelectorAll('.field-error').forEach(el => el.remove());
+            [...camposPaso1, ...camposPaso2].forEach(inp => { if (inp) inp.style.borderColor = ''; });
+
+            let valido = true;
+            if (!validarGrupo(camposPaso1, 1)) valido = false;
+            if (!validarGrupo(camposPaso2, 2)) valido = false;
+
+            if (!valido) {
+                e.preventDefault();
+                // Volver al primer paso con errores
+                if (camposPaso1.some(inp => inp && inp.style.borderColor === 'rgb(239, 68, 68)')) {
+                    originalSiguientePaso(1);
+                } else if (camposPaso2.some(inp => inp && inp.style.borderColor === 'rgb(239, 68, 68)')) {
+                    originalSiguientePaso(2);
+                }
+            }
+        });
+    }
+
     // --- Dropdown del header ---
     const btn = document.getElementById('userMenuButton');
     const menu = document.getElementById('userDropdown');
@@ -382,14 +542,4 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarSlide(parseInt(e.target.dataset.slide));
         }));
     }
-
-    // --- Checkout por pasos ---
-    window.siguientePaso = (paso) => {
-        document.querySelectorAll('.paso').forEach(el => el.classList.add('hidden'));
-        document.getElementById('paso' + paso)?.classList.remove('hidden');
-        for (let i = 1; i <= 3; i++) {
-            const ind = document.getElementById('paso' + i + '-ind');
-            if (ind) ind.style.background = i <= paso ? '#b45309' : '#4b5563';
-        }
-    };
 });

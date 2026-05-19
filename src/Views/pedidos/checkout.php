@@ -24,11 +24,11 @@
             <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">Datos personales</h2>
             <div class="form-group">
                 <label class="form-label">Nombre completo</label>
-                <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['nombre'] ?? '') ?>" required>
+                <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['nombre'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label class="form-label">Correo electrónico</label>
-                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['email'] ?? '') ?>" required>
+                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['email'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label class="form-label">Teléfono</label>
