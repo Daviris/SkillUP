@@ -1,4 +1,7 @@
 <?php ob_start(); ?>
+
+<div id="ultimo-curso-visitado" style="display:none;"></div>
+
 <div class="text-center" style="padding:2rem 0;">
     <!-- Título principal con animación -->
     <h1 class="font-rpg fade-in-up" style="font-size:4rem; color:#fbbf24; text-shadow:0 0 15px rgba(251,191,36,0.6); margin-bottom:1rem;">

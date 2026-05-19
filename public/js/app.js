@@ -163,6 +163,9 @@ function guardarCursoVisitado() {
  * Mostrar enlace del último curso visitado
  */
 function mostrarUltimoCurso() {
+    const autenticado = document.body.getAttribute('data-authenticated') === 'true';
+    if (!autenticado) return;
+
     const id = Cookies.get('ultimo_curso_visitado');
     if (!id) return;
 
