@@ -54,7 +54,7 @@
     </header>
 
     <main class="container" style="padding-top:2rem; padding-bottom:3rem; flex:1;">
-        <!-- Mensajes flash (se mantiene igual) -->
+        <!-- Mensajes flash -->
         <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
             <div class="flash-container">
                 <span><?= htmlspecialchars($mensaje) ?></span>

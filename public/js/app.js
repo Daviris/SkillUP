@@ -386,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Checkout por pasos ---
     window.siguientePaso = (paso) => {
         document.querySelectorAll('.paso').forEach(el => el.classList.add('hidden'));
+        document.getElementById('paso' + paso)?.classList.remove('hidden');
         for (let i = 1; i <= 3; i++) {
             const ind = document.getElementById('paso' + i + '-ind');
             if (ind) ind.style.background = i <= paso ? '#b45309' : '#4b5563';

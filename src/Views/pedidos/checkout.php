@@ -99,20 +99,5 @@
     </form>
 </div>
 
-<script>
-function siguientePaso(paso) {
-    document.querySelectorAll('.paso').forEach(el => el.classList.add('hidden'));
-    document.getElementById('paso' + paso).classList.remove('hidden');
-
-    for(let i=1; i<=3; i++) {
-        let ind = document.getElementById('paso'+i+'-ind');
-        if(i <= paso) {
-            ind.style.background = '#b45309';
-        } else {
-            ind.style.background = '#4b5563';
-        }
-    }
-}
-</script>
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/../layouts/main.php'; ?>
