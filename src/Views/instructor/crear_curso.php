@@ -12,7 +12,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-textarea" rows="5" required><?= htmlspecialchars($curso['descripcion'] ?? '') ?></textarea>
+                <textarea name="descripcion" class="form-textarea" rows="5"><?= htmlspecialchars($curso['descripcion'] ?? '') ?></textarea>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                 <div class="form-group">

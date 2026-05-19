@@ -8,7 +8,6 @@ $router->get('/cursos', [\App\Controllers\CursoController::class, 'index']);
 $router->get('/cursos/{id}', [\App\Controllers\CursoController::class, 'show']);
 $router->get('/mis-cursos', [\App\Controllers\MisCursosController::class, 'index']);
 $router->get('/mis-cursos/ver/{id}', [\App\Controllers\AlumnoCursoController::class, 'verCurso']);
-$router->get('/instructor/{id}', [\App\Controllers\CursoController::class, 'verInstructor']);
 
 // Panel de Instructor
 $router->get('/instructor', [\App\Controllers\InstructorController::class, 'index']);
@@ -18,6 +17,7 @@ $router->get('/instructor/editar/{id}', [\App\Controllers\InstructorController::
 $router->post('/instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
 $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController::class, 'delete']);
 $router->get('/instructor/ver-asistentes/{id}', [\App\Controllers\InstructorController::class, 'verAsistentes']);
+$router->get('/instructor/{id}', [\App\Controllers\CursoController::class, 'verInstructor']);
 
 // Clases
 $router->get('/instructor/cursos/{curso_id}/clases', [\App\Controllers\InstructorClaseController::class, 'index']);
