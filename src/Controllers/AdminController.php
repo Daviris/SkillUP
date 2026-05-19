@@ -46,7 +46,7 @@ class AdminController
     {
         $this->verificarAdmin();
         $usuarios = Usuario::all();
-        View::render('admin/usuarios', ['title' => 'Usuarios', 'usuarios' => $usuarios]);
+        View::render('admin/usuarios', ['title' => 'Usuarios']);
     }
 
     public function actualizarUsuario(Request $request): void
@@ -110,18 +110,7 @@ class AdminController
     public function cursos(Request $request): void
     {
         $this->verificarAdmin();
-        $pdo = \App\Core\Database::getConnection();
-        // Obtener cursos con media de reseñas
-        $stmt = $pdo->query("SELECT c.*, u.nombre AS instructor_nombre, 
-                            AVG(r.puntuacion) AS media_resenas, 
-                            COUNT(r.id) AS total_resenas
-                            FROM cursos c 
-                            JOIN usuarios u ON c.id_instructor = u.id 
-                            LEFT JOIN resenas r ON c.id = r.curso_id 
-                            GROUP BY c.id 
-                            ORDER BY c.created_at DESC");
-        $cursos = $stmt->fetchAll();
-        View::render('admin/cursos', ['title' => 'Cursos', 'cursos' => $cursos]);
+        View::render('admin/cursos', ['title' => 'Cursos']);
     }
 
     public function editarCurso(Request $request): void
@@ -163,10 +152,7 @@ class AdminController
     public function pedidos(Request $request): void
     {
         $this->verificarAdmin();
-        $pdo = \App\Core\Database::getConnection();
-        $stmt = $pdo->query("SELECT p.*, u.nombre AS usuario_nombre FROM pedidos p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha DESC");
-        $pedidos = $stmt->fetchAll();
-        View::render('admin/pedidos', ['title' => 'Pedidos', 'pedidos' => $pedidos]);
+        View::render('admin/pedidos', ['title' => 'Pedidos']);
     }
 
     public function cambiarEstadoPedido(Request $request): void
@@ -251,6 +237,52 @@ class AdminController
         } else {
             header('Location: /admin/cursos');
         }
+        exit;
+    }
+
+    // ==================== DATATABLES ====================
+    public function apiUsuarios(Request $request): void
+    {
+        $this->verificarAdmin();
+        $usuarios = Usuario::all();
+        ob_clean();
+        header('Content-Type: application/json');
+        echo json_encode(['data' => $usuarios]);
+        exit;
+    }
+
+    public function apiCursos(Request $request): void
+    {
+        $this->verificarAdmin();
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->query("SELECT c.id, c.titulo, c.precio, c.modalidad, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id ORDER BY c.created_at DESC");
+        $cursos = $stmt->fetchAll();
+        ob_clean();
+        header('Content-Type: application/json');
+        echo json_encode(['data' => $cursos]);
+        exit;
+    }
+
+    public function apiPedidos(Request $request): void
+    {
+        $this->verificarAdmin();
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->query("SELECT p.*, u.nombre AS usuario_nombre FROM pedidos p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha DESC");
+        $pedidos = $stmt->fetchAll();
+        ob_clean();
+        header('Content-Type: application/json');
+        echo json_encode(['data' => $pedidos]);
+        exit;
+    }
+
+    public function apiResenasCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $resenas = Resena::delCurso($id);
+        ob_clean();
+        header('Content-Type: application/json');
+        echo json_encode(['data' => $resenas]);
         exit;
     }
 }
