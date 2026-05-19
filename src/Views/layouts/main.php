@@ -69,7 +69,7 @@
     <body data-authenticated="<?= isset($_SESSION['usuario']) ? 'true' : 'false' ?>"></body>
 
     <footer style="background:#1e293b; border-top:1px solid #334155; color:#94a3b8; text-align:center; padding:1.2rem; font-size:0.9rem;">
-        &copy; <?= date('Y') ?> SkillUP — TFG DAW
+        &copy; 2026 SkillUP — TFG DAW
     </footer>
 
     <script src="/js/app.js"></script>
