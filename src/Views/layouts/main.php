@@ -9,28 +9,34 @@
 </head>
 <body>
     <header class="main-header">
-        <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0;">
+        <div class="header-container">
             <!-- Bloque izquierdo: Logo + Cursos -->
-            <div style="display:flex; align-items:center; gap:2rem;">
-                <a href="/" class="header-logo" style="margin:0;">⚡ SkillUP</a>
-                <a href="/cursos" style="color:#d1d5db; font-weight:500; font-size:1rem; transition:color 0.2s;">📚 Cursos</a>
+            <div class="header-nav-left">
+                <a href="/" class="header-logo">
+                    <span class="logo-icon">⚔️</span> SkillUP
+                </a>
+                <a href="/cursos">📚 Cursos</a>
             </div>
 
             <!-- Bloque derecho: Carrito + Usuario o Login/Register -->
-            <div style="display:flex; align-items:center; gap:1.5rem;">
+            <div class="header-nav-right">
                 <?php if (isset($_SESSION['usuario'])): ?>
                     <?php $cartCount = !empty($_SESSION['carrito']['items']) ? count($_SESSION['carrito']['items']) : 0; ?>
-                    <a href="/carrito" style="position:relative; color:#d1d5db;">
+                    <!-- Carrito -->
+                    <a href="/carrito" class="cart-link">
                         🛒
                         <?php if ($cartCount > 0): ?>
-                            <span class="badge badge-red" style="position:absolute; top:-12px; right:-12px; font-size:0.7rem; min-width:1.5rem; height:1.5rem; display:flex; align-items:center; justify-content:center;"><?= $cartCount ?></span>
+                            <span class="cart-badge"><?= $cartCount ?></span>
                         <?php endif; ?>
                     </a>
-                    <div class="dropdown">
+                    <!-- Dropdown usuario -->
+                    <div class="dropdown" id="userDropdown">
                         <button class="dropdown-toggle" id="userMenuButton">
-                            <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?> ▾
+                            <span class="user-avatar">🧑</span>
+                            <span><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                            <span class="arrow">▼</span>
                         </button>
-                        <div class="dropdown-menu" id="userDropdown">
+                        <div class="dropdown-menu" id="userMenu">
                             <a href="/perfil">👤 Mi Perfil</a>
                             <?php if ($_SESSION['usuario']['rol'] === 'alumno'): ?>
                                 <a href="/mis-cursos">📖 Mis Cursos</a>
@@ -42,19 +48,18 @@
                                 <a href="/admin">🛡️ Panel Admin</a>
                             <?php endif; ?>
                             <div class="dropdown-divider"></div>
-                            <a href="/logout" style="color:#ef4444;">🚪 Cerrar sesión</a>
+                            <a href="/logout" class="logout-link">🚪 Cerrar sesión</a>
                         </div>
                     </div>
                 <?php else: ?>
-                    <a href="/login" style="color:#d1d5db; font-weight:500;">🔐 Login</a>
-                    <a href="/register" class="btn btn-primary" style="padding:0.5rem 1.2rem;">✨ Registro</a>
+                    <a href="/login" class="btn-login">🔐 Login</a>
+                    <a href="/register" class="btn-register">✨ Registro</a>
                 <?php endif; ?>
             </div>
         </div>
     </header>
 
     <main class="container" style="padding-top:2rem; padding-bottom:3rem; flex:1;">
-        <!-- Mensajes flash -->
         <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
             <div class="flash-container">
                 <span><?= htmlspecialchars($mensaje) ?></span>
@@ -64,9 +69,6 @@
         <?php endif; ?>
         <?= $content ?? '' ?>
     </main>
-
-    <!-- Comprobación de loggeo para JS -->
-    <body data-authenticated="<?= isset($_SESSION['usuario']) ? 'true' : 'false' ?>"></body>
 
     <footer style="background:#1e293b; border-top:1px solid #334155; color:#94a3b8; text-align:center; padding:1.2rem; font-size:0.9rem;">
         &copy; 2026 SkillUP — TFG DAW

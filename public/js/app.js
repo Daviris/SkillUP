@@ -764,16 +764,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Dropdown del header ---
+    const dropdown = document.getElementById('userDropdown');
     const btn = document.getElementById('userMenuButton');
-    const menu = document.getElementById('userDropdown');
-    if (btn && menu) {
-        btn.addEventListener('click', (e) => {
+    const menu = document.getElementById('userMenu');
+    if (dropdown && btn && menu) {
+        btn.addEventListener('click', function(e) {
             e.stopPropagation();
             menu.classList.toggle('open');
+            dropdown.classList.toggle('open');
         });
-        document.addEventListener('click', () => menu.classList.remove('open'));
-        menu.addEventListener('click', (e) => e.stopPropagation());
-    }
+        document.addEventListener('click', function() {
+            menu.classList.remove('open');
+            dropdown.classList.remove('open');
+        });
+        menu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    };
 
     // --- Carrusel Home ---
     const track = document.querySelector('.carousel-track');
