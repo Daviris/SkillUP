@@ -29,18 +29,18 @@ if (!empty($clase['curso_id'])) {
             <?= htmlspecialchars($accion) ?> clase
         </h1>
 
-        <form method="POST" action="<?= $accion === 'Crear' ? '/instructor/clases/guardar' : '/instructor/clases/actualizar/' . ($clase['id'] ?? '') ?>" enctype="multipart/form-data">
+        <form method="POST" action="<?= $accion === 'Crear' ? '/instructor/clases/guardar' : '/instructor/clases/actualizar/' . ($clase['id'] ?? '') ?>" enctype="multipart/form-data" id="clase-form">
             <input type="hidden" name="curso_id" value="<?= htmlspecialchars($curso_id ?? $clase['curso_id'] ?? '') ?>">
 
             <div class="form-group">
                 <label class="form-label">Título</label>
-                <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($clase['titulo'] ?? '') ?>" required>
+                <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($clase['titulo'] ?? '') ?>">
             </div>
 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                 <div class="form-group">
                     <label class="form-label">Duración (min)</label>
-                    <input type="number" name="duracion" class="form-input" value="<?= htmlspecialchars($clase['duracion'] ?? 0) ?>" required>
+                    <input type="number" name="duracion" class="form-input" value="<?= htmlspecialchars($clase['duracion'] ?? 0) ?>">
                 </div>
             </div>
 

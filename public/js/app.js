@@ -112,10 +112,6 @@ function validarCampo(input, tipo) {
         mostrarError(input, 'El nombre debe tener al menos 2 caracteres.');
         return false;
     }
-    if (tipo === 'telefono' && input.value.trim() && !/^\+?\d{6,15}$/.test(input.value.trim())) {
-        mostrarError(input, 'Teléfono no válido');
-        return false;
-    }
     limpiarError(input);
     return true;
 }
@@ -509,6 +505,162 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (camposPaso2.some(inp => inp && inp.style.borderColor === 'rgb(239, 68, 68)')) {
                     originalSiguientePaso(2);
                 }
+            }
+        });
+    }
+
+    // Validación del formulario de cursos (instructor)
+    const cursoForm = document.getElementById('curso-form');
+    if (cursoForm) {
+        const titulo = cursoForm.querySelector('input[name="titulo"]');
+        const descripcion = cursoForm.querySelector('textarea[name="descripcion"]');
+        const precio = cursoForm.querySelector('input[name="precio"]');
+        const modalidad = cursoForm.querySelector('select[name="modalidad"]');
+
+        // Campos presenciales (solo se validan si modalidad === 'presencial')
+        const fechaPresencial = cursoForm.querySelector('input[name="fecha"]');
+        const horaPresencial = cursoForm.querySelector('input[name="hora"]');
+        const ubicacion = cursoForm.querySelector('input[name="ubicacion"]');
+        const plazas = cursoForm.querySelector('input[name="plazas"]');
+
+        const validarCurso = () => {
+            let valido = true;
+
+            // Limpiar errores previos
+            [titulo, descripcion, precio, fechaPresencial, horaPresencial, ubicacion, plazas].forEach(inp => {
+                if (inp) limpiarError(inp);
+            });
+
+            // Título
+            if (titulo.value.trim() === '') {
+                mostrarError(titulo, 'El título es obligatorio.');
+                valido = false;
+            }
+
+            // Descripción
+            if (descripcion.value.trim() === '') {
+                mostrarError(descripcion, 'La descripción es obligatoria.');
+                valido = false;
+            }
+
+            // Precio
+            const precioValor = parseFloat(precio.value.trim());
+            if (isNaN(precioValor) || precioValor <= 0) {
+                mostrarError(precio, 'El precio debe ser un número positivo.');
+                valido = false;
+            }
+
+            // Modalidad (siempre tiene valor por defecto, no es necesario validar)
+
+            // Campos presenciales (solo si modalidad es 'presencial')
+            if (modalidad.value === 'presencial') {
+                if (fechaPresencial && fechaPresencial.value.trim() === '') {
+                    mostrarError(fechaPresencial, 'La fecha es obligatoria para cursos presenciales.');
+                    valido = false;
+                }
+                if (horaPresencial && horaPresencial.value.trim() === '') {
+                    mostrarError(horaPresencial, 'La hora es obligatoria.');
+                    valido = false;
+                }
+                if (ubicacion && ubicacion.value.trim() === '') {
+                    mostrarError(ubicacion, 'La ubicación es obligatoria.');
+                    valido = false;
+                }
+                if (plazas && plazas.value.trim() !== '') {
+                    const plazasValor = parseInt(plazas.value.trim());
+                    if (isNaN(plazasValor) || plazasValor < 1) {
+                        mostrarError(plazas, 'Las plazas deben ser al menos 1.');
+                        valido = false;
+                    }
+                }
+            }
+
+            return valido;
+        };
+
+        cursoForm.addEventListener('submit', (e) => {
+            if (!validarCurso()) {
+                e.preventDefault();
+            }
+        });
+
+        // Opcional: validar al cambiar la modalidad (mostrar/ocultar campos ya lo tienes)
+        if (modalidad) {
+            modalidad.addEventListener('change', () => {
+                // Limpiar errores de campos presenciales si se cambia a online
+                if (modalidad.value === 'online') {
+                    [fechaPresencial, horaPresencial, ubicacion, plazas].forEach(inp => {
+                        if (inp) limpiarError(inp);
+                    });
+                }
+            });
+        }
+    }
+
+    // Validación del formulario de clases (instructor)
+    const claseForm = document.getElementById('clase-form');
+    if (claseForm) {
+        const tituloClase = claseForm.querySelector('input[name="titulo"]');
+        const duracion = claseForm.querySelector('input[name="duracion"]');
+        const tipo = claseForm.querySelector('select[name="tipo"]');
+
+        // Campos específicos
+        const contenidoTexto = claseForm.querySelector('textarea[name="contenido_texto"]');
+        const archivo = claseForm.querySelector('input[name="archivo"]');
+        const fechaLimite = claseForm.querySelector('input[name="fecha_limite"]');
+        const criterios = claseForm.querySelector('textarea[name="criterios_evaluacion"]');
+
+        const validarClase = () => {
+            let valido = true;
+
+            // Limpiar todos los errores previos
+            [tituloClase, duracion, contenidoTexto, archivo, fechaLimite, criterios].forEach(inp => {
+                if (inp) limpiarError(inp);
+            });
+
+            // Título obligatorio
+            if (tituloClase.value.trim() === '') {
+                mostrarError(tituloClase, 'El título es obligatorio.');
+                valido = false;
+            }
+
+            // Duración obligatoria y numérica
+            const duracionValor = parseInt(duracion.value.trim());
+            if (isNaN(duracionValor) || duracionValor <= 0) {
+                mostrarError(duracion, 'La duración debe ser un número positivo.');
+                valido = false;
+            }
+
+            // Validar según tipo
+            if (tipo.value === 'teoria') {
+                if (!contenidoTexto || contenidoTexto.value.trim() === '') {
+                    if (contenidoTexto) mostrarError(contenidoTexto, 'El contenido teórico es obligatorio.');
+                    valido = false;
+                }
+            } else if (tipo.value === 'archivo') {
+                // En creación, archivo es obligatorio; en edición, solo si no hay archivo previo
+                const archivoActual = claseForm.querySelector('input[name="archivo_id"]'); // campo oculto si existe
+                if ((!archivoActual || archivoActual.value === '') && (!archivo || archivo.files.length === 0)) {
+                    if (archivo) mostrarError(archivo, 'Debes subir un archivo.');
+                    valido = false;
+                }
+            } else if (tipo.value === 'tarea') {
+                if (fechaLimite && fechaLimite.value.trim() === '') {
+                    mostrarError(fechaLimite, 'La fecha límite es obligatoria.');
+                    valido = false;
+                }
+                if (criterios && criterios.value.trim() === '') {
+                    mostrarError(criterios, 'Los criterios de evaluación son obligatorios.');
+                    valido = false;
+                }
+            }
+
+            return valido;
+        };
+
+        claseForm.addEventListener('submit', (e) => {
+            if (!validarClase()) {
+                e.preventDefault();
             }
         });
     }

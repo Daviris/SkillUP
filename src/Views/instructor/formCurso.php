@@ -5,10 +5,10 @@
             <?= htmlspecialchars($accion ?? 'Crear') ?> Curso
         </h1>
 
-        <form method="POST" action="<?= ($accion ?? '') === 'Crear' ? '/instructor/guardar' : '/instructor/actualizar/' . ($curso['id'] ?? '') ?>">
+        <form method="POST" action="<?= ($accion ?? '') === 'Crear' ? '/instructor/guardar' : '/instructor/actualizar/' . ($curso['id'] ?? '') ?>" id="curso-form">
             <div class="form-group">
                 <label class="form-label">Título</label>
-                <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($curso['titulo'] ?? '') ?>" required>
+                <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($curso['titulo'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label class="form-label">Descripción</label>
@@ -17,7 +17,7 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                 <div class="form-group">
                     <label class="form-label">Precio (€)</label>
-                    <input type="number" name="precio" class="form-input" step="0.01" value="<?= htmlspecialchars($curso['precio'] ?? '') ?>" required>
+                    <input type="number" name="precio" class="form-input" step="0.01" value="<?= htmlspecialchars($curso['precio'] ?? '') ?>">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Modalidad</label>
