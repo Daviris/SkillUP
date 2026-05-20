@@ -14,6 +14,7 @@
                 <th>Instructor</th>
                 <th>Precio</th>
                 <th>Modalidad</th>
+                <th>Estado</th>
                 <th>Rating</th>
                 <th style="text-align:right;">Acciones</th>
             </tr>
@@ -41,6 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             },
             { 
+                data: 'estado',
+                render: (estado) => {
+                    const colores = {
+                        borrador: '#4b5563',
+                        revision: '#fbbf24',
+                        publicado: '#10b981',
+                        rechazado: '#ef4444'
+                    };
+                    return `<span class="badge" style="background:${colores[estado] || '#4b5563'}; color:white;">${estado}</span>`;
+                }
+            },
+            { 
                 data: 'media_resenas',
                 render: (media, type, row) => {
                     const estrellas = media ? `${parseFloat(media).toFixed(1)} ★` : 'Sin reseñas';
@@ -54,13 +67,23 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 data: 'id',
                 orderable: false,
-                render: (id) => `
-                    <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                        <a href="/admin/cursos/ver-clases/${id}" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📚 Clases</a>
-                        <a href="/admin/cursos/editar/${id}" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">Editar</a>
-                        <a href="/admin/cursos/eliminar/${id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">Eliminar</a>
-                    </div>
-                `
+                render: (id, type, row) => {
+                    let botonEstado = '';
+                    if (row.estado !== 'revision') {
+                        botonEstado = `<a href="/admin/cursos/cambiar-estado/${id}?estado=revision" class="btn btn-warning btn-sm" style="background:#fbbf24; color:#0f172a; font-size:0.7rem;" onclick="return confirm('¿Mover este curso a revisión?')" title="Mover a revisión">🔍 Revisar</a>`;
+                    }
+                    if (row.estado === 'revision') {
+                        botonEstado = `<a href="/admin/cursos/cambiar-estado/${id}?estado=publicado" class="btn btn-success btn-sm" style="font-size:0.7rem;" onclick="return confirm('¿Publicar este curso?')" title="Publicar curso">✅ Publicar</a>`;
+                    }
+                    return `
+                        <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                            <a href="/admin/cursos/ver-clases/${id}" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📚 Clases</a>
+                            ${botonEstado}
+                            <a href="/admin/cursos/editar/${id}" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">Editar</a>
+                            <a href="/admin/cursos/eliminar/${id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">Eliminar</a>
+                        </div>
+                    `;
+                }
             }
         ],
         language: { url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/es-ES.json' },

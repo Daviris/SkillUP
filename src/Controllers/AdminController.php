@@ -174,6 +174,31 @@ class AdminController
         exit;
     }
 
+    public function cambiarEstadoCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $nuevoEstado = $request->input('estado') ?? $_GET['estado'] ?? '';
+
+        if (!in_array($nuevoEstado, ['borrador', 'revision', 'publicado', 'rechazado'])) {
+            $_SESSION['mensaje'] = 'Estado no válido.';
+            header('Location: /admin/cursos');
+            exit;
+        }
+
+        $curso = Curso::find($id);
+        if (!$curso) {
+            $_SESSION['mensaje'] = 'Curso no encontrado.';
+            header('Location: /admin/cursos');
+            exit;
+        }
+
+        Curso::update($id, ['estado' => $nuevoEstado]);
+        $_SESSION['mensaje'] = 'Estado del curso actualizado correctamente.';
+        header('Location: /admin/cursos');
+        exit;
+    }
+
     public function alumnosDeCurso(Request $request): void
     {
         $this->verificarAdmin();
@@ -409,7 +434,7 @@ class AdminController
         $this->verificarAdmin();
         $estado = $request->input('estado'); // 'revision', 'publicado', etc.
         $pdo = \App\Core\Database::getConnection();
-        $sql = "SELECT c.id, c.titulo, c.precio, c.modalidad, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id";
+        $sql = "SELECT c.id, c.titulo, c.precio, c.modalidad, c.estado, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id";
         if ($estado) {
             $sql .= " WHERE c.estado = :estado";
         }
