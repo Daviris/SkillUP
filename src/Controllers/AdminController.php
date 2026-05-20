@@ -8,6 +8,7 @@ use App\Models\Usuario;
 use App\Models\Curso;
 use App\Models\Pedido;
 use App\Models\Resena;
+use App\Models\Clase;
 
 class AdminController
 {
@@ -194,6 +195,57 @@ class AdminController
             'curso'   => $curso,
             'alumnos' => $alumnos,
         ]);
+    }
+
+    // ==================== CLASES ====================
+
+    public function editarClase(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $clase = Clase::find($id);
+        if (!$clase) {
+            http_response_code(404);
+            echo "Clase no encontrada.";
+            exit;
+        }
+        // Obtener el curso para el breadcrumb
+        $curso = Curso::find($clase['curso_id']);
+        View::render('admin/editar_clase', [
+            'title'  => 'Editar clase',
+            'accion' => 'Actualizar',
+            'clase'  => $clase,
+            'curso'  => $curso,
+        ]);
+    }
+
+    public function actualizarClase(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $data = [
+            'titulo'   => $request->input('titulo'),
+            'duracion' => $request->input('duracion'),
+            'orden'    => $request->input('orden'),
+            'tipo'     => $request->input('tipo'),
+            'contenido_texto' => $request->input('contenido_texto', ''),
+            'fecha_limite'    => $request->input('fecha_limite') ?: null,
+            'criterios_evaluacion' => $request->input('criterios_evaluacion', ''),
+        ];
+        Clase::update($id, $data);
+        $_SESSION['mensaje'] = 'Clase actualizada correctamente.';
+        header('Location: /admin/cursos');
+        exit;
+    }
+
+    public function eliminarClase(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        Clase::delete($id);
+        $_SESSION['mensaje'] = 'Clase eliminada correctamente.';
+        header('Location: /admin/cursos');
+        exit;
     }
 
     // ==================== PEDIDOS ====================
@@ -403,7 +455,10 @@ class AdminController
     {
         $this->verificarAdmin();
 
-        $cursos = Curso::whereAll('estado', 'revision');
+        // Consulta con JOIN para obtener el nombre del instructor
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->query("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE c.estado = 'revision' ORDER BY c.created_at DESC");
+        $cursos = $stmt->fetchAll();
 
         $this->renderAdmin('admin/revisiones', [
             'title'  => 'Cursos en Revisión',
@@ -436,13 +491,29 @@ class AdminController
     {
         $this->verificarAdmin();
         $id = (int) $request->param('id');
-        $curso = Curso::buscarConClases($id);
+        $curso = Curso::buscarConClases($id, false);
         if (!$curso) {
             http_response_code(404);
             echo "Curso no encontrado.";
             exit;
         }
         $this->renderAdmin('admin/ver_clases_revision', [
+            'title' => 'Clases de ' . $curso['titulo'],
+            'curso' => $curso,
+        ]);
+    }
+
+    public function verClasesCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $curso = Curso::buscarConClases($id, false);
+        if (!$curso) {
+            http_response_code(404);
+            echo "Curso no encontrado.";
+            exit;
+        }
+        $this->renderAdmin('admin/ver_clases', [
             'title' => 'Clases de ' . $curso['titulo'],
             'curso' => $curso,
         ]);

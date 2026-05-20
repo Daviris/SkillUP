@@ -16,9 +16,10 @@ $router->post('/instructor/guardar', [\App\Controllers\InstructorController::cla
 $router->get('/instructor/editar/{id}', [\App\Controllers\InstructorController::class, 'edit']);
 $router->post('/instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
 $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController::class, 'delete']);
-$router->get('/instructor/ver-asistentes/{id}', [\App\Controllers\InstructorController::class, 'verAsistentes']);
+$router->get('/instructor/cursos/{id}/asistentes', [\App\Controllers\InstructorController::class, 'verAsistentes']);
 $router->get('/instructor/enviar-revision/{id}', [\App\Controllers\InstructorController::class, 'enviarRevision']);
 $router->get('/instructor/{id}', [\App\Controllers\CursoController::class, 'verInstructor']);
+$router->get('/admin/cursos/ver-clases/{id}', [\App\Controllers\AdminController::class, 'verClasesCurso']);
 
 // Clases
 $router->get('/instructor/cursos/{curso_id}/clases', [\App\Controllers\InstructorClaseController::class, 'index']);
@@ -94,6 +95,9 @@ $router->get('/admin/revisiones', [\App\Controllers\AdminController::class, 'rev
 $router->get('/admin/revisiones/aprobar/{id}', [\App\Controllers\AdminController::class, 'aprobarCurso']);
 $router->post('/admin/revisiones/rechazar/{id}', [\App\Controllers\AdminController::class, 'rechazarCurso']);
 $router->get('/admin/revisiones/ver-clases/{id}', [\App\Controllers\AdminController::class, 'verClasesRevision']);
+$router->get('/admin/clases/editar/{id}', [\App\Controllers\AdminController::class, 'editarClase']);
+$router->post('/admin/clases/actualizar/{id}', [\App\Controllers\AdminController::class, 'actualizarClase']);
+$router->get('/admin/clases/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarClase']);
 
 // Endpoints JavaScript
 $router->get('/api/cursos', [\App\Controllers\CursoController::class, 'apiIndex']);

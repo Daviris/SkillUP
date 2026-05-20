@@ -67,13 +67,20 @@ class Curso extends Model
     }
 
     // Obtener curso y sus clases por ID
-    public static function buscarConClases(int $id): ?array
+    public static function buscarConClases(int $id, bool $soloPublicados = true): ?array
     {
-        // Curso
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE c.id = :id AND c.estado = 'publicado'");
+
+        $sql = "SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE c.id = :id";
+
+        if ($soloPublicados) {
+            $sql .= " AND c.estado = 'publicado'";
+        }
+
+        $stmt = $pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         $curso = $stmt->fetch();
+
         if (!$curso) return null;
 
         // Clases
