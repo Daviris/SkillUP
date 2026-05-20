@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 orderable: false,
                 render: (id) => `
                     <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                        <a href="/admin/usuarios/${id}/cursos" class="btn btn-secondary btn-sm">Cursos</a>
                         <a href="/admin/usuarios/editar/${id}" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">Editar</a>
                         <a href="/admin/usuarios/eliminar/${id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
                     </div>

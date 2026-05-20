@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 orderable: false,
                 render: (id) => `
                     <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                        <a href="/admin/cursos/${id}/alumnos" class="btn btn-secondary btn-sm">Alumnos</a>
                         <a href="/admin/cursos/editar/${id}" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">Editar</a>
                         <a href="/admin/cursos/eliminar/${id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">Eliminar</a>
                     </div>

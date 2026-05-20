@@ -107,6 +107,26 @@ class AdminController
         exit;
     }
 
+    public function cursosDeAlumno(Request $request): void
+    {
+        $this->verificarAdmin();
+        $usuarioId = (int) $request->param('id');
+        $usuario = Usuario::find($usuarioId);
+        if (!$usuario) {
+            http_response_code(404);
+            echo "Usuario no encontrado.";
+            exit;
+        }
+
+        $cursos = Pedido::cursosCompradosPorUsuario($usuarioId);
+
+        View::render('admin/cursos_de_alumno', [
+            'title' => 'Cursos de ' . $usuario['nombre'],
+            'usuario' => $usuario,
+            'cursos' => $cursos,
+        ]);
+    }
+
     // ==================== CURSOS ====================
     public function cursos(Request $request): void
     {
@@ -148,6 +168,34 @@ class AdminController
         Curso::delete($id);
         header('Location: /admin/cursos');
         exit;
+    }
+
+    public function alumnosDeCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $cursoId = (int) $request->param('id');
+        $curso = Curso::find($cursoId);
+        if (!$curso) {
+            http_response_code(404);
+            echo "Curso no encontrado.";
+            exit;
+        }
+
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->prepare("SELECT u.id, u.nombre, u.email, p.fecha 
+                            FROM detalle_pedido dp 
+                            JOIN pedidos p ON dp.pedido_id = p.id 
+                            JOIN usuarios u ON p.usuario_id = u.id 
+                            WHERE dp.curso_id = :curso AND p.estado = 'completado' 
+                            ORDER BY p.fecha DESC");
+        $stmt->execute(['curso' => $cursoId]);
+        $alumnos = $stmt->fetchAll();
+
+        View::render('admin/alumnos_de_curso', [
+            'title'   => 'Alumnos de ' . $curso['titulo'],
+            'curso'   => $curso,
+            'alumnos' => $alumnos,
+        ]);
     }
 
     // ==================== PEDIDOS ====================
