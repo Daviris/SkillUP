@@ -11,6 +11,7 @@ class ArchivoController
 {
     public function subir(Request $request): void
     {
+        \App\Core\Csrf::verify();
         if (!isset($_SESSION['usuario'])) {
             header('Location: /login');
             exit;

@@ -12,6 +12,7 @@ class ResenaController
     // Almacenar reseña
     public function store(Request $request): void
     {
+        \App\Core\Csrf::verify();
         if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'alumno') {
             header('Location: /login');
             exit;
@@ -88,6 +89,7 @@ class ResenaController
     // Actualizar reseña
     public function update(Request $request): void
     {
+        \App\Core\Csrf::verify();
         if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'alumno') {
             header('Location: /login');
             exit;

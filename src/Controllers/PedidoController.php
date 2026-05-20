@@ -125,6 +125,7 @@ class PedidoController
 
     public function procesarCheckout(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->checkout($request);
     }
 }

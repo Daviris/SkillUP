@@ -16,11 +16,11 @@ class Csrf
     // Devolver campo HTML oculto con el token.
     public static function tokenField(): string
     {
-        return '<input type="hidden" name="_token" value"' . self::generate() . '">';
+        return '<input type="hidden" name="_token" value="' . self::generate() . '">';
     }
 
     // Verificar token enviado con el de la sesión.
-    public static function verify(?string $toke = null): void
+    public static function verify(?string $token = null): void
     {
         $token = $token ?? $_POST['_token'] ?? $_GET['_token'] ?? '';
         if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {

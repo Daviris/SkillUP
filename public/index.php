@@ -15,6 +15,7 @@ use App\Core\Database;
 set_exception_handler([\App\Core\ExceptionHandler::class, 'handleException']);
 
 Session::start();
+\App\Core\Csrf::generate();
 
 $config = require_once __DIR__ . '/../config/database.php';
 Database::init($config);

@@ -51,6 +51,7 @@ class AdminController
 
     public function actualizarUsuario(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->verificarAdmin();
         $id = (int) $request->param('id');
 
@@ -125,6 +126,7 @@ class AdminController
 
     public function actualizarCurso(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->verificarAdmin();
         $id = (int) $request->param('id');
         $data = [
@@ -157,6 +159,7 @@ class AdminController
 
     public function cambiarEstadoPedido(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->verificarAdmin();
         $id = (int) $request->param('id');
         $nuevoEstado = $request->input('estado');

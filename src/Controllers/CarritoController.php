@@ -45,6 +45,7 @@ class CarritoController
     // Añadir un curso
         public function agregar(Request $request) : void
         {
+            \App\Core\Csrf::verify();
             $idCurso = (int) $request->param('id')   ;
             if (!$idCurso) {
                 header('Location: /cursos');
@@ -95,6 +96,7 @@ class CarritoController
         // Eliminar un curso
         public function eliminar(Request $request): void
         {
+            \App\Core\Csrf::verify();
             $idCurso = (int) $request->param('id');
             $this->iniciarCarrito();
 
@@ -109,6 +111,7 @@ class CarritoController
         // Vaciar carro
         public function vaciar(Request $request): void
         {
+            \App\Core\Csrf::verify();
             $_SESSION['carrito'] = [];
             header('Location: /carrito');
             exit;

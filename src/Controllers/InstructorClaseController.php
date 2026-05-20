@@ -65,6 +65,7 @@ class InstructorClaseController
     // Guardar clase creada
     public function store(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->verificarInstructor();
 
         $cursoId = (int) $request->input('curso_id');
@@ -157,68 +158,69 @@ class InstructorClaseController
 
     // Actualizar la clase editada
     public function update(Request $request): void
-{
-    $this->verificarInstructor();
-    $id = (int) $request->param('id');
-    $clase = Clase::find($id);
-    if (!$clase) {
-        http_response_code(404);
+    {
+        \App\Core\Csrf::verify();
+        $this->verificarInstructor();
+        $id = (int) $request->param('id');
+        $clase = Clase::find($id);
+        if (!$clase) {
+            http_response_code(404);
+            exit;
+        }
+        $curso = Curso::find($clase['curso_id']);
+        if ($curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            exit;
+        }
+
+        $data = [
+            'titulo'   => $request->input('titulo'),
+            'duracion' => $request->input('duracion'),
+            'tipo'     => $request->input('tipo'),
+        ];
+
+        if (!empty($request->input('fecha_limite'))) {
+            $data['fecha_limite'] = date('Y-m-d H:i:s', strtotime($request->input('fecha_limite')));
+        } else {
+            $data['fecha_limite'] = null;
+        }
+
+        $tipo = $data['tipo'];
+        if ($tipo === 'teoria') {
+            $data['contenido_texto'] = $request->input('contenido_texto');
+            $data['archivo_id'] = null;
+        } elseif ($tipo === 'archivo') {
+            // Si se subió un archivo nuevo, se procesa; si no, se conserva el existente
+            if (!empty($_FILES['archivo']['tmp_name'])) {
+                // Subir archivo nuevo
+                $archivoController = new \App\Controllers\ArchivoController();
+                // Simular la subida del archivo
+                $uploadDir = __DIR__ . '/../../storage/uploads/';
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+                $nombreGuardado = uniqid() . '_' . basename($_FILES['archivo']['name']);
+                move_uploaded_file($_FILES['archivo']['tmp_name'], $uploadDir . $nombreGuardado);
+                $archivoId = \App\Models\Archivo::create([
+                    'nombre_original' => $_FILES['archivo']['name'],
+                    'nombre_guardado' => $nombreGuardado,
+                    'tipo_mime' => mime_content_type($uploadDir . $nombreGuardado),
+                    'tamano' => filesize($uploadDir . $nombreGuardado),
+                    'usuario_id' => $_SESSION['usuario']['id'],
+                ]);
+                $data['archivo_id'] = $archivoId;
+            } // si no, se mantiene el archivo actual
+            $data['contenido_texto'] = null;
+        } elseif ($tipo === 'tarea') {
+            $data['fecha_limite'] = $request->input('fecha_limite');
+            $data['criterios_evaluacion'] = $request->input('criterios_evaluacion');
+            $data['archivo_id'] = null;
+            $data['contenido_texto'] = null;
+        }
+
+        Clase::update($id, $data);
+        $_SESSION['mensaje'] = 'Clase actualizada.';
+        header('Location: /instructor/cursos/' . $curso['id'] . '/clases');
         exit;
     }
-    $curso = Curso::find($clase['curso_id']);
-    if ($curso['id_instructor'] != $_SESSION['usuario']['id']) {
-        http_response_code(403);
-        exit;
-    }
-
-    $data = [
-        'titulo'   => $request->input('titulo'),
-        'duracion' => $request->input('duracion'),
-        'tipo'     => $request->input('tipo'),
-    ];
-
-    if (!empty($request->input('fecha_limite'))) {
-        $data['fecha_limite'] = date('Y-m-d H:i:s', strtotime($request->input('fecha_limite')));
-    } else {
-        $data['fecha_limite'] = null;
-    }
-
-    $tipo = $data['tipo'];
-    if ($tipo === 'teoria') {
-        $data['contenido_texto'] = $request->input('contenido_texto');
-        $data['archivo_id'] = null;
-    } elseif ($tipo === 'archivo') {
-        // Si se subió un archivo nuevo, se procesa; si no, se conserva el existente
-        if (!empty($_FILES['archivo']['tmp_name'])) {
-            // Subir archivo nuevo
-            $archivoController = new \App\Controllers\ArchivoController();
-            // Simular la subida del archivo
-            $uploadDir = __DIR__ . '/../../storage/uploads/';
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-            $nombreGuardado = uniqid() . '_' . basename($_FILES['archivo']['name']);
-            move_uploaded_file($_FILES['archivo']['tmp_name'], $uploadDir . $nombreGuardado);
-            $archivoId = \App\Models\Archivo::create([
-                'nombre_original' => $_FILES['archivo']['name'],
-                'nombre_guardado' => $nombreGuardado,
-                'tipo_mime' => mime_content_type($uploadDir . $nombreGuardado),
-                'tamano' => filesize($uploadDir . $nombreGuardado),
-                'usuario_id' => $_SESSION['usuario']['id'],
-            ]);
-            $data['archivo_id'] = $archivoId;
-        } // si no, se mantiene el archivo actual
-        $data['contenido_texto'] = null;
-    } elseif ($tipo === 'tarea') {
-        $data['fecha_limite'] = $request->input('fecha_limite');
-        $data['criterios_evaluacion'] = $request->input('criterios_evaluacion');
-        $data['archivo_id'] = null;
-        $data['contenido_texto'] = null;
-    }
-
-    Clase::update($id, $data);
-    $_SESSION['mensaje'] = 'Clase actualizada.';
-    header('Location: /instructor/cursos/' . $curso['id'] . '/clases');
-    exit;
-}
 
     // Borrar clase
     public function delete(Request $request): void

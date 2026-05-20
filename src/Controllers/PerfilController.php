@@ -65,6 +65,7 @@ class PerfilController
 
     public function update(Request $request): void
     {
+        \App\Core\Csrf::verify();
         if (!isset($_SESSION['usuario'])) {
             header('Location: /login');
             exit;

@@ -15,6 +15,7 @@ class AuthController
 
     public function login(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $email = trim($request->input('email', ''));
         $password = $request->input('password', '');
 
@@ -56,6 +57,7 @@ class AuthController
 
     public function register(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $nombre = trim($request->input('nombre', ''));
         $email = trim($request->input('email', ''));
         $password = $request->input('password', '');

@@ -43,6 +43,7 @@ class InstructorController
     // Guarda el curso.
     public function store(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->verificarInstructor();
         $data = [
             'id_instructor' => $_SESSION['usuario']['id'],
@@ -90,6 +91,7 @@ class InstructorController
     // Actualizar curso editado.
     public function update(Request $request): void
     {
+        \App\Core\Csrf::verify();
         $this->verificarInstructor();
         $id = (int) $request->param('id');
         $curso = Curso::find($id);

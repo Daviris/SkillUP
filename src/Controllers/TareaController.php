@@ -34,6 +34,7 @@ class TareaController
     // Actualiza la entrega
     public function actualizar(Request $request): void
     {
+        \App\Core\Csrf::verify();
         if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'alumno') {
             header('Location: /login');
             exit;
@@ -93,6 +94,7 @@ class TareaController
     //Elimina una entrega no calificada.
     public function eliminar(Request $request): void
     {
+        \App\Core\Csrf::verify();
         if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'alumno') {
             header('Location: /login');
             exit;
