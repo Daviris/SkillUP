@@ -55,7 +55,6 @@ $router->get('/carrito/eliminar/{id}', [\App\Controllers\CarritoController::clas
 $router->get('/carrito/vaciar', [\App\Controllers\CarritoController::class, 'vaciar']);
 
 // Checkout
-
 $router->get('/pedidos/confirmacion/{id}', [\App\Controllers\PedidoController::class, 'confirmacion']);
 $router->get('/checkout', [\App\Controllers\PedidoController::class, 'formularioCheckout']);
 $router->post('/checkout/procesar', [\App\Controllers\PedidoController::class, 'procesarCheckout']);
@@ -85,6 +84,7 @@ $router->get('/admin/cursos/{id}/resenas', [\App\Controllers\AdminController::cl
 $router->get('/admin/resenas/eliminar/{id}', [\App\Controllers\AdminController::class, 'eliminarResena']);
 $router->get('/admin/pedidos', [\App\Controllers\AdminController::class, 'pedidos']);
 $router->post('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
+$router->get('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
 $router->get('/admin/pedidos/ver/{id}', [\App\Controllers\AdminController::class, 'verPedido']);
 
 // Endpoints JavaScript

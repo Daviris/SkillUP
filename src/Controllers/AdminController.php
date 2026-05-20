@@ -161,6 +161,7 @@ class AdminController
     {
         \App\Core\Csrf::verify();
         $this->verificarAdmin();
+        $nuevoEstado = $request->input('estado') ?? $_GET['estado'] ?? '';
         $id = (int) $request->param('id');
         $nuevoEstado = $request->input('estado');
         if ($id && in_array($nuevoEstado, ['pendiente', 'completado', 'cancelado'])) {
