@@ -88,6 +88,7 @@ $router->get('/admin/pedidos', [\App\Controllers\AdminController::class, 'pedido
 $router->post('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
 $router->get('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
 $router->get('/admin/pedidos/ver/{id}', [\App\Controllers\AdminController::class, 'verPedido']);
+$router->get('/admin/pedidos/revocar/{id}', [\App\Controllers\AdminController::class, 'revocarAccesoCurso']);
 
 // Endpoints JavaScript
 $router->get('/api/cursos', [\App\Controllers\CursoController::class, 'apiIndex']);

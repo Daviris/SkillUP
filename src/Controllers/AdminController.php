@@ -118,7 +118,10 @@ class AdminController
             exit;
         }
 
-        $cursos = Pedido::cursosCompradosPorUsuario($usuarioId);
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->prepare("SELECT c.id, c.titulo, c.precio, p.id AS pedido_id, p.estado FROM detalle_pedido dp JOIN pedidos p ON dp.pedido_id = p.id JOIN cursos c ON dp.curso_id = c.id WHERE p.usuario_id = :uid ORDER BY p.fecha DESC");
+        $stmt->execute(['uid' => $usuarioId]);
+        $cursos = $stmt->fetchAll();
 
         View::render('admin/cursos_de_alumno', [
             'title' => 'Cursos de ' . $usuario['nombre'],
@@ -182,13 +185,8 @@ class AdminController
         }
 
         $pdo = \App\Core\Database::getConnection();
-        $stmt = $pdo->prepare("SELECT u.id, u.nombre, u.email, p.fecha 
-                            FROM detalle_pedido dp 
-                            JOIN pedidos p ON dp.pedido_id = p.id 
-                            JOIN usuarios u ON p.usuario_id = u.id 
-                            WHERE dp.curso_id = :curso AND p.estado = 'completado' 
-                            ORDER BY p.fecha DESC");
-        $stmt->execute(['curso' => $cursoId]);
+        $stmt = $pdo->prepare("SELECT u.id, u.nombre, u.email, p.id AS pedido_id, p.estado FROM detalle_pedido dp JOIN pedidos p ON dp.pedido_id = p.id JOIN usuarios u ON p.usuario_id = u.id WHERE dp.curso_id = :cid ORDER BY p.fecha DESC");
+        $stmt->execute(['cid' => $cursoId]);
         $alumnos = $stmt->fetchAll();
 
         View::render('admin/alumnos_de_curso', [
@@ -279,6 +277,25 @@ class AdminController
             'pedido'   => $pedido,
             'detalles' => $detalles,
         ]);
+    }
+
+        public function revocarAccesoCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $pedidoId = (int) $request->param('id');
+
+        $pedido = Pedido::find($pedidoId);
+        if (!$pedido) {
+            $_SESSION['mensaje'] = 'Pedido no encontrado.';
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/admin'));
+            exit;
+        }
+
+        // Cancelar el pedido
+        Pedido::update($pedidoId, ['estado' => 'cancelado']);
+        $_SESSION['mensaje'] = 'Acceso revocado correctamente.';
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/admin'));
+        exit;
     }
 
     // ==================== RESEÑAS ====================
