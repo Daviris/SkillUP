@@ -6,31 +6,27 @@
     <title><?= $title ?? 'Admin SkillUP' ?></title>
     <link rel="stylesheet" href="/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- DataTables -->
-     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 </head>
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
-        <aside class="admin-sidebar">
-            <h2>🛡️ Admin</h2>
+        <aside class="admin-sidebar" style="background:linear-gradient(180deg, #0f172a, #1e293b); border-right:2px solid #b45309;">
+            <h2 style="font-family:'VT323', monospace; font-size:2rem; color:#fbbf24; margin-bottom:2rem; text-shadow:0 0 10px rgba(251,191,36,0.5);">🛡️ Admin</h2>
             <nav>
-                <a href="/admin">📊 Dashboard</a>
-                <a href="/admin/usuarios">👥 Usuarios</a>
-                <a href="/admin/cursos">📚 Cursos</a>
-                <a href="/admin/pedidos">🛒 Pedidos</a>
+                <a href="/admin" style="display:flex; align-items:center; gap:0.5rem;">📊 Dashboard</a>
+                <a href="/admin/usuarios" style="display:flex; align-items:center; gap:0.5rem;">👥 Usuarios</a>
+                <a href="/admin/cursos" style="display:flex; align-items:center; gap:0.5rem;">📚 Cursos</a>
+                <a href="/admin/pedidos" style="display:flex; align-items:center; gap:0.5rem;">🛒 Pedidos</a>
                 <div class="dropdown-divider" style="margin:1rem 0;"></div>
-                <a href="/">🏠 Volver a SkillUP</a>
-                <a href="/logout" style="color:#ef4444;">🚪 Cerrar sesión</a>
+                <a href="/" style="display:flex; align-items:center; gap:0.5rem;">🏠 Volver a SkillUP</a>
+                <a href="/logout" style="color:#f87171; display:flex; align-items:center; gap:0.5rem;">🚪 Cerrar sesión</a>
             </nav>
         </aside>
 
         <!-- Contenido principal -->
-        <main class="admin-content">
+        <main class="admin-content" style="background:#0b1120;">
             <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
                 <div class="flash-message flash-success" style="margin-bottom:1.5rem;">
                     <?= htmlspecialchars($mensaje) ?>
@@ -41,5 +37,9 @@
             <?= $content ?? '' ?>
         </main>
     </div>
+
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 </body>
 </html>

@@ -1,26 +1,35 @@
 <?php ob_start(); ?>
-<h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:2rem;">Dashboard</h1>
+<h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
+    📊 Panel de Administración
+</h1>
+<p style="color:#94a3b8; font-size:1.1rem; margin-bottom:2rem;">Resumen general de la plataforma SkillUP</p>
 
-<div class="grid-3">
-    <div class="card text-center">
-        <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalUsuarios ?></p>
-        <p style="color:#cbd5e1; margin-top:0.5rem;">Usuarios registrados</p>
+<!-- Tarjetas de estadísticas -->
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem;">
+    <div class="card" style="padding:1.5rem; text-align:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">👥</div>
+        <div style="font-size:2.5rem; font-weight:bold; color:#fbbf24;"><?= $totalUsuarios ?? '?' ?></div>
+        <div style="color:#94a3b8; font-size:0.95rem;">Usuarios registrados</div>
     </div>
-    <div class="card text-center">
-        <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalCursos ?></p>
-        <p style="color:#cbd5e1; margin-top:0.5rem;">Cursos publicados</p>
+    <div class="card" style="padding:1.5rem; text-align:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">📚</div>
+        <div style="font-size:2.5rem; font-weight:bold; color:#fbbf24;"><?= $totalCursos ?? '?' ?></div>
+        <div style="color:#94a3b8; font-size:0.95rem;">Cursos publicados</div>
     </div>
-    <div class="card text-center">
-        <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalPedidos ?></p>
-        <p style="color:#cbd5e1; margin-top:0.5rem;">Pedidos realizados</p>
+    <div class="card" style="padding:1.5rem; text-align:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">🛒</div>
+        <div style="font-size:2.5rem; font-weight:bold; color:#fbbf24;"><?= $totalPedidos ?? '?' ?></div>
+        <div style="color:#94a3b8; font-size:0.95rem;">Pedidos realizados</div>
     </div>
-    <div class="card text-center">
-        <p style="font-size:3rem; color:#10b981; font-weight:700;"><?= number_format($ingresosTotales, 2) ?> €</p>
-        <p style="color:#cbd5e1; margin-top:0.5rem;">Ingresos totales</p>
+    <div class="card" style="padding:1.5rem; text-align:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">💰</div>
+        <div style="font-size:2.5rem; font-weight:bold; color:#10b981;"><?= number_format($ingresosTotales ?? 0, 2) ?> €</div>
+        <div style="color:#94a3b8; font-size:0.95rem;">Ingresos totales</div>
     </div>
-    <div class="card text-center">
-        <p style="font-size:3rem; color:#fbbf24; font-weight:700;"><?= $totalResenas ?></p>
-        <p style="color:#cbd5e1; margin-top:0.5rem;">Reseñas escritas</p>
+    <div class="card" style="padding:1.5rem; text-align:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">⭐</div>
+        <div style="font-size:2.5rem; font-weight:bold; color:#fbbf24;"><?= $totalResenas ?? '?' ?></div>
+        <div style="color:#94a3b8; font-size:0.95rem;">Reseñas escritas</div>
     </div>
 </div>
 <?php $content = ob_get_clean(); ?>
