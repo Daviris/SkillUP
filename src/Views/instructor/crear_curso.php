@@ -6,6 +6,7 @@
         </h1>
 
         <form method="POST" action="<?= ($accion ?? '') === 'Crear' ? '/instructor/guardar' : '/instructor/actualizar/' . ($curso['id'] ?? '') ?>" id="curso-form">
+            <?= \App\Core\Csrf::tokenField() ?>
             <div class="form-group">
                 <label class="form-label">Título</label>
                 <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($curso['titulo'] ?? '') ?>">

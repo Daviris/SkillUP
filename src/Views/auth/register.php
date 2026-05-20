@@ -71,6 +71,7 @@
             <?php endif; ?>
 
             <form method="POST" action="/register" id="register-form" novalidate>
+                <?= \App\Core\Csrf::tokenField() ?>
                 <div class="form-group">
                     <label class="form-label">Nombre completo</label>
                     <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['nombre'] ?? '') ?>" placeholder="Elige tu nombre de aventurero">

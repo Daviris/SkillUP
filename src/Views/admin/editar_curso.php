@@ -5,6 +5,7 @@
 
 <div class="card" style="max-width:700px; margin:0 auto; padding:2rem;">
     <form action="/admin/cursos/actualizar/<?= $curso['id'] ?>" method="POST">
+        <?= \App\Core\Csrf::tokenField() ?>
         <div class="form-group">
             <label class="form-label">Título</label>
             <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($curso['titulo']) ?>" required>

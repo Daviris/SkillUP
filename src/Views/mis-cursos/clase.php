@@ -120,6 +120,7 @@
                 <?php if (!$plazoVencido): ?>
                     <h3 style="color:#fbbf24; font-weight:600; margin-bottom:1rem;">📤 Subir entrega</h3>
                     <form action="/archivo/subir" method="POST" enctype="multipart/form-data">
+                        <?= \App\Core\Csrf::tokenField() ?>
                         <input type="hidden" name="clase_id" value="<?= $clase['id'] ?>">
                         <div class="form-group">
                             <label class="form-label">Selecciona un archivo</label>

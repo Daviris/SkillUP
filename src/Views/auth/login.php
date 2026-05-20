@@ -21,6 +21,7 @@
         <?php endif; ?>
 
         <form method="POST" action="/login" id="login-form" novalidate>
+            <?= \App\Core\Csrf::tokenField() ?>
             <div class="form-group">
                 <label class="form-label">Correo electrónico</label>
                 <input type="text" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['old']['email'] ?? '') ?>" placeholder="aventurero@skillup.com" autofocus>

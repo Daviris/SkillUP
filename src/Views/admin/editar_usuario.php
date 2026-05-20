@@ -5,6 +5,7 @@
 
 <div class="card" style="max-width:600px; margin:0 auto; padding:2rem;">
     <form action="/admin/usuarios/actualizar/<?= $usuario['id'] ?>" method="POST">
+        <?= \App\Core\Csrf::tokenField() ?>
         <div class="form-group">
             <label class="form-label">Nombre</label>
             <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($usuario['nombre']) ?>" required>

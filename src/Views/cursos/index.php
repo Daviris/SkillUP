@@ -15,6 +15,7 @@
 
     <!-- Barra de filtros mejorada (con búsqueda) -->
     <form method="GET" action="/cursos" id="catalog-form" class="fade-in-up" style="transition-delay: 0.2s; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #334155; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: end; flex-wrap: wrap;">
+        <?= \App\Core\Csrf::tokenField() ?>
         <!-- NUEVO: Búsqueda por texto -->
         <div style="flex: 2; min-width: 200px;">
             <label class="form-label" style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">🔍 Buscar por título o descripción</label>

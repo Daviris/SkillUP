@@ -55,6 +55,7 @@
                                 <!-- Formulario de edición (oculto inicialmente) -->
                                 <div id="nota-form-<?= $entrega['id'] ?>" class="hidden">
                                     <form action="/instructor/entregas/actualizar" method="POST">
+                                        <?= \App\Core\Csrf::tokenField() ?>
                                         <input type="hidden" name="entrega_id" value="<?= $entrega['id'] ?>">
                                         <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:0.5rem;">
                                             <input type="number" name="nota" step="0.1" min="0" max="10" value="<?= $entrega['nota'] ?>" 

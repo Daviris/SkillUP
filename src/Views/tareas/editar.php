@@ -6,6 +6,7 @@
         <p class="text-gray-300 mb-4">Selecciona un nuevo archivo para reemplazar tu entrega actual.</p>
 
         <form action="/tarea/actualizar/<?= $entrega['id'] ?>" method="POST" enctype="multipart/form-data">
+            <?= \App\Core\Csrf::tokenField() ?>
             <div class="mb-4">
                 <label class="block text-amber-400 text-sm mb-1">Nuevo archivo</label>
                 <input type="file" name="archivo" required

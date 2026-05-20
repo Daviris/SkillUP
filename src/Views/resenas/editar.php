@@ -17,6 +17,7 @@
         <?php endif; ?>
 
         <form action="/resena/actualizar/<?= $resena['id'] ?>" method="POST">
+            <?= \App\Core\Csrf::tokenField() ?>
             <div class="form-group">
                 <label class="form-label">Puntuación (1-5)</label>
                 <select name="puntuacion" class="form-select" required>

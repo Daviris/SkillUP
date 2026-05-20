@@ -146,6 +146,7 @@
                 <div style="padding:1.5rem; background:#0f172a; border:1px solid #b45309; border-radius:0.75rem;">
                     <h3 class="font-rpg" style="font-size:1.3rem; color:#fbbf24; margin-bottom:1rem;">Deja tu reseña</h3>
                     <form action="/resena/guardar" method="POST" id="resena-form" novalidate>
+                        <?= \App\Core\Csrf::tokenField() ?>
                         <input type="hidden" name="curso_id" value="<?= $curso['id'] ?>">
                         <div class="form-group">
                             <label class="form-label">Puntuación (1-5)</label>

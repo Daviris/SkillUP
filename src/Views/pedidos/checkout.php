@@ -21,6 +21,7 @@
     </div>
 
     <form id="checkout-form" method="POST" action="/checkout/procesar" novalidate>
+        <?= \App\Core\Csrf::tokenField() ?>
         <!-- Paso 1: Datos personales -->
         <div id="paso1" class="paso card fade-in-up" style="padding:2rem;">
             <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📋 Datos personales</h2>

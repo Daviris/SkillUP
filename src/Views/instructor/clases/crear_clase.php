@@ -30,6 +30,7 @@ if (!empty($clase['curso_id'])) {
         </h1>
 
         <form method="POST" action="<?= $accion === 'Crear' ? '/instructor/clases/guardar' : '/instructor/clases/actualizar/' . ($clase['id'] ?? '') ?>" enctype="multipart/form-data" id="clase-form">
+            <?= \App\Core\Csrf::tokenField() ?>
             <input type="hidden" name="curso_id" value="<?= htmlspecialchars($curso_id ?? $clase['curso_id'] ?? '') ?>">
 
             <div class="form-group">

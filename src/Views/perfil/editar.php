@@ -6,6 +6,7 @@
         </h1>
 
         <form action="/perfil/actualizar" method="POST" id="perfil-form" novalidate>
+            <?= \App\Core\Csrf::tokenField() ?>
             <div class="form-group">
                 <label class="form-label">Nombre</label>
                 <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($usuario['nombre']) ?>">
