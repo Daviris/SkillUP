@@ -7,7 +7,9 @@ class Migrator
     {
         $pdo = Database::getConnection();
 
-        // Tabla usuarios
+        // ==================== TABLAS PRINCIPALES ====================
+
+        // 1. Usuarios
         $pdo->exec("CREATE TABLE IF NOT EXISTS `usuarios` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `nombre` varchar(255) NOT NULL,
@@ -21,7 +23,7 @@ class Migrator
             UNIQUE KEY `usuarios_email_unique` (`email`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla cursos
+        // 2. Cursos
         $pdo->exec("CREATE TABLE IF NOT EXISTS `cursos` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `id_instructor` bigint(20) UNSIGNED NOT NULL,
@@ -29,6 +31,12 @@ class Migrator
             `descripcion` text NOT NULL,
             `precio` decimal(8,2) NOT NULL,
             `modalidad` enum('online','presencial') NOT NULL,
+            `fecha` DATE DEFAULT NULL,
+            `hora` TIME DEFAULT NULL,
+            `ubicacion` VARCHAR(255) DEFAULT NULL,
+            `plazas` INT(11) DEFAULT NULL,
+            `estado` enum('borrador','revision','publicado','rechazado') NOT NULL DEFAULT 'borrador',
+            `motivo_rechazo` TEXT DEFAULT NULL,
             `created_at` timestamp NULL DEFAULT current_timestamp(),
             `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             `deleted_at` timestamp NULL DEFAULT NULL,
@@ -37,7 +45,7 @@ class Migrator
             CONSTRAINT `cursos_id_instructor_foreign` FOREIGN KEY (`id_instructor`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla clases
+        // 3. Clases
         $pdo->exec("CREATE TABLE IF NOT EXISTS `clases` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `curso_id` bigint(20) UNSIGNED NOT NULL,
@@ -58,7 +66,7 @@ class Migrator
             CONSTRAINT `clases_curso_id_foreign` FOREIGN KEY (`curso_id`) REFERENCES `cursos` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla carritos
+        // 4. Carritos
         $pdo->exec("CREATE TABLE IF NOT EXISTS `carritos` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `usuario_id` bigint(20) UNSIGNED NOT NULL,
@@ -70,7 +78,7 @@ class Migrator
             CONSTRAINT `carritos_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla carrito_items
+        // 5. Carrito items
         $pdo->exec("CREATE TABLE IF NOT EXISTS `carrito_items` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `carrito_id` bigint(20) UNSIGNED NOT NULL,
@@ -86,7 +94,7 @@ class Migrator
             CONSTRAINT `carrito_items_curso_id_foreign` FOREIGN KEY (`curso_id`) REFERENCES `cursos` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla pedidos
+        // 6. Pedidos
         $pdo->exec("CREATE TABLE IF NOT EXISTS `pedidos` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `usuario_id` bigint(20) UNSIGNED NOT NULL,
@@ -100,7 +108,7 @@ class Migrator
             CONSTRAINT `pedidos_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla detalle_pedido
+        // 7. Detalle pedido
         $pdo->exec("CREATE TABLE IF NOT EXISTS `detalle_pedido` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `pedido_id` bigint(20) UNSIGNED NOT NULL,
@@ -116,7 +124,7 @@ class Migrator
             CONSTRAINT `detalle_pedido_curso_id_foreign` FOREIGN KEY (`curso_id`) REFERENCES `cursos` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla resenas
+        // 8. Reseñas
         $pdo->exec("CREATE TABLE IF NOT EXISTS `resenas` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `usuario_id` bigint(20) UNSIGNED NOT NULL,
@@ -133,7 +141,7 @@ class Migrator
             CONSTRAINT `resenas_curso_id_foreign` FOREIGN KEY (`curso_id`) REFERENCES `cursos` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla archivos
+        // 9. Archivos
         $pdo->exec("CREATE TABLE IF NOT EXISTS `archivos` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `nombre_original` varchar(255) NOT NULL,
@@ -148,7 +156,7 @@ class Migrator
             CONSTRAINT `archivos_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Tabla entregas_tareas
+        // 10. Entregas tareas
         $pdo->exec("CREATE TABLE IF NOT EXISTS `entregas_tareas` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `clase_id` bigint(20) UNSIGNED NOT NULL,
@@ -169,25 +177,9 @@ class Migrator
             CONSTRAINT `entregas_archivo_id_foreign` FOREIGN KEY (`archivo_id`) REFERENCES `archivos` (`id`) ON DELETE SET NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // Añadir campos nuevos a la tabla clases si no existen
-        $nuevosCampos = [
-            'tipo'                  => "ENUM('teoria','archivo','tarea') NOT NULL DEFAULT 'teoria' AFTER `orden`",
-            'contenido_texto'       => "TEXT DEFAULT NULL AFTER `tipo`",
-            'archivo_id'            => "bigint(20) UNSIGNED DEFAULT NULL AFTER `contenido_texto`",
-            'fecha_limite'          => "datetime DEFAULT NULL AFTER `archivo_id`",
-            'criterios_evaluacion'  => "TEXT DEFAULT NULL AFTER `fecha_limite`",
-            'created_at'            => "timestamp NULL DEFAULT current_timestamp()",
-            'updated_at'            => "timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()"
-        ];
+        // ==================== COLUMNAS NUEVAS EN TABLAS YA EXISTENTES ====================
 
-        foreach ($nuevosCampos as $campo => $definicion) {
-            $stmt = $pdo->query("SHOW COLUMNS FROM clases LIKE '$campo'");
-            if ($stmt->rowCount() == 0) {
-                $pdo->exec("ALTER TABLE clases ADD $campo $definicion");
-            }
-        }
-
-        // Añadir campos para cursos presenciales si no existen
+        // Campos para cursos presenciales (si no existen)
         $camposPresenciales = [
             'fecha'       => "DATE DEFAULT NULL AFTER `modalidad`",
             'hora'        => "TIME DEFAULT NULL AFTER `fecha`",
@@ -201,7 +193,37 @@ class Migrator
             }
         }
 
-        // Crear un admin por defecto si no hay ninguno
+        // Estado del curso y motivo de rechazo
+        $stmt = $pdo->query("SHOW COLUMNS FROM cursos LIKE 'estado'");
+        if ($stmt->rowCount() == 0) {
+            $pdo->exec("ALTER TABLE cursos ADD estado enum('borrador','revision','publicado','rechazado') NOT NULL DEFAULT 'borrador' AFTER `plazas`");
+            // Si la tabla ya tenía datos, ponemos 'borrador' a los que tengan estado NULL o vacío
+            $pdo->exec("UPDATE cursos SET estado = 'borrador' WHERE estado IS NULL OR estado = ''");
+        }
+
+        $stmt = $pdo->query("SHOW COLUMNS FROM cursos LIKE 'motivo_rechazo'");
+        if ($stmt->rowCount() == 0) {
+            $pdo->exec("ALTER TABLE cursos ADD motivo_rechazo TEXT DEFAULT NULL AFTER `estado`");
+        }
+
+        // Campos adicionales en clases (si no existen)
+        $nuevosCamposClases = [
+            'tipo'                  => "ENUM('teoria','archivo','tarea') NOT NULL DEFAULT 'teoria' AFTER `orden`",
+            'contenido_texto'       => "TEXT DEFAULT NULL AFTER `tipo`",
+            'archivo_id'            => "bigint(20) UNSIGNED DEFAULT NULL AFTER `contenido_texto`",
+            'fecha_limite'          => "datetime DEFAULT NULL AFTER `archivo_id`",
+            'criterios_evaluacion'  => "TEXT DEFAULT NULL AFTER `fecha_limite`",
+            'created_at'            => "timestamp NULL DEFAULT current_timestamp()",
+            'updated_at'            => "timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()"
+        ];
+        foreach ($nuevosCamposClases as $campo => $definicion) {
+            $stmt = $pdo->query("SHOW COLUMNS FROM clases LIKE '$campo'");
+            if ($stmt->rowCount() == 0) {
+                $pdo->exec("ALTER TABLE clases ADD $campo $definicion");
+            }
+        }
+
+        // Crear admin por defecto
         $stmt = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE rol = 'admin'");
         if ((int) $stmt->fetchColumn() === 0) {
             $pdo->exec("INSERT INTO usuarios (nombre, email, password, rol, reputacion) VALUES ('Administrador', 'admin@skillup.com', '" . password_hash('admin123', PASSWORD_DEFAULT) . "', 'admin', 0)");

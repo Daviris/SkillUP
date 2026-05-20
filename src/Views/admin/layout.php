@@ -19,6 +19,14 @@
                 <a href="/admin/usuarios" style="display:flex; align-items:center; gap:0.5rem;">👥 Usuarios</a>
                 <a href="/admin/cursos" style="display:flex; align-items:center; gap:0.5rem;">📚 Cursos</a>
                 <a href="/admin/pedidos" style="display:flex; align-items:center; gap:0.5rem;">🛒 Pedidos</a>
+                <a href="/admin/revisiones" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
+                    🔍 Revisiones
+                    <?php if (!empty($pendientesRevision)): ?>
+                        <span class="badge badge-peligro" style="position:absolute; top:-5px; right:-10px; font-size:0.7rem; min-width:1.2rem; height:1.2rem; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                            <?= $pendientesRevision ?>
+                        </span>
+                    <?php endif; ?>
+                </a>
                 <div class="dropdown-divider" style="margin:1rem 0;"></div>
                 <a href="/" style="display:flex; align-items:center; gap:0.5rem;">🏠 Volver a SkillUP</a>
                 <a href="/logout" style="color:#f87171; display:flex; align-items:center; gap:0.5rem;">🚪 Cerrar sesión</a>

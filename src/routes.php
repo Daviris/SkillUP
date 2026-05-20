@@ -17,6 +17,7 @@ $router->get('/instructor/editar/{id}', [\App\Controllers\InstructorController::
 $router->post('/instructor/actualizar/{id}', [\App\Controllers\InstructorController::class, 'update']);
 $router->get('/instructor/eliminar/{id}', [\App\Controllers\InstructorController::class, 'delete']);
 $router->get('/instructor/ver-asistentes/{id}', [\App\Controllers\InstructorController::class, 'verAsistentes']);
+$router->get('/instructor/enviar-revision/{id}', [\App\Controllers\InstructorController::class, 'enviarRevision']);
 $router->get('/instructor/{id}', [\App\Controllers\CursoController::class, 'verInstructor']);
 
 // Clases
@@ -89,6 +90,10 @@ $router->post('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminContr
 $router->get('/admin/pedidos/cambiar-estado/{id}', [\App\Controllers\AdminController::class, 'cambiarEstadoPedido']);
 $router->get('/admin/pedidos/ver/{id}', [\App\Controllers\AdminController::class, 'verPedido']);
 $router->get('/admin/pedidos/revocar/{id}', [\App\Controllers\AdminController::class, 'revocarAccesoCurso']);
+$router->get('/admin/revisiones', [\App\Controllers\AdminController::class, 'revisiones']);
+$router->get('/admin/revisiones/aprobar/{id}', [\App\Controllers\AdminController::class, 'aprobarCurso']);
+$router->post('/admin/revisiones/rechazar/{id}', [\App\Controllers\AdminController::class, 'rechazarCurso']);
+$router->get('/admin/revisiones/ver-clases/{id}', [\App\Controllers\AdminController::class, 'verClasesRevision']);
 
 // Endpoints JavaScript
 $router->get('/api/cursos', [\App\Controllers\CursoController::class, 'apiIndex']);

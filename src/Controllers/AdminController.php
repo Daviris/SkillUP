@@ -31,7 +31,7 @@ class AdminController
         $ingresosTotales = array_sum(array_column($pedidos, 'total'));
         $totalResenas = count(Resena::all());
 
-        View::render('admin/dashboard', [
+        $this->renderAdmin('admin/dashboard', [
             'title' => 'Panel de Administración',
             'totalUsuarios' => $totalUsuarios,
             'totalCursos' => $totalCursos,
@@ -46,7 +46,7 @@ class AdminController
     {
         $this->verificarAdmin();
         $usuarios = Usuario::all();
-        View::render('admin/usuarios', ['title' => 'Usuarios']);
+        $this->renderAdmin('admin/usuarios', ['title' => 'Usuarios']);
     }
 
     public function actualizarUsuario(Request $request): void
@@ -95,7 +95,7 @@ class AdminController
             echo "Usuario no encontrado.";
             exit;
         }
-        View::render('admin/editar_usuario', ['title' => 'Editar usuario', 'usuario' => $usuario]);
+        $this->renderAdmin('admin/editar_usuario', ['title' => 'Editar usuario', 'usuario' => $usuario]);
     }
 
     public function eliminarUsuario(Request $request): void
@@ -123,7 +123,7 @@ class AdminController
         $stmt->execute(['uid' => $usuarioId]);
         $cursos = $stmt->fetchAll();
 
-        View::render('admin/cursos_de_alumno', [
+        $this->renderAdmin('admin/cursos_de_alumno', [
             'title' => 'Cursos de ' . $usuario['nombre'],
             'usuario' => $usuario,
             'cursos' => $cursos,
@@ -134,7 +134,7 @@ class AdminController
     public function cursos(Request $request): void
     {
         $this->verificarAdmin();
-        View::render('admin/cursos', ['title' => 'Cursos']);
+        $this->renderAdmin('admin/cursos', ['title' => 'Cursos']);
     }
 
     public function editarCurso(Request $request): void
@@ -144,7 +144,7 @@ class AdminController
         $curso = Curso::find($id);
         if (!$curso) { http_response_code(404); exit; }
         $instructores = Usuario::whereAll('rol', 'instructor');
-        View::render('admin/editar_curso', ['title' => 'Editar curso', 'curso' => $curso, 'instructores' => $instructores]);
+        $this->renderAdmin('admin/editar_curso', ['title' => 'Editar curso', 'curso' => $curso, 'instructores' => $instructores]);
     }
 
     public function actualizarCurso(Request $request): void
@@ -189,7 +189,7 @@ class AdminController
         $stmt->execute(['cid' => $cursoId]);
         $alumnos = $stmt->fetchAll();
 
-        View::render('admin/alumnos_de_curso', [
+        $this->renderAdmin('admin/alumnos_de_curso', [
             'title'   => 'Alumnos de ' . $curso['titulo'],
             'curso'   => $curso,
             'alumnos' => $alumnos,
@@ -200,7 +200,7 @@ class AdminController
     public function pedidos(Request $request): void
     {
         $this->verificarAdmin();
-        View::render('admin/pedidos', ['title' => 'Pedidos']);
+        $this->renderAdmin('admin/pedidos', ['title' => 'Pedidos']);
     }
 
     public function cambiarEstadoPedido(Request $request): void
@@ -272,7 +272,7 @@ class AdminController
         $stmtDetalles->execute(['pedido' => $id]);
         $detalles = $stmtDetalles->fetchAll();
 
-        View::render('admin/ver_pedido', [
+        $this->renderAdmin('admin/ver_pedido', [
             'title'    => 'Pedido #' . $pedido['id'],
             'pedido'   => $pedido,
             'detalles' => $detalles,
@@ -318,7 +318,7 @@ class AdminController
             $media = $suma / $totalResenas;
         }
 
-        View::render('admin/ver_resenas', [
+        $this->renderAdmin('admin/ver_resenas', [
             'title'        => 'Reseñas de ' . $curso['titulo'],
             'curso'        => $curso,
             'resenas'      => $resenas,
@@ -355,8 +355,19 @@ class AdminController
     public function apiCursos(Request $request): void
     {
         $this->verificarAdmin();
+        $estado = $request->input('estado'); // 'revision', 'publicado', etc.
         $pdo = \App\Core\Database::getConnection();
-        $stmt = $pdo->query("SELECT c.id, c.titulo, c.precio, c.modalidad, u.nombre AS instructor_nombre, ROUND(AVG(r.puntuacion), 1) AS media_resenas FROM cursos c JOIN usuarios u ON c.id_instructor = u.id LEFT JOIN resenas r ON c.id = r.curso_id GROUP BY c.id ORDER BY c.created_at DESC");
+        $sql = "SELECT c.id, c.titulo, c.precio, c.modalidad, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id";
+        if ($estado) {
+            $sql .= " WHERE c.estado = :estado";
+        }
+        $sql .= " ORDER BY c.created_at DESC";
+        $stmt = $pdo->prepare($sql);
+        if ($estado) {
+            $stmt->execute(['estado' => $estado]);
+        } else {
+            $stmt->execute();
+        }
         $cursos = $stmt->fetchAll();
         ob_clean();
         header('Content-Type: application/json');
@@ -385,5 +396,68 @@ class AdminController
         header('Content-Type: application/json');
         echo json_encode(['data' => $resenas]);
         exit;
+    }
+
+    // ==================== REVISIONES ====================
+    public function revisiones(Request $request): void
+    {
+        $this->verificarAdmin();
+
+        $cursos = Curso::whereAll('estado', 'revision');
+
+        $this->renderAdmin('admin/revisiones', [
+            'title'  => 'Cursos en Revisión',
+            'cursos' => $cursos,
+        ]);
+    }
+
+    public function aprobarCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        Curso::update($id, ['estado' => 'publicado', 'motivo_rechazo' => null]);
+        $_SESSION['mensaje'] = 'Curso aprobado y publicado.';
+        header('Location: /admin/revisiones');
+        exit;
+    }
+
+    public function rechazarCurso(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $motivo = $request->input('motivo', '');
+        Curso::update($id, ['estado' => 'rechazado', 'motivo_rechazo' => $motivo]);
+        $_SESSION['mensaje'] = 'Curso rechazado.';
+        header('Location: /admin/revisiones');
+        exit;
+    }
+
+    public function verClasesRevision(Request $request): void
+    {
+        $this->verificarAdmin();
+        $id = (int) $request->param('id');
+        $curso = Curso::buscarConClases($id);
+        if (!$curso) {
+            http_response_code(404);
+            echo "Curso no encontrado.";
+            exit;
+        }
+        $this->renderAdmin('admin/ver_clases_revision', [
+            'title' => 'Clases de ' . $curso['titulo'],
+            'curso' => $curso,
+        ]);
+    }
+
+    private function pendientesRevision(): int
+    {
+        $pdo = \App\Core\Database::getConnection();
+        $stmt = $pdo->query("SELECT COUNT(*) FROM cursos WHERE estado = 'revision'");
+        return (int) $stmt->fetchColumn();
+    }
+
+    private function renderAdmin(string $template, array $data = []): void
+    {
+        $data['pendientesRevision'] = $this->pendientesRevision();
+        View::render($template, $data);
     }
 }

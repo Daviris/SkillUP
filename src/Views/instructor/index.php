@@ -31,6 +31,7 @@
                             <th>Título</th>
                             <th>Modalidad</th>
                             <th>Precio</th>
+                            <th>Estado</th>
                             <th>Gestión</th>
                             <th style="text-align:right;">Acciones</th>
                         </tr>
@@ -46,6 +47,21 @@
                             </td>
                             <td style="color:#fbbf24; font-weight:600;"><?= number_format($curso['precio'], 2) ?> €</td>
                             <td>
+                                <?php
+                                // Si el estado está vacío, asumimos borrador
+                                $estado = !empty($curso['estado']) ? $curso['estado'] : 'borrador';
+                                $colores = [
+                                    'borrador'   => '#4b5563',
+                                    'revision'   => '#fbbf24',
+                                    'publicado'  => '#10b981',
+                                    'rechazado'  => '#ef4444'
+                                ];
+                                ?>
+                                <span class="badge" style="background:<?= $colores[$estado] ?? '#4b5563' ?>; color:white;">
+                                    <?= ucfirst($estado) ?>
+                                </span>
+                            </td>
+                            <td>
                                 <?php if ($curso['modalidad'] === 'online'): ?>
                                     <a href="/instructor/cursos/<?= $curso['id'] ?>/clases" class="btn btn-secondary btn-sm">
                                         📚 Clases
@@ -58,10 +74,17 @@
                             </td>
                             <td style="text-align:right;">
                                 <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                                    <?php if ($estado === 'borrador'): ?>
+                                        <a href="/instructor/enviar-revision/<?= $curso['id'] ?>" 
+                                           class="btn btn-secondary btn-sm"
+                                           onclick="return confirm('¿Enviar este curso a revisión?')">
+                                            📤 Enviar a revisión
+                                        </a>
+                                    <?php endif; ?>
                                     <a href="/instructor/editar/<?= $curso['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
                                         ✏️ Editar
                                     </a>
-                                    <a href="/instructor/eliminar/<?= $curso['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso? Esta acción no se puede deshacer.')">
+                                    <a href="/instructor/eliminar/<?= $curso['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">
                                         🗑️ Eliminar
                                     </a>
                                 </div>

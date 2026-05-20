@@ -68,7 +68,7 @@
     <?php endif; ?>
 
     <div style="margin-top:2rem;">
-        <a href="/instructor" class="btn btn-secondary">← Volver al panel</a>
+        <a href="/instructor" class="fade-in-up btn btn-secondary">← Volver al panel</a>
     </div>
 </div>
 <?php $content = ob_get_clean(); ?>

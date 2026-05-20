@@ -1,8 +1,6 @@
 <?php ob_start(); ?>
 <div class="fade-in-up" style="margin-bottom:2rem;">
-    <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-        📚 Cursos
-    </h1>
+    <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:1.5rem;">📚 Cursos</h1>
     <p style="color:#94a3b8; font-size:1.1rem;">Gestión de todas las misiones disponibles en la plataforma</p>
 </div>
 

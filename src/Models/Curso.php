@@ -14,7 +14,7 @@ class Curso extends Model
     public static function listar(?string $modalidad = null, ?float $precioMax = null, int $porPagina = 12, int $pagina = 1, ?string $busqueda = null) : array
     {
         $pdo = Database::getConnection();
-        $sql = "SELECT c.*, u.nombre AS instructor_nombre, u.reputacion AS media_resenas FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE 1=1";
+        $sql = "SELECT c.*, u.nombre AS instructor_nombre, u.reputacion AS media_resenas FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE 1=1 AND c.estado = 'publicado'";
         $params = [];
 
         if ($modalidad) {
@@ -71,7 +71,7 @@ class Curso extends Model
     {
         // Curso
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE c.id = :id");
+        $stmt = $pdo->prepare("SELECT c.*, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id WHERE c.id = :id AND c.estado = 'publicado'");
         $stmt->execute(['id' => $id]);
         $curso = $stmt->fetch();
         if (!$curso) return null;

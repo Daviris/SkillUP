@@ -47,17 +47,18 @@ class InstructorController
         $this->verificarInstructor();
         $data = [
             'id_instructor' => $_SESSION['usuario']['id'],
-            'titulo'        => $request->input('titulo'),
-            'descripcion'   => $request->input('descripcion'),
-            'precio'        => $request->input('precio'),
-            'modalidad'     => $request->input('modalidad'),
+            'titulo' => $request->input('titulo'),
+            'descripcion' => $request->input('descripcion'),
+            'precio' => $request->input('precio'),
+            'modalidad' => $request->input('modalidad'),
+            'estado' => 'borrador',
         ];
 
         if ($data['modalidad'] === 'presencial') {
-            $data['fecha']     = $request->input('fecha') ?: null;
-            $data['hora']      = $request->input('hora') ?: null;
+            $data['fecha'] = $request->input('fecha') ?: null;
+            $data['hora'] = $request->input('hora') ?: null;
             $data['ubicacion'] = $request->input('ubicacion') ?: null;
-            $data['plazas']    = $request->input('plazas') ?: null;
+            $data['plazas'] = $request->input('plazas') ?: null;
         }
 
         Curso::create($data);
@@ -67,7 +68,6 @@ class InstructorController
     }
 
     // Editar curso.
-
     public function edit(Request $request): void
     {
         $this->verificarInstructor();
@@ -95,6 +95,8 @@ class InstructorController
         $this->verificarInstructor();
         $id = (int) $request->param('id');
         $curso = Curso::find($id);
+        $cursoActualizado = Curso::find($id);
+        var_dump($cursoActualizado['estado']); exit;
         if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
             http_response_code(403);
             exit;
@@ -163,5 +165,30 @@ class InstructorController
             'curso'      => $curso,
             'asistentes' => $asistentes,
         ]);
+    }
+
+    // Enviar curso creado nuevo a revisión
+    public function enviarRevision(Request $request): void
+    {
+        $this->verificarInstructor();
+        $id = (int) $request->param('id');
+        $curso = Curso::find($id);
+
+        if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
+            http_response_code(403);
+            echo "No autorizado.";
+            exit;
+        }
+
+        if ($curso['estado'] !== 'borrador') {
+            $_SESSION['mensaje'] = 'Solo los cursos en borrador pueden enviarse a revisión.';
+            header('Location: /instructor');
+            exit;
+        }
+
+        Curso::update($id, ['estado' => 'revision']);
+        $_SESSION['mensaje'] = 'Curso enviado a revisión correctamente. Será evaluado por un administrador.';
+        header('Location: /instructor');
+        exit;
     }
 }
