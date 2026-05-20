@@ -258,7 +258,7 @@ class AdminController
     {
         $this->verificarAdmin();
         $pdo = \App\Core\Database::getConnection();
-        $stmt = $pdo->query("SELECT c.id, c.titulo, c.precio, c.modalidad, u.nombre AS instructor_nombre FROM cursos c JOIN usuarios u ON c.id_instructor = u.id ORDER BY c.created_at DESC");
+        $stmt = $pdo->query("SELECT c.id, c.titulo, c.precio, c.modalidad, u.nombre AS instructor_nombre, ROUND(AVG(r.puntuacion), 1) AS media_resenas FROM cursos c JOIN usuarios u ON c.id_instructor = u.id LEFT JOIN resenas r ON c.id = r.curso_id GROUP BY c.id ORDER BY c.created_at DESC");
         $cursos = $stmt->fetchAll();
         ob_clean();
         header('Content-Type: application/json');
