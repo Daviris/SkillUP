@@ -20,7 +20,49 @@ class ArchivoController
         $archivo = $_FILES['archivo'] ?? null;
 
         if (!$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
-            die('Error al subir archivo.');
+            $_SESSION['mensaje'] = 'Error al subir el archivo.';
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/'));
+            exit;
+        }
+
+        // Validar tamaño máximo (10 MB)
+        $tamanoMaximo = 10 * 1024 * 1024; // 10 MB en bytes
+        if ($archivo['size'] > $tamanoMaximo) {
+            $_SESSION['mensaje'] = 'El archivo es demasiado grande. El tamaño máximo permitido es de 10 MB.';
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/'));
+            exit;
+        }
+
+        // Validar tipos de archivo permitidos
+        $tiposPermitidos = [
+            'application/pdf',                                                                               // PDF
+            'image/jpeg',                                                                                     // JPEG
+            'image/png',                                                                                      // PNG
+            'image/gif',                                                                                      // GIF
+            'text/plain',                                                                                     // Texto plano
+            'text/csv',                                                                                       // CSV
+            'application/zip',                                                                                // ZIP
+            'application/x-rar-compressed',                                                                   // RAR
+            'application/msword',                                                                             // DOC
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',                        // DOCX
+            'application/vnd.ms-excel',                                                                       // XLS
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',                              // XLSX
+            'application/vnd.ms-powerpoint',                                                                  // PPT
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',                      // PPTX
+            'text/html',                                                                                      // HTML
+            'text/css',                                                                                       // CSS
+            'text/javascript',                                                                                // JS
+            'application/json',                                                                               // JSON
+            'application/xml',                                                                                // XML
+            'text/xml',                                                                                       // XML (alternativo)
+            'application/octet-stream',                                                                       // Genérico (archivos sin tipo MIME definido)
+        ];
+
+        $tipoArchivo = mime_content_type($archivo['tmp_name']);
+        if (!in_array($tipoArchivo, $tiposPermitidos)) {
+            $_SESSION['mensaje'] = 'El tipo de archivo no está permitido. Se aceptan PDF, imágenes, documentos de Office, archivos de código y texto.';
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/'));
+            exit;
         }
 
         // Guardar archivo subido
@@ -36,17 +78,17 @@ class ArchivoController
         $archivoId = Archivo::create([
             'nombre_original' => $archivo['name'],
             'nombre_guardado' => $nombreGuardado,
-            'tipo_mime' => mime_content_type($rutaDestino),
-            'tamano' => filesize($rutaDestino),
-            'usuario_id' => $_SESSION['usuario']['id'],
+            'tipo_mime'       => $tipoArchivo,
+            'tamano'          => filesize($rutaDestino),
+            'usuario_id'      => $_SESSION['usuario']['id'],
         ]);
 
         // Subida tarea de alumno
         $clase = \App\Models\Clase::find($claseId);
         if ($clase && $clase['tipo'] === 'tarea' && $_SESSION['usuario']['rol'] === 'alumno') {
             Tarea::create([
-                'clase_id' => $claseId,
-                'alumno_id' => $_SESSION['usuario']['id'],
+                'clase_id'   => $claseId,
+                'alumno_id'  => $_SESSION['usuario']['id'],
                 'archivo_id' => $archivoId,
             ]);
             $_SESSION['mensaje'] = 'Tarea enviada correctamente.';
@@ -59,11 +101,16 @@ class ArchivoController
             $curso = \App\Models\Curso::find($clase['curso_id']);
             if ($curso && $curso['id_instructor'] == $_SESSION['usuario']['id']) {
                 \App\Models\Clase::update($claseId, ['archivo_id' => $archivoId]);
-                $_SESSION['mensaje'] = 'Archivo actualizado';
-                header('Location: /instructor/clases/' . $claseId);
+                $_SESSION['mensaje'] = 'Archivo actualizado correctamente.';
+                header('Location: /instructor/clases/ver/' . $claseId);
                 exit;
             }
         }
+
+        // Si no se cumplió ninguna condición, redirigir a un lugar seguro
+        $_SESSION['mensaje'] = 'No se pudo procesar la subida.';
+        header('Location: /');
+        exit;
     }
 
     // Descargar los archivos
@@ -73,20 +120,27 @@ class ArchivoController
         $archivo = Archivo::find($id);
         if (!$archivo) {
             http_response_code(404);
+            echo "Archivo no encontrado.";
             exit;
         }
 
         if (!isset($_SESSION['usuario'])) {
             http_response_code(403);
+            echo "Acceso denegado.";
             exit;
         }
 
         $ruta = __DIR__ . '/../../storage/uploads/' . $archivo['nombre_guardado'];
-        if (file_exists($ruta)) {
-            header('Content-Type: ' . $archivo['tipo_mime']);
-            header('Content-Disposition: attachment; filename="' . $archivo['nombre_original'] . '"');
-            readfile($ruta);
+        if (!file_exists($ruta)) {
+            http_response_code(404);
+            echo "El archivo no existe en el servidor.";
             exit;
         }
+
+        header('Content-Type: ' . ($archivo['tipo_mime'] ?? 'application/octet-stream'));
+        header('Content-Disposition: attachment; filename="' . $archivo['nombre_original'] . '"');
+        header('Content-Length: ' . filesize($ruta));
+        readfile($ruta);
+        exit;
     }
 }
