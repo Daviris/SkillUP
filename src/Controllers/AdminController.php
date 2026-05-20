@@ -159,14 +159,46 @@ class AdminController
 
     public function cambiarEstadoPedido(Request $request): void
     {
-        \App\Core\Csrf::verify();
         $this->verificarAdmin();
-        $nuevoEstado = $request->input('estado') ?? $_GET['estado'] ?? '';
         $id = (int) $request->param('id');
-        $nuevoEstado = $request->input('estado');
-        if ($id && in_array($nuevoEstado, ['pendiente', 'completado', 'cancelado'])) {
-            Pedido::update($id, ['estado' => $nuevoEstado]);
+        $nuevoEstado = $request->input('estado') ?? $_GET['estado'] ?? '';
+
+        if (!in_array($nuevoEstado, ['pendiente', 'completado', 'cancelado'])) {
+            $_SESSION['mensaje'] = 'Estado no válido.';
+            header('Location: /admin/pedidos');
+            exit;
         }
+
+        $pedido = Pedido::find($id);
+        if (!$pedido) {
+            $_SESSION['mensaje'] = 'Pedido no encontrado.';
+            header('Location: /admin/pedidos');
+            exit;
+        }
+
+        if ($nuevoEstado === 'completado' && $pedido['estado'] === 'cancelado') {
+            $pdo = \App\Core\Database::getConnection();
+            $stmt = $pdo->prepare("SELECT dp.curso_id, c.plazas, c.modalidad 
+                                FROM detalle_pedido dp 
+                                JOIN cursos c ON dp.curso_id = c.id 
+                                WHERE dp.pedido_id = :pid");
+            $stmt->execute(['pid' => $id]);
+            $cursosDelPedido = $stmt->fetchAll();
+
+            foreach ($cursosDelPedido as $curso) {
+                if ($curso['modalidad'] === 'presencial' && $curso['plazas'] !== null) {
+                    $compradoresActuales = Curso::contarCompradores($curso['curso_id']);
+                    if ($compradoresActuales >= $curso['plazas']) {
+                        $_SESSION['mensaje'] = 'No se puede reactivar el pedido: el curso "' . $curso['titulo'] . '" ya tiene todas las plazas ocupadas.';
+                        header('Location: /admin/pedidos');
+                        exit;
+                    }
+                }
+            }
+        }
+
+        Pedido::update($id, ['estado' => $nuevoEstado]);
+        $_SESSION['mensaje'] = 'Estado del pedido actualizado correctamente.';
         header('Location: /admin/pedidos');
         exit;
     }
