@@ -1,48 +1,52 @@
 <?php ob_start(); ?>
 <div style="max-width:800px; margin:0 auto;">
-    <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:2rem;">⚔️ Finalizar Misión</h1>
+    <div class="fade-in-up" style="margin-bottom:2rem;">
+        <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem;">
+            ⚔️ Finalizar Misión
+        </h1>
+        <p style="color:#94a3b8; font-size:1.1rem;">Completa los pasos para adquirir tus cursos</p>
+    </div>
 
     <!-- Indicadores de paso -->
-    <div style="display:flex; margin-bottom:2rem; gap:0;">
+    <div class="fade-in-up" style="transition-delay:0.2s; display:flex; margin-bottom:2rem; gap:1rem;">
         <div style="flex:1; text-align:center;">
-            <span id="paso1-ind" style="display:inline-block; width:2rem; height:2rem; background:#b45309; color:white; border-radius:50%; line-height:2rem; font-weight:700;">1</span>
-            <p style="color:#fbbf24; margin-top:0.25rem; font-size:0.9rem;">Datos</p>
+            <span id="paso1-ind" class="badge" style="background:#b45309; color:white; font-size:0.9rem; padding:0.5rem 1rem;">1 · Datos</span>
         </div>
         <div style="flex:1; text-align:center;">
-            <span id="paso2-ind" style="display:inline-block; width:2rem; height:2rem; background:#4b5563; color:white; border-radius:50%; line-height:2rem; font-weight:700;">2</span>
-            <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">Tarjeta</p>
+            <span id="paso2-ind" class="badge" style="background:#4b5563; color:white; font-size:0.9rem; padding:0.5rem 1rem;">2 · Tarjeta</span>
         </div>
         <div style="flex:1; text-align:center;">
-            <span id="paso3-ind" style="display:inline-block; width:2rem; height:2rem; background:#4b5563; color:white; border-radius:50%; line-height:2rem; font-weight:700;">3</span>
-            <p style="color:#9ca3af; margin-top:0.25rem; font-size:0.9rem;">Confirmar</p>
+            <span id="paso3-ind" class="badge" style="background:#4b5563; color:white; font-size:0.9rem; padding:0.5rem 1rem;">3 · Confirmar</span>
         </div>
     </div>
 
-    <form id="checkout-form" method="POST" action="/checkout/procesar">
+    <form id="checkout-form" method="POST" action="/checkout/procesar" novalidate>
         <!-- Paso 1: Datos personales -->
-        <div id="paso1" class="paso card" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">Datos personales</h2>
+        <div id="paso1" class="paso card fade-in-up" style="padding:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📋 Datos personales</h2>
             <div class="form-group">
                 <label class="form-label">Nombre completo</label>
                 <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['nombre'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label class="form-label">Correo electrónico</label>
-                <input type="email" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['email'] ?? '') ?>">
+                <input type="text" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['email'] ?? '') ?>">
             </div>
             <div class="form-group">
-                <label class="form-label">Teléfono</label>
+                <label class="form-label">Teléfono (opcional)</label>
                 <input type="text" name="telefono" class="form-input" placeholder="+34 600 000 000">
             </div>
             <div style="text-align:right; margin-top:1.5rem;">
-                <button type="button" onclick="siguientePaso(2)" class="btn btn-primary">Siguiente →</button>
+                <button type="button" onclick="siguientePaso(2)" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
+                    Siguiente →
+                </button>
             </div>
         </div>
 
         <!-- Paso 2: Tarjeta (simulado) -->
-        <div id="paso2" class="paso card hidden" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Datos de pago</h2>
-            <p style="color:#9ca3af; margin-bottom:1.5rem;">Estos datos son simulados y no se almacenarán.</p>
+        <div id="paso2" class="paso card hidden fade-in-up" style="padding:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">💳 Datos de pago</h2>
+            <p style="color:#94a3b8; margin-bottom:1.5rem;">Estos datos son simulados y no se almacenarán.</p>
             <div class="form-group">
                 <label class="form-label">Titular de la tarjeta</label>
                 <input type="text" name="titular" class="form-input" placeholder="Nombre en la tarjeta">
@@ -63,15 +67,17 @@
             </div>
             <div style="display:flex; justify-content:space-between; margin-top:1.5rem;">
                 <button type="button" onclick="siguientePaso(1)" class="btn btn-secondary">← Anterior</button>
-                <button type="button" onclick="siguientePaso(3)" class="btn btn-primary">Siguiente →</button>
+                <button type="button" onclick="siguientePaso(3)" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
+                    Siguiente →
+                </button>
             </div>
         </div>
 
         <!-- Paso 3: Confirmación -->
-        <div id="paso3" class="paso card hidden" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">Confirmar compra</h2>
+        <div id="paso3" class="paso card hidden fade-in-up" style="padding:2rem;">
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">✅ Confirmar compra</h2>
 
-            <div class="card" style="background:#111827; margin-bottom:1.5rem; padding:1.5rem;">
+            <div class="card" style="background:#0f172a; margin-bottom:1.5rem; padding:1.5rem; border:1px solid #334155;">
                 <h3 class="font-rpg" style="font-size:1.3rem; color:#fbbf24; margin-bottom:1rem;">Resumen del pedido</h3>
                 <?php
                 $totalCheckout = 0;
@@ -93,11 +99,12 @@
 
             <div style="display:flex; justify-content:space-between;">
                 <button type="button" onclick="siguientePaso(2)" class="btn btn-secondary">← Anterior</button>
-                <button type="submit" class="btn btn-success">✅ Confirmar pago</button>
+                <button type="submit" class="btn btn-success" style="background:linear-gradient(135deg, #065f46, #047857); border:none;">
+                    ✅ Confirmar pago
+                </button>
             </div>
         </div>
     </form>
 </div>
-
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/../layouts/main.php'; ?>
