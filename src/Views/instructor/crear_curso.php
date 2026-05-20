@@ -1,57 +1,70 @@
 <?php ob_start(); ?>
 <div style="max-width:800px; margin:0 auto;">
-    <div class="card" style="padding:2rem;">
-        <h1 class="font-rpg" style="font-size:2.2rem; color:#fbbf24; margin-bottom:1.5rem;">
+    <div class="fade-in-up card" style="padding:2.5rem;">
+        <!-- Icono decorativo -->
+        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;">📜</div>
+
+        <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; text-align:center; margin-bottom:1.5rem;">
             <?= htmlspecialchars($accion ?? 'Crear') ?> Curso
         </h1>
 
-        <form method="POST" action="<?= ($accion ?? '') === 'Crear' ? '/instructor/guardar' : '/instructor/actualizar/' . ($curso['id'] ?? '') ?>" id="curso-form">
+        <form method="POST" action="<?= ($accion ?? '') === 'Crear' ? '/instructor/guardar' : '/instructor/actualizar/' . ($curso['id'] ?? '') ?>" id="curso-form" novalidate>
             <?= \App\Core\Csrf::tokenField() ?>
+
             <div class="form-group">
-                <label class="form-label">Título</label>
-                <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($curso['titulo'] ?? '') ?>">
+                <label class="form-label">Título del curso</label>
+                <input type="text" name="titulo" class="form-input" value="<?= htmlspecialchars($curso['titulo'] ?? '') ?>" placeholder="Ej: Forja de PHP">
             </div>
+
             <div class="form-group">
                 <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-textarea" rows="5"><?= htmlspecialchars($curso['descripcion'] ?? '') ?></textarea>
+                <textarea name="descripcion" class="form-textarea" rows="5" placeholder="Describe la misión que vivirán los alumnos..."><?= htmlspecialchars($curso['descripcion'] ?? '') ?></textarea>
             </div>
+
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                 <div class="form-group">
                     <label class="form-label">Precio (€)</label>
-                    <input type="number" name="precio" class="form-input" step="0.01" value="<?= htmlspecialchars($curso['precio'] ?? '') ?>">
+                    <input type="number" name="precio" class="form-input" step="0.01" value="<?= htmlspecialchars($curso['precio'] ?? '') ?>" placeholder="99.99">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Modalidad</label>
-                    <select name="modalidad" id="modalidad-select" class="form-select" required>
-                        <option value="online" <?= (isset($curso['modalidad']) && $curso['modalidad'] === 'online') ? 'selected' : '' ?>>Online</option>
-                        <option value="presencial" <?= (isset($curso['modalidad']) && $curso['modalidad'] === 'presencial') ? 'selected' : '' ?>>Presencial</option>
+                    <select name="modalidad" id="modalidad-select" class="form-select">
+                        <option value="online" <?= (isset($curso['modalidad']) && $curso['modalidad'] === 'online') ? 'selected' : '' ?>>🌐 Online</option>
+                        <option value="presencial" <?= (isset($curso['modalidad']) && $curso['modalidad'] === 'presencial') ? 'selected' : '' ?>>🏰 Presencial</option>
                     </select>
                 </div>
             </div>
 
             <!-- Campos exclusivos para presencial -->
             <div id="campos-presencial" class="hidden">
-                <div class="form-group">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" name="fecha" class="form-input" value="<?= htmlspecialchars($curso['fecha'] ?? '') ?>">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Hora</label>
-                    <input type="time" name="hora" class="form-input" value="<?= htmlspecialchars($curso['hora'] ?? '') ?>">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Ubicación</label>
-                    <input type="text" name="ubicacion" class="form-input" value="<?= htmlspecialchars($curso['ubicacion'] ?? '') ?>" placeholder="Dirección o aula">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Plazas disponibles</label>
-                    <input type="number" name="plazas" class="form-input" value="<?= htmlspecialchars($curso['plazas'] ?? '') ?>" min="1">
+                <div style="border:1px solid #334155; border-radius:0.5rem; padding:1.5rem; margin-top:1rem; background:#0f172a;">
+                    <h3 style="color:#fbbf24; margin-bottom:1rem;">📍 Detalles presenciales</h3>
+                    <div class="form-group">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" name="fecha" class="form-input" value="<?= htmlspecialchars($curso['fecha'] ?? '') ?>">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Hora</label>
+                        <input type="time" name="hora" class="form-input" value="<?= htmlspecialchars($curso['hora'] ?? '') ?>">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ubicación</label>
+                        <input type="text" name="ubicacion" class="form-input" value="<?= htmlspecialchars($curso['ubicacion'] ?? '') ?>" placeholder="Dirección o aula">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Plazas disponibles</label>
+                        <input type="number" name="plazas" class="form-input" value="<?= htmlspecialchars($curso['plazas'] ?? '') ?>" min="1" placeholder="20">
+                    </div>
                 </div>
             </div>
 
             <div style="display:flex; gap:1rem; margin-top:2rem;">
-                <button type="submit" class="btn btn-primary"><?= htmlspecialchars($accion ?? 'Guardar') ?></button>
-                <a href="/instructor" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem;">
+                    ⚔️ <?= htmlspecialchars($accion ?? 'Guardar') ?>
+                </button>
+                <a href="/instructor" class="btn btn-secondary" style="flex:1; text-align:center; padding:0.8rem;">
+                    Cancelar
+                </a>
             </div>
         </form>
     </div>

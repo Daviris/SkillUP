@@ -1,80 +1,75 @@
 <?php ob_start(); ?>
-<div style="max-width:1000px; margin:0 auto;">
-    <!-- Cabecera con mejor espaciado -->
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:2rem;">
+<div style="max-width:1100px; margin:0 auto;">
+    <!-- Migas de pan -->
+    <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
+        <a href="/instructor" style="color:#fbbf24;">🧙 Panel Instructor</a> /
+        <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
+    </div>
+
+    <!-- Cabecera -->
+    <div class="fade-in-up" style="margin-bottom:2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
         <div>
-            <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem;">
+            <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.25rem;">
                 <?= htmlspecialchars($curso['titulo']) ?>
             </h1>
-            <p style="color:#9ca3af; font-size:1.1rem;">Gestión de clases</p>
-            <?php if (!empty($clases)): ?>
-                <p style="color:#9ca3af; font-size:0.9rem; margin-top:0.25rem;">
-                    <?= count($clases) ?> clase(s) · <?= array_sum(array_column($clases, 'duracion')) ?> min total
-                </p>
-            <?php endif; ?>
+            <p style="color:#94a3b8; font-size:1rem;">Gestión de clases · <?= count($clases ?? []) ?> clases</p>
         </div>
-        <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary" style="font-size:1rem; padding:0.75rem 1.5rem;">
+        <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.7rem 1.8rem; box-shadow:0 0 15px rgba(251,191,36,0.2);">
             + Nueva clase
         </a>
     </div>
 
-    <!-- Migas de pan con mejor estilo -->
-    <div style="margin-bottom:2.5rem; padding:0.75rem 1rem; background:#1e293b; border-radius:0.5rem; border:1px solid #334155; color:#9ca3af; font-size:0.9rem;">
-        <a href="/instructor" style="color:#fbbf24;">Panel Instructor</a>
-        <span style="margin:0 0.5rem;">/</span>
-        <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
-        <span style="margin:0 0.5rem;">/</span>
-        <span style="color:#e5e7eb;">Clases</span>
-    </div>
-
     <!-- Listado de clases -->
     <?php if (!empty($clases)): ?>
-        <div style="display:flex; flex-direction:column; gap:1rem;">
+        <div class="fade-in-up" style="transition-delay:0.2s; display:grid; gap:1rem;">
             <?php foreach ($clases as $clase): ?>
-                <div class="card" style="padding:1.5rem; display:flex; justify-content:space-between; align-items:center; transition:transform 0.15s;">
+                <div class="card" style="padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155; transition:border-color 0.2s;">
                     <div style="flex:1;">
-                        <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem;">
-                            <span style="background:#b45309; color:white; width:2rem; height:2rem; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; flex-shrink:0;">
-                                <?= $clase['orden'] ?>
+                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.25rem;">
+                            <a href="/instructor/clases/ver/<?= $clase['id'] ?>" style="color:#fbbf24; font-weight:600; font-size:1.1rem; text-decoration:none; transition:color 0.2s;">
+                                <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
+                            </a>
+                            <span class="badge" style="background:<?= $clase['tipo'] === 'teoria' ? '#065f46' : ($clase['tipo'] === 'tarea' ? '#7f1d1d' : '#b45309') ?>; color:white; font-size:0.7rem;">
+                                <?= ucfirst($clase['tipo']) ?>
                             </span>
-                            <div>
-                                <span style="color:#fbbf24; font-weight:600; font-size:1.1rem;">
-                                    <a href="/instructor/clases/ver/<?= $clase['id'] ?>" style="color:inherit;">
-                                        <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
-                                    </a>
-                                </span>
-                                <div style="display:flex; align-items:center; gap:0.75rem; margin-top:0.25rem;">
-                                    <span class="badge badge-amber" style="font-size:0.7rem;"><?= ucfirst($clase['tipo']) ?></span>
-                                    <span style="color:#9ca3af; font-size:0.85rem;"><?= $clase['duracion'] ?> min</span>
-                                </div>
-                            </div>
+                            <span style="color:#94a3b8; font-size:0.85rem;"><?= $clase['duracion'] ?> min</span>
                         </div>
                         <?php if ($clase['tipo'] === 'tarea' && !empty($clase['fecha_limite'])): ?>
-                            <div style="margin-left:3rem; margin-top:0.5rem;">
-                                <p style="color:#ef4444; font-size:0.8rem; display:flex; align-items:center; gap:0.25rem;">
-                                    ⏰ Límite: <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>
-                                </p>
-                            </div>
+                            <p style="color:#ef4444; font-size:0.8rem; margin-top:0.25rem;">
+                                ⏰ Límite: <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>
+                            </p>
                         <?php endif; ?>
                     </div>
-                    <div style="display:flex; gap:0.5rem; flex-shrink:0; margin-left:1rem;">
-                        <a href="/instructor/clases/editar/<?= $clase['id'] ?>" class="btn btn-primary btn-sm">Editar</a>
-                        <a href="/instructor/clases/eliminar/<?= $clase['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta clase?')">Eliminar</a>
+                    <div style="display:flex; gap:0.75rem; align-items:center;">
+                        <a href="/instructor/clases/editar/<?= $clase['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
+                            ✏️ Editar
+                        </a>
+                        <a href="/instructor/clases/eliminar/<?= $clase['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta clase?')">
+                            🗑️ Eliminar
+                        </a>
                         <?php if ($clase['tipo'] === 'tarea'): ?>
-                            <a href="/instructor/clases/<?= $clase['id'] ?>/entregas" class="btn btn-secondary btn-sm">Entregas</a>
+                            <a href="/instructor/clases/<?= $clase['id'] ?>/entregas" class="btn btn-secondary btn-sm">
+                                📋 Entregas
+                            </a>
                         <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
     <?php else: ?>
-        <div class="card" style="padding:4rem 2rem; text-align:center;">
-            <p style="font-size:4rem; margin-bottom:1rem;">📚</p>
-            <h2 style="color:#fbbf24; font-size:1.5rem; margin-bottom:0.5rem;">No hay clases todavía</h2>
-            <p style="color:#9ca3af; margin-bottom:2rem;">Empieza a construir el contenido de tu curso</p>
-            <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary" style="font-size:1rem; padding:0.75rem 2rem;">Añadir primera clase</a>
+        <div class="fade-in-up card" style="padding:4rem 2rem; text-align:center;">
+            <p style="font-size:4rem; margin-bottom:1rem;">📭</p>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:0.5rem;">No hay clases todavía</h2>
+            <p style="color:#94a3b8; font-size:1.1rem; margin-bottom:2rem;">Crea la primera clase para este curso y comparte tu conocimiento.</p>
+            <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.7rem 2rem;">
+                + Añadir primera clase
+            </a>
         </div>
     <?php endif; ?>
+
+    <div style="margin-top:2rem;">
+        <a href="/instructor" class="btn btn-secondary">← Volver al panel</a>
+    </div>
 </div>
 <?php $content = ob_get_clean(); ?>
 <?php require __DIR__ . '/../../layouts/main.php'; ?>

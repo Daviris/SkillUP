@@ -1,64 +1,85 @@
 <?php ob_start(); ?>
-<div style="max-width:1000px; margin:0 auto;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-        <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24;">Mis Cursos</h1>
-        <a href="/instructor/crear" class="btn btn-primary">+ Nuevo curso</a>
+<div style="max-width:1200px; margin:0 auto;">
+    <!-- Cabecera -->
+    <div class="fade-in-up" style="margin-bottom:2rem; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 class="font-rpg" style="font-size:2.8rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
+                🧙 Panel de Instructor
+            </h1>
+            <p style="color:#94a3b8; font-size:1.1rem;">Gestiona tus cursos y comparte tu conocimiento</p>
+        </div>
+        <a href="/instructor/crear" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem 2rem; font-size:1.1rem; box-shadow:0 0 20px rgba(251,191,36,0.3);">
+            + Nueva misión
+        </a>
     </div>
 
+    <!-- Mensaje flash -->
     <?php if ($mensaje = $_SESSION['mensaje'] ?? null): ?>
-        <div class="flash-message flash-success" style="margin-bottom:1.5rem;">
+        <div class="fade-in-up flash-message flash-success" style="margin-bottom:1.5rem;">
             <?= htmlspecialchars($mensaje) ?>
         </div>
         <?php unset($_SESSION['mensaje']); ?>
     <?php endif; ?>
 
+    <!-- Listado de cursos -->
     <?php if (!empty($cursos)): ?>
-        <div class="table-container">
-            <table style="width:100%;">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Modalidad</th>
-                        <th>Precio</th>
-                        <th>
-                            Clases / Asistentes
-                        </th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($cursos as $c): ?>
-                    <tr>
-                        <td style="font-weight:600; color:#fbbf24;"><?= htmlspecialchars($c['titulo']) ?></td>
-                        <td><?= ucfirst($c['modalidad']) ?></td>
-                        <td style="color:#fbbf24;"><?= number_format($c['precio'], 2) ?> €</td>
-                        <td>
-                            <?php if ($c['modalidad'] === 'online'): ?>
-                                <a href="/instructor/cursos/<?= $c['id'] ?>/clases" style="color:#fbbf24;">
-                                    Gestionar clases
-                                </a>
-                            <?php else: ?>
-                                <a href="/instructor/ver-asistentes/<?= $c['id'] ?>" class="btn btn-secondary btn-sm">
-                                    Ver asistentes
-                                </a>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <div style="display:flex; gap:0.5rem;">
-                                <a href="/instructor/editar/<?= $c['id'] ?>" class="btn btn-primary btn-sm">Editar</a>
-                                <a href="/instructor/eliminar/<?= $c['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">Eliminar</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="fade-in-up" style="transition-delay:0.2s;">
+            <div class="table-container">
+                <table style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Modalidad</th>
+                            <th>Precio</th>
+                            <th>Gestión</th>
+                            <th style="text-align:right;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($cursos as $curso): ?>
+                        <tr>
+                            <td style="font-weight:600; color:#fbbf24;"><?= htmlspecialchars($curso['titulo']) ?></td>
+                            <td>
+                                <span class="badge" style="background:<?= $curso['modalidad'] === 'online' ? '#065f46' : '#7f1d1d' ?>; color:white;">
+                                    <?= $curso['modalidad'] === 'online' ? '🌐 Online' : '🏰 Presencial' ?>
+                                </span>
+                            </td>
+                            <td style="color:#fbbf24; font-weight:600;"><?= number_format($curso['precio'], 2) ?> €</td>
+                            <td>
+                                <?php if ($curso['modalidad'] === 'online'): ?>
+                                    <a href="/instructor/cursos/<?= $curso['id'] ?>/clases" class="btn btn-secondary btn-sm">
+                                        📚 Clases
+                                    </a>
+                                <?php else: ?>
+                                    <a href="/instructor/cursos/<?= $curso['id'] ?>/asistentes" class="btn btn-secondary btn-sm">
+                                        👥 Asistentes
+                                    </a>
+                                <?php endif; ?>
+                            </td>
+                            <td style="text-align:right;">
+                                <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                                    <a href="/instructor/editar/<?= $curso['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
+                                        ✏️ Editar
+                                    </a>
+                                    <a href="/instructor/eliminar/<?= $curso['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso? Esta acción no se puede deshacer.')">
+                                        🗑️ Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     <?php else: ?>
-        <div class="card" style="padding:3rem; text-align:center;">
-            <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
-            <p style="color:#cbd5e1; font-size:1.1rem;">Aún no has creado ningún curso.</p>
-            <a href="/instructor/crear" class="btn btn-primary" style="margin-top:1.5rem;">Crear mi primer curso</a>
+        <div class="fade-in-up card" style="padding:4rem 2rem; text-align:center;">
+            <p style="font-size:4rem; margin-bottom:1rem;">📜</p>
+            <h2 class="font-rpg" style="font-size:2rem; color:#fbbf24; margin-bottom:0.5rem;">Aún no has creado ningún curso</h2>
+            <p style="color:#94a3b8; font-size:1.1rem; margin-bottom:2rem;">Comparte tu sabiduría con el mundo y crea tu primera misión de aprendizaje.</p>
+            <a href="/instructor/crear" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem 2.5rem; font-size:1.1rem;">
+                ⚔️ Crear mi primer curso
+            </a>
         </div>
     <?php endif; ?>
 </div>
