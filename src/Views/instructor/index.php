@@ -48,7 +48,6 @@
                             <td style="color:#fbbf24; font-weight:600;"><?= number_format($curso['precio'], 2) ?> €</td>
                             <td>
                                 <?php
-                                // Si el estado está vacío, asumimos borrador
                                 $estado = !empty($curso['estado']) ? $curso['estado'] : 'borrador';
                                 $colores = [
                                     'borrador'   => '#4b5563',
@@ -80,6 +79,17 @@
                                            onclick="return confirm('¿Enviar este curso a revisión?')">
                                             📤 Enviar a revisión
                                         </a>
+                                    <?php elseif ($estado === 'rechazado'): ?>
+                                        <div style="margin-right:0.5rem;">
+                                            <p style="color:#ef4444; font-size:0.8rem; margin-bottom:0.25rem;">
+                                                <?= !empty($curso['motivo_rechazo']) ? htmlspecialchars($curso['motivo_rechazo']) : 'Sin motivo especificado' ?>
+                                            </p>
+                                            <a href="/instructor/enviar-revision/<?= $curso['id'] ?>" 
+                                               class="btn btn-secondary btn-sm"
+                                               onclick="return confirm('¿Reenviar este curso a revisión?')">
+                                                🔄 Reenviar a revisión
+                                            </a>
+                                        </div>
                                     <?php endif; ?>
                                     <a href="/instructor/editar/<?= $curso['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
                                         ✏️ Editar

@@ -95,8 +95,6 @@ class InstructorController
         $this->verificarInstructor();
         $id = (int) $request->param('id');
         $curso = Curso::find($id);
-        $cursoActualizado = Curso::find($id);
-        var_dump($cursoActualizado['estado']); exit;
         if (!$curso || $curso['id_instructor'] != $_SESSION['usuario']['id']) {
             http_response_code(403);
             exit;
@@ -180,13 +178,18 @@ class InstructorController
             exit;
         }
 
-        if ($curso['estado'] !== 'borrador') {
-            $_SESSION['mensaje'] = 'Solo los cursos en borrador pueden enviarse a revisión.';
+        if (!in_array($curso['estado'], ['borrador', 'rechazado'])) {
+            $_SESSION['mensaje'] = 'Solo los cursos en borrador o rechazados pueden enviarse a revisión.';
             header('Location: /instructor');
             exit;
         }
 
-        Curso::update($id, ['estado' => 'revision']);
+        $updateData = ['estado' => 'revision'];
+        if ($curso['estado'] === 'rechazado') {
+            $updateData['motivo_rechazo'] = null;
+        }
+
+        Curso::update($id, $updateData);
         $_SESSION['mensaje'] = 'Curso enviado a revisión correctamente. Será evaluado por un administrador.';
         header('Location: /instructor');
         exit;
