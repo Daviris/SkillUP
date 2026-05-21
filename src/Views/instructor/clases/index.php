@@ -35,11 +35,6 @@
                             </span>
                             <span style="color:#94a3b8; font-size:0.85rem;"><?= $clase['duracion'] ?> min</span>
                         </div>
-                        <?php if ($clase['tipo'] === 'tarea' && !empty($clase['fecha_limite'])): ?>
-                            <p style="color:#ef4444; font-size:0.8rem; margin-top:0.5rem;">
-                                ⏰ Límite: <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>
-                            </p>
-                        <?php endif; ?>
                     </div>
                     <!-- Bloque derecho (botones) -->
                     <div style="display:flex; gap:1rem; align-items:center; flex-shrink:0;">

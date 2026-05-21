@@ -51,7 +51,6 @@
         </div>
 
     <?php elseif ($clase['tipo'] === 'tarea'): ?>
-        <?php $fechaLimite = strtotime($clase['fecha_limite'] ?? ''); $plazoVencido = $fechaLimite && $fechaLimite < time(); ?>
 
         <!-- Descripción de la tarea -->
         <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem;">
@@ -60,18 +59,6 @@
                 <p style="color:#e5e7eb; line-height:1.6;"><?= nl2br(htmlspecialchars($clase['criterios_evaluacion'])) ?></p>
             <?php else: ?>
                 <p style="color:#94a3b8;">El instructor no ha añadido criterios de evaluación.</p>
-            <?php endif; ?>
-
-            <?php if (!empty($clase['fecha_limite'])): ?>
-                <div style="margin-top:1.5rem; padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid <?= $plazoVencido ? '#7f1d1d' : '#065f46' ?>;">
-                    <p style="color:#94a3b8; margin-bottom:0.25rem;">Fecha límite</p>
-                    <p style="color:<?= $plazoVencido ? '#ef4444' : '#10b981' ?>; font-weight:bold; font-size:1.1rem;">
-                        <?= date('d/m/Y H:i', $fechaLimite) ?>
-                        <?php if ($plazoVencido): ?>
-                            <span style="font-size:0.8rem; margin-left:0.5rem;">(Vencido)</span>
-                        <?php endif; ?>
-                    </p>
-                </div>
             <?php endif; ?>
         </div>
 
@@ -130,12 +117,6 @@
                             Enviar tarea
                         </button>
                     </form>
-                <?php else: ?>
-                    <div style="text-align:center; padding:1rem;">
-                        <p style="color:#ef4444; font-size:1.1rem; font-weight:600;">El plazo de entrega ha finalizado.</p>
-                        <p style="color:#94a3b8; font-size:0.9rem; margin-top:0.5rem;">No puedes enviar esta tarea porque la fecha límite ya pasó.</p>
-                    </div>
-                <?php endif; ?>
             </div>
         <?php endif; ?>
     <?php endif; ?>

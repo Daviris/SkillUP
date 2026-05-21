@@ -1,17 +1,11 @@
 <?php ob_start(); ?>
 <?php
+
 // Inicializar variables para evitar "Undefined variable"
 $clase    = $clase    ?? [];
 $curso_id = $curso_id ?? null;
 $accion   = $accion   ?? 'Crear';
 
-// Preparar la fecha límite formateada con segundos
-$fechaLimiteFormateada = '';
-if (!empty($clase['fecha_limite'])) {
-    $fechaLimiteFormateada = date('Y-m-d\TH:i:s', strtotime($clase['fecha_limite']));
-} else {
-    $fechaLimiteFormateada = date('Y-m-d\TH:i:s', strtotime('+1 hour'));
-}
 ?>
 <div style="max-width:800px; margin:0 auto;">
     <div class="fade-in-up card" style="padding:2.5rem;">
@@ -68,10 +62,6 @@ if (!empty($clase['fecha_limite'])) {
             <div id="campo-tarea" class="hidden">
                 <div style="border:1px solid #334155; border-radius:0.5rem; padding:1.5rem; margin-top:1rem; background:#0f172a;">
                     <h3 style="color:#fbbf24; margin-bottom:1rem;">📝 Configuración de la tarea</h3>
-                    <div class="form-group">
-                        <label class="form-label">Fecha límite</label>
-                        <input type="datetime-local" name="fecha_limite" class="form-input" value="<?= $fechaLimiteFormateada ?>" step="60">
-                    </div>
                     <div class="form-group">
                         <label class="form-label">Criterios de evaluación</label>
                         <textarea name="criterios_evaluacion" class="form-textarea" rows="4" placeholder="Describe qué deben hacer los alumnos y cómo se evaluará..."><?= htmlspecialchars($clase['criterios_evaluacion'] ?? '') ?></textarea>

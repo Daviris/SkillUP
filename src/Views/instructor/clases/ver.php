@@ -58,15 +58,6 @@
             <?php else: ?>
                 <p style="color:#94a3b8;">No se han definido criterios de evaluación.</p>
             <?php endif; ?>
-
-            <?php if (!empty($clase['fecha_limite'])): ?>
-                <div style="margin-top:1.5rem; padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                    <p style="color:#94a3b8; margin-bottom:0.25rem;">Fecha límite</p>
-                    <p style="color:#fbbf24; font-weight:bold; font-size:1.1rem;">
-                        <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>
-                    </p>
-                </div>
-            <?php endif; ?>
         </div>
 
         <!-- Botón para ver entregas -->

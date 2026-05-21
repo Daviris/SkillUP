@@ -45,7 +45,7 @@ class Migrator
             CONSTRAINT `cursos_id_instructor_foreign` FOREIGN KEY (`id_instructor`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-        // 3. Clases
+        // 3. Clases (sin fecha_limite)
         $pdo->exec("CREATE TABLE IF NOT EXISTS `clases` (
             `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `curso_id` bigint(20) UNSIGNED NOT NULL,
@@ -56,7 +56,6 @@ class Migrator
             `tipo` enum('teoria','archivo','tarea') NOT NULL DEFAULT 'teoria',
             `contenido_texto` text DEFAULT NULL,
             `archivo_id` bigint(20) UNSIGNED DEFAULT NULL,
-            `fecha_limite` datetime DEFAULT NULL,
             `criterios_evaluacion` text DEFAULT NULL,
             `created_at` timestamp NULL DEFAULT current_timestamp(),
             `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -197,7 +196,6 @@ class Migrator
         $stmt = $pdo->query("SHOW COLUMNS FROM cursos LIKE 'estado'");
         if ($stmt->rowCount() == 0) {
             $pdo->exec("ALTER TABLE cursos ADD estado enum('borrador','revision','publicado','rechazado') NOT NULL DEFAULT 'borrador' AFTER `plazas`");
-            // Si la tabla ya tenía datos, ponemos 'borrador' a los que tengan estado NULL o vacío
             $pdo->exec("UPDATE cursos SET estado = 'borrador' WHERE estado IS NULL OR estado = ''");
         }
 
@@ -206,13 +204,12 @@ class Migrator
             $pdo->exec("ALTER TABLE cursos ADD motivo_rechazo TEXT DEFAULT NULL AFTER `estado`");
         }
 
-        // Campos adicionales en clases (si no existen)
+        // Campos adicionales en clases
         $nuevosCamposClases = [
             'tipo'                  => "ENUM('teoria','archivo','tarea') NOT NULL DEFAULT 'teoria' AFTER `orden`",
             'contenido_texto'       => "TEXT DEFAULT NULL AFTER `tipo`",
             'archivo_id'            => "bigint(20) UNSIGNED DEFAULT NULL AFTER `contenido_texto`",
-            'fecha_limite'          => "datetime DEFAULT NULL AFTER `archivo_id`",
-            'criterios_evaluacion'  => "TEXT DEFAULT NULL AFTER `fecha_limite`",
+            'criterios_evaluacion'  => "TEXT DEFAULT NULL AFTER `archivo_id`",
             'created_at'            => "timestamp NULL DEFAULT current_timestamp()",
             'updated_at'            => "timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()"
         ];

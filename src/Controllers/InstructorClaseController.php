@@ -97,9 +97,6 @@ class InstructorClaseController
         if ($tipo === 'teoria') {
             $data['contenido_texto'] = $request->input('contenido_texto');
         } elseif ($tipo === 'tarea') {
-            $data['fecha_limite'] = $request->input('fecha_limite')
-                ? date('Y-m-d H:i:s', strtotime($request->input('fecha_limite')))
-                : null;
             $data['criterios_evaluacion'] = $request->input('criterios_evaluacion');
         }
         // Para archivo se sube aparte, la clase se crea primero sin archivo
@@ -179,12 +176,6 @@ class InstructorClaseController
             'tipo'     => $request->input('tipo'),
         ];
 
-        if (!empty($request->input('fecha_limite'))) {
-            $data['fecha_limite'] = date('Y-m-d H:i:s', strtotime($request->input('fecha_limite')));
-        } else {
-            $data['fecha_limite'] = null;
-        }
-
         $tipo = $data['tipo'];
         if ($tipo === 'teoria') {
             $data['contenido_texto'] = $request->input('contenido_texto');
@@ -210,7 +201,6 @@ class InstructorClaseController
             } // si no, se mantiene el archivo actual
             $data['contenido_texto'] = null;
         } elseif ($tipo === 'tarea') {
-            $data['fecha_limite'] = $request->input('fecha_limite');
             $data['criterios_evaluacion'] = $request->input('criterios_evaluacion');
             $data['archivo_id'] = null;
             $data['contenido_texto'] = null;
