@@ -43,6 +43,7 @@ class AuthController
             ];
             $_SESSION['mensaje'] = 'Bienvenid@';
             header('Location: /');
+            exit;
         } else {
             $_SESSION['errors'] = ['Credenciales incorrectas.'];
             header('Location: /login');

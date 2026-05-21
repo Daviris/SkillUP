@@ -31,6 +31,9 @@
                 </a>
             <?php endif; ?>
         </div>
+
+        <!-- Último curso visitado -->
+        <div id="ultimo-curso-visitado" class="fade-in-up" style="display:none; margin-top:2rem;"></div>
     </div>
 </div>
 
