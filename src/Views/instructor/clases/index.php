@@ -23,9 +23,10 @@
     <?php if (!empty($clases)): ?>
         <div class="fade-in-up" style="transition-delay:0.2s; display:grid; gap:1rem;">
             <?php foreach ($clases as $clase): ?>
-                <div class="card" style="padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155; transition:border-color 0.2s;">
+                <div class="card" style="padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; gap:2rem; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155; transition:border-color 0.2s;">
+                    <!-- Bloque izquierdo -->
                     <div style="flex:1;">
-                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.25rem;">
+                        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
                             <a href="/instructor/clases/ver/<?= $clase['id'] ?>" style="color:#fbbf24; font-weight:600; font-size:1.1rem; text-decoration:none; transition:color 0.2s;">
                                 <?= $clase['orden'] ?>. <?= htmlspecialchars($clase['titulo']) ?>
                             </a>
@@ -35,12 +36,13 @@
                             <span style="color:#94a3b8; font-size:0.85rem;"><?= $clase['duracion'] ?> min</span>
                         </div>
                         <?php if ($clase['tipo'] === 'tarea' && !empty($clase['fecha_limite'])): ?>
-                            <p style="color:#ef4444; font-size:0.8rem; margin-top:0.25rem;">
+                            <p style="color:#ef4444; font-size:0.8rem; margin-top:0.5rem;">
                                 ⏰ Límite: <?= date('d/m/Y H:i', strtotime($clase['fecha_limite'])) ?>
                             </p>
                         <?php endif; ?>
                     </div>
-                    <div style="display:flex; gap:0.75rem; align-items:center;">
+                    <!-- Bloque derecho (botones) -->
+                    <div style="display:flex; gap:1rem; align-items:center; flex-shrink:0;">
                         <a href="/instructor/clases/editar/<?= $clase['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
                             ✏️ Editar
                         </a>
