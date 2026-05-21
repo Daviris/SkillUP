@@ -4,7 +4,7 @@
     <div style="max-width: 900px; margin: 0 auto; position: relative; z-index: 2;">
         <!-- Logo / Icono principal -->
         <div style="margin-bottom: 1.5rem;">
-            <span style="font-size: 4.5rem; filter: drop-shadow(0 0 20px rgba(251,191,36,0.5));">⚔️</span>
+            <img src="/img/logo.png" alt="SkillUP Logo" style="height: 8rem; filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5)); margin-bottom: 0.5;">
         </div>
 
         <!-- Título principal -->

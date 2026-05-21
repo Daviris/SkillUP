@@ -50,15 +50,17 @@ a:hover {
     top: 0;
     z-index: 100;
     width: 100%;
+    padding: 0.5rem 0;
 }
 
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0.6rem 1rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
 /* Logo */
@@ -72,15 +74,11 @@ a:hover {
     gap: 0.5rem;
     text-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
     transition: text-shadow 0.3s;
+    line-height: 1;
 }
 
 .header-logo:hover {
     text-shadow: 0 0 25px rgba(251, 191, 36, 0.9);
-}
-
-.logo-icon {
-    font-size: 2.2rem;
-    animation: float 3s ease-in-out infinite;
 }
 
 /* Navegación izquierda */
@@ -960,6 +958,16 @@ table.dataTable tbody tr:hover td {
 
 .dataTables_info {
     color: #94a3b8;
+}
+
+/* ========== IMÁGENES ========== /*
+
+/* Logo */
+
+.logo-img {
+    height: 3.5rem;
+    width: auto;
+    display: block;
 }
 
 /* ========== MISC ========== */
