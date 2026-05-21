@@ -51,7 +51,6 @@
         </div>
 
     <?php elseif ($clase['tipo'] === 'tarea'): ?>
-
         <!-- Descripción de la tarea -->
         <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem;">
             <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">📝 Descripción de la tarea</h2>
@@ -104,19 +103,18 @@
             </div>
         <?php else: ?>
             <div class="fade-in-up card" style="padding:1.5rem;">
-                <?php if (!$plazoVencido): ?>
-                    <h3 style="color:#fbbf24; font-weight:600; margin-bottom:1rem;">📤 Subir entrega</h3>
-                    <form action="/archivo/subir" method="POST" enctype="multipart/form-data">
-                        <?= \App\Core\Csrf::tokenField() ?>
-                        <input type="hidden" name="clase_id" value="<?= $clase['id'] ?>">
-                        <div class="form-group">
-                            <label class="form-label">Selecciona un archivo</label>
-                            <input type="file" name="archivo" class="form-input" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                            Enviar tarea
-                        </button>
-                    </form>
+                <h3 style="color:#fbbf24; font-weight:600; margin-bottom:1rem;">📤 Subir entrega</h3>
+                <form action="/archivo/subir" method="POST" enctype="multipart/form-data">
+                    <?= \App\Core\Csrf::tokenField() ?>
+                    <input type="hidden" name="clase_id" value="<?= $clase['id'] ?>">
+                    <div class="form-group">
+                        <label class="form-label">Selecciona un archivo</label>
+                        <input type="file" name="archivo" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
+                        Enviar tarea
+                    </button>
+                </form>
             </div>
         <?php endif; ?>
     <?php endif; ?>
