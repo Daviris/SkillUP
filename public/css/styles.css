@@ -8,21 +8,21 @@
 
 body {
     font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: #111827; /* Color negro fondo*/
-    color: #e5e7eb; /* Color blanco letras */
+    background-color: #111827;
+    color: #e5e7eb;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 a {
-    color: #fbbf24; /* Color naranja enlaces */
+    color: #fbbf24;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 a:hover {
-    color: #f59e0b; /* Color naranja más oscuro */
+    color: #f59e0b;
 }
 
 /* ========== LAYOUT ========== */
@@ -289,14 +289,13 @@ a:hover {
 .hero-section {
     position: relative;
     border-bottom: 1px solid rgba(180,83,9,0.2);
-    overflow: visible;                     /* Permitimos que el glow sobresalga */
-    /* El pseudo‑elemento ::before pintará el fondo */
+    overflow: visible;
 }
 
 .hero-section::before {
     content: '';
     position: absolute;
-    top: -50px;                            /* Expandimos un poco hacia arriba */
+    top: -50px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -593,7 +592,6 @@ tr:hover td {
 
 /* ========== CARRUSEL ========== */
 
-/* ========== CARRUSEL DESLIZANTE ========== */
 .carousel {
     position: relative;
     height: 320px;
@@ -622,7 +620,7 @@ tr:hover td {
     justify-content: center;
     padding: 2rem;
     text-align: center;
-    pointer-events: none;        /* Desactiva interacción mientras no esté activa */
+    pointer-events: none;
 }
 
 .carousel-slide.active {
@@ -982,4 +980,155 @@ table.dataTable tbody tr:hover td {
 
 .hidden {
     display: none;
+}
+
+/* ========== RESPONSIVE MEDIA QUERY QUIRÚRGICA CON IMPORTANT MÍNIMOS ========== */
+@media screen and (max-width: 768px) {
+    
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body main .container, body .container {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 1rem;
+        margin: 0 auto;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    body header.main-header {
+        height: auto;
+        padding: 1rem 0;
+    }
+
+    body header.main-header .header-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    body header.main-header .header-logo {
+        display: flex;
+        font-size: 2.2rem;
+        text-align: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    body header.main-header .header-nav-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    body header.main-header .header-nav-left a:not(.header-logo) {
+        display: none; 
+    }
+
+    body header.main-header .header-nav-right {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    body header.main-header .dropdown-menu {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 260px;
+        position: absolute;
+    }
+
+    body header.main-header .dropdown-menu a.cursos-link, body header.main-header .dropdown-menu a:first-child {
+        font-weight: bold;
+        color: #fbbf24;
+        background: rgba(180, 83, 9, 0.15);
+        border-bottom: 1px solid #b45309;
+    }
+
+    body main .container .grid-3, .grid-3 {
+        display: block !important; 
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    body main .container .grid-3 .stat-card, body main .container .grid-3 .feature-card, body main .container .grid-3 .card, .stat-card, .feature-card, .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100% !important; 
+        flex: none !important;   
+        min-width: 0; 
+        padding: 2rem 1.25rem; 
+        margin: 0 0 1.5rem 0; 
+        box-sizing: border-box;
+        border-radius: 0.75rem;
+    }
+
+    /* ========== TEXTOS SEGUROS ========== */
+    body main .container .stat-number, body main .container .card-title, body main .container .carousel h2, .stat-number, .card-title {
+        font-size: 2.2rem; 
+        line-height: 1.2;
+        width: 100%;
+        max-width: 100%;
+        white-space: normal;
+        word-wrap: normal;
+        overflow-wrap: normal;
+        word-break: keep-all; 
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    body main .container .stat-label, body main .container .stat-desc, body main .container .card-text, body main .container .carousel p, .stat-label, .stat-desc, .card-text {
+        font-size: 1rem;
+        line-height: 1.5;
+        white-space: normal;
+        word-break: normal;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    body main .container .stat-icon, .stat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* ========== CARRUSEL ========== */
+    body main .container .carousel, .carousel {
+        height: auto;
+        min-height: 220px;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    body main .container .carousel .carousel-slide, .carousel-slide {
+        padding: 1.5rem 1rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
