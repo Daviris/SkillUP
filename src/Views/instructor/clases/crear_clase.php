@@ -18,7 +18,7 @@ $accion   = $accion   ?? 'Crear';
             <?= htmlspecialchars($accion) ?> clase
         </h1>
 
-        <form method="POST" action="<?= $accion === 'Crear' ? '/instructor/clases/guardar' : '/instructor/clases/actualizar/' . ($clase['id'] ?? '') ?>" enctype="multipart/form-data" novalidate>
+        <form method="POST" action="<?= $accion === 'Crear' ? '/instructor/clases/guardar' : '/instructor/clases/actualizar/' . ($clase['id'] ?? '') ?>" enctype="multipart/form-data" id="clase-form" novalidate>
             <?= \App\Core\Csrf::tokenField() ?>
             <input type="hidden" name="curso_id" value="<?= htmlspecialchars($curso_id ?? $clase['curso_id'] ?? '') ?>">
 

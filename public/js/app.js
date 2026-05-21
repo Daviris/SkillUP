@@ -644,7 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Opcional: validar al cambiar la modalidad (mostrar/ocultar campos ya lo tienes)
+        // Validar al cambiar la modalidad
         if (modalidad) {
             modalidad.addEventListener('change', () => {
                 // Limpiar errores de campos presenciales si se cambia a online
@@ -657,75 +657,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Validación del formulario de clases (instructor)
+    // --- Validación del formulario de Clase (instructor) ---
     const claseForm = document.getElementById('clase-form');
     if (claseForm) {
-        const tituloClase = claseForm.querySelector('input[name="titulo"]');
+        console.log('Formulario de clase encontrado, preparando validación.');
+
+        const titulo = claseForm.querySelector('input[name="titulo"]');
         const duracion = claseForm.querySelector('input[name="duracion"]');
         const tipo = claseForm.querySelector('select[name="tipo"]');
 
-        // Campos específicos
-        const contenidoTexto = claseForm.querySelector('textarea[name="contenido_texto"]');
-        const archivo = claseForm.querySelector('input[name="archivo"]');
-        const fechaLimite = claseForm.querySelector('input[name="fecha_limite"]');
-        const criterios = claseForm.querySelector('textarea[name="criterios_evaluacion"]');
-
-        const validarClase = () => {
-            let valido = true;
-
-            // Limpiar todos los errores previos
-            [tituloClase, duracion, contenidoTexto, archivo, fechaLimite, criterios].forEach(inp => {
-                if (inp) limpiarError(inp);
-            });
-
-            // Título obligatorio
-            if (tituloClase.value.trim() === '') {
-                mostrarError(tituloClase, 'El título es obligatorio.');
-                valido = false;
-            }
-
-            // Duración obligatoria y numérica
-            const duracionValor = parseInt(duracion.value.trim());
-            if (isNaN(duracionValor) || duracionValor <= 0) {
-                mostrarError(duracion, 'La duración debe ser un número positivo.');
-                valido = false;
-            }
-
-            // Validar según tipo
-            if (tipo.value === 'teoria') {
-                if (!contenidoTexto || contenidoTexto.value.trim() === '') {
-                    if (contenidoTexto) mostrarError(contenidoTexto, 'El contenido teórico es obligatorio.');
-                    valido = false;
-                }
-            } else if (tipo.value === 'archivo') {
-                // En creación, archivo es obligatorio; en edición, solo si no hay archivo previo
-                const archivoActual = claseForm.querySelector('input[name="archivo_id"]'); // campo oculto si existe
-                if ((!archivoActual || archivoActual.value === '') && (!archivo || archivo.files.length === 0)) {
-                    if (archivo) mostrarError(archivo, 'Debes subir un archivo.');
-                    valido = false;
-                }
-            } else if (tipo.value === 'tarea') {
-                if (fechaLimite && fechaLimite.value.trim() === '') {
-                    mostrarError(fechaLimite, 'La fecha límite es obligatoria.');
-                    valido = false;
-                }
-                if (criterios && criterios.value.trim() === '') {
-                    mostrarError(criterios, 'Los criterios de evaluación son obligatorios.');
-                    valido = false;
-                }
-            }
-
-            return valido;
-        };
+        console.log('Campos encontrados:', { titulo, duracion, tipo });
 
         claseForm.addEventListener('submit', (e) => {
-            if (!validarClase()) {
+            console.log('Evento submit de clase capturado.');
+
+            // Limpiar errores previos
+            document.querySelectorAll('.field-error').forEach(el => el.remove());
+            [titulo, duracion, tipo].forEach(inp => {
+                if (inp) inp.style.borderColor = '';
+            });
+
+            let valido = true;
+
+            if (titulo && titulo.value.trim() === '') {
+                mostrarError(titulo, 'El título es obligatorio');
+                valido = false;
+            }
+            if (duracion && (duracion.value.trim() === '' || parseInt(duracion.value) <= 0)) {
+                mostrarError(duracion, 'La duración debe ser un número positivo');
+                valido = false;
+            }
+            if (tipo && tipo.value === '') {
+                mostrarError(tipo, 'Selecciona un tipo de clase');
+                valido = false;
+            }
+
+            if (!valido) {
+                console.log('Errores encontrados, se evita el envío.');
                 e.preventDefault();
+            } else {
+                console.log('Validación correcta, se envía el formulario.');
             }
         });
+    } else {
+        console.warn('No se encontró el formulario con id "clase-form".');
     }
 
-    // Formulraio del perfil
+    // Formulario del perfil
     const perfilForm = document.getElementById('perfil-form');
     if (perfilForm) {
         const nombre = perfilForm.querySelector('input[name="nombre"]');
