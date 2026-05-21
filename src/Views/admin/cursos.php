@@ -68,12 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 data: 'id',
                 orderable: false,
                 render: (id, type, row) => {
+                    // Botón de estado según el estado actual
                     let botonEstado = '';
                     if (row.estado !== 'revision') {
                         botonEstado = `<a href="/admin/cursos/cambiar-estado/${id}?estado=revision" class="btn btn-warning btn-sm" style="background:#fbbf24; color:#0f172a; font-size:0.7rem;" onclick="return confirm('¿Mover este curso a revisión?')" title="Mover a revisión">🔍 Revisar</a>`;
-                    }
-                    if (row.estado === 'revision') {
-                        botonEstado = `<a href="/admin/cursos/cambiar-estado/${id}?estado=publicado" class="btn btn-success btn-sm" style="font-size:0.7rem;" onclick="return confirm('¿Publicar este curso?')" title="Publicar curso">✅ Publicar</a>`;
+                    } else {
+                        botonEstado = `<span class="btn btn-sm" style="background:#4b5563; color:#94a3b8; font-size:0.7rem; cursor:default;" title="Este curso ya está en revisión">En revisión</span>`;
                     }
                     return `
                         <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
