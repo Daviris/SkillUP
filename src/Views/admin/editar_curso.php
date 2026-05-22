@@ -26,8 +26,8 @@
                 <div class="form-group">
                     <label class="form-label">Modalidad</label>
                     <select name="modalidad" class="form-select" required>
-                        <option value="online" <?= $curso['modalidad'] === 'online' ? 'selected' : '' ?>>🌐 Online</option>
-                        <option value="presencial" <?= $curso['modalidad'] === 'presencial' ? 'selected' : '' ?>>🏰 Presencial</option>
+                        <option value="online" <?= $curso['modalidad'] === 'online' ? 'selected' : '' ?>><i class="fa-solid fa-globe"></i> Online</option>
+                        <option value="presencial" <?= $curso['modalidad'] === 'presencial' ? 'selected' : '' ?>><i class="fa-solid fa-dungeon"></i> Presencial</option>
                     </select>
                 </div>
             </div>
@@ -45,7 +45,7 @@
 
             <div style="display:flex; gap:1rem; margin-top:2rem;">
                 <button type="submit" class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem;">
-                    💾 Guardar cambios
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
                 </button>
                 <a href="/admin/cursos" class="btn btn-secondary" style="flex:1; text-align:center; padding:0.8rem;">
                     Cancelar

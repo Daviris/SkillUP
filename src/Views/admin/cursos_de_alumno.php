@@ -1,14 +1,14 @@
 <?php ob_start(); ?>
 <div class="fade-in-up" style="margin-bottom:2rem;">
     <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-        📚 Cursos de <?= htmlspecialchars($usuario['nombre']) ?>
+        <i class="fa-solid fa-book-open"></i> Cursos de <?= htmlspecialchars($usuario['nombre']) ?>
     </h1>
     <p style="color:#94a3b8; font-size:1.1rem;">Cursos en los que está matriculado</p>
 </div>
 
 <div class="card" style="padding:1.5rem; margin-bottom:2rem;">
     <div style="display:flex; align-items:center; gap:1rem;">
-        <span style="font-size:2rem;">👤</span>
+        <span style="font-size:2rem;"><i class="fa-solid fa-circle-user"></i></span>
         <div>
             <p style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($usuario['nombre']) ?></p>
             <p style="color:#94a3b8;"><?= htmlspecialchars($usuario['email']) ?></p>
@@ -42,7 +42,7 @@
                             <a href="/admin/pedidos/revocar/<?= $curso['pedido_id'] ?>" 
                                class="btn btn-danger btn-sm" 
                                onclick="return confirm('¿Revocar el acceso a este curso?')">
-                                🚫 Revocar
+                               <i class="fa-solid fa-ban"></i> Revocar
                             </a>
                         <?php else: ?>
                             <span style="color:#94a3b8;">Ya cancelado</span>

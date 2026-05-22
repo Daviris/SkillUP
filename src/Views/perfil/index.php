@@ -4,7 +4,7 @@
     <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem; background:linear-gradient(135deg, #1e293b, #0f172a); border:2px solid #b45309;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem;">
             <div style="display:flex; align-items:center; gap:1.5rem;">
-                <div style="font-size:4rem;">👤</div>
+                <div style="font-size:4rem;"><i class="fa-solid fa-circle-user"></i></div>
                 <div>
                     <h1 class="font-rpg" style="font-size:2.2rem; color:#fbbf24; margin-bottom:0.25rem;">
                         <?= htmlspecialchars($usuario['nombre']) ?>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <a href="/perfil/editar" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.7rem 1.5rem;">
-                ✏️ Editar perfil
+                <i class="fa-solid fa-pencil"></i> Editar perfil
             </a>
         </div>
     </div>
@@ -28,7 +28,7 @@
     <?php if ($usuario['rol'] === 'alumno'): ?>
         <!-- Historial de pedidos (sin cambios) -->
         <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">🛒 Historial de pedidos</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-cart-shopping"></i> Historial de pedidos</h2>
             <?php if (!empty($pedidos)): ?>
                 <div class="table-container">
                     <table style="width:100%;">
@@ -59,20 +59,20 @@
 
         <!-- Cursos comprados (REDISEÑADO) -->
         <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📖 Cursos comprados</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-book"></i> Cursos comprados</h2>
             <?php if (!empty($cursosComprados)): ?>
                 <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:1rem;">
                     <?php foreach ($cursosComprados as $curso): ?>
                         <div class="card" style="padding:1.25rem; background:#0f172a; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between; transition:border-color 0.2s;">
                             <div>
                                 <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
-                                    <span style="font-size:1.5rem;">📜</span>
+                                    <span style="font-size:1.5rem;"><i class="fa-solid fa-scroll"></i></span>
                                     <h3 style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($curso['titulo']) ?></h3>
                                 </div>
-                                <p style="color:#94a3b8; font-size:0.9rem;">🧙 <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></p>
+                                <p style="color:#94a3b8; font-size:0.9rem;"><i class="fa-solid fa-hat-wizard"></i> <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?></p>
                             </div>
                             <a href="/mis-cursos/ver/<?= $curso['id'] ?>" class="btn btn-primary" style="margin-top:1rem; background:linear-gradient(135deg, #b45309, #d97706); border:none; width:100%; text-align:center; padding:0.6rem;">
-                                ⚔️ Ir al curso
+                                <i class="fa-solid fa-sword"></i> Ir al curso
                             </a>
                         </div>
                     <?php endforeach; ?>
@@ -84,7 +84,7 @@
 
         <!-- Reseñas escritas (sin cambios) -->
         <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">⭐ Reseñas que has escrito</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-star"></i> Reseñas que has escrito</h2>
             <?php if (!empty($resenas)): ?>
                 <div style="display:grid; gap:1rem;">
                     <?php foreach ($resenas as $resena): ?>
@@ -112,7 +112,7 @@
     <!-- Sección Instructor (sin cambios) -->
     <?php if ($usuario['rol'] === 'instructor'): ?>
         <div class="fade-in-up card" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">🧙 Mis cursos publicados</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-hat-wizard"></i> Mis cursos publicados</h2>
             <?php if (!empty($cursos)): ?>
                 <div class="table-container">
                     <table style="width:100%;">

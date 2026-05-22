@@ -2,7 +2,7 @@
 <div style="max-width:1000px; margin:0 auto;">
     <!-- Migas de pan -->
     <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
-        <a href="/instructor" style="color:#fbbf24;">🧙 Panel Instructor</a> /
+        <a href="/instructor" style="color:#fbbf24;"><i class="fa-solid fa-hat-wizard"></i> Panel Instructor</a> /
         <span style="color:#e5e7eb;">Asistentes de "<?= htmlspecialchars($curso['titulo']) ?>"</span>
     </div>
 
@@ -11,12 +11,12 @@
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem;">
             <div>
                 <h1 class="font-rpg" style="font-size:2.2rem; color:#fbbf24; margin-bottom:0.25rem;">
-                    👥 Asistentes
+                    <i class="fa-solid fa-people-group"></i> Asistentes
                 </h1>
                 <p style="color:#cbd5e1;"><?= htmlspecialchars($curso['titulo']) ?> · <?= count($asistentes) ?> alumnos inscritos</p>
             </div>
             <div class="badge" style="background:#7f1d1d; color:white; font-size:0.9rem; padding:0.5rem 1rem;">
-                🏰 Presencial
+                <i class="fa-solid fa-dungeon"></i> Presencial
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
         </div>
     <?php else: ?>
         <div class="fade-in-up card" style="padding:3rem; text-align:center;">
-            <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+            <p style="font-size:3rem; margin-bottom:1rem;"><i class="fa-solid fa-inbox"></i></p>
             <p style="color:#cbd5e1; font-size:1.1rem;">Nadie se ha inscrito aún en este curso presencial.</p>
         </div>
     <?php endif; ?>

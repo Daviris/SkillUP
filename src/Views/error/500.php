@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <div style="max-width:600px; margin:4rem auto; text-align:center;">
     <div class="card" style="padding:3rem 2rem;">
-        <p style="font-size:5rem; margin-bottom:1rem;">💥</p>
+        <p style="font-size:5rem; margin-bottom:1rem;"><i class="fa-solid fa-burst"></i></p>
         <h1 class="font-rpg" style="font-size:2.5rem; color:#ef4444; margin-bottom:0.5rem;">
             ¡Error crítico!
         </h1>
@@ -17,7 +17,7 @@
             </div>
         <?php endif; ?>
 
-        <a href="/" class="btn btn-primary">🏠 Volver a la taberna</a>
+        <a href="/" class="btn btn-primary"><i class="fa-solid fa-house"></i> Volver a la taberna</a>
     </div>
 </div>
 <?php $content = ob_get_clean(); ?>

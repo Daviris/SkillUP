@@ -1,14 +1,14 @@
 <?php ob_start(); ?>
 <div class="fade-in-up" style="margin-bottom:2rem;">
     <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-        🔍 Pedido #<?= $pedido['id'] ?>
+        <i class="fa-solid fa-magnifying-glass"></i> Pedido #<?= $pedido['id'] ?>
     </h1>
     <p style="color:#94a3b8; font-size:1.1rem;">Detalle completo de la transacción</p>
 </div>
 
 <!-- Datos del cliente -->
 <div class="card" style="padding:1.5rem; margin-bottom:1.5rem; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
-    <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">👤 Cliente</h2>
+    <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-solid fa-circle-user"></i> Cliente</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; color:#e5e7eb;">
         <div>
             <span style="color:#fbbf24;">Nombre:</span>
@@ -23,7 +23,7 @@
 
 <!-- Resumen del pedido -->
 <div class="card" style="padding:1.5rem; margin-bottom:1.5rem; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155;">
-    <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">📋 Resumen del pedido</h2>
+    <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-solid fa-clipboard-list"></i> Resumen del pedido</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; color:#e5e7eb; margin-bottom:1rem;">
         <div>
             <span style="color:#fbbf24;">Fecha:</span>

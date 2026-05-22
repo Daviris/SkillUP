@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <div style="max-width:550px; margin:3rem auto;">
     <div class="fade-in-up card" style="padding:2.5rem 2rem;">
-        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;">✏️</div>
+        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;"><i class="fa-solid fa-pencil"></i></div>
         <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; text-align:center; margin-bottom:1.5rem;">
             Editar Perfil
         </h1>
@@ -37,7 +37,7 @@
             </div>
             <div style="display:flex; gap:1rem; margin-top:1.5rem;">
                 <button type="submit" class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem;">
-                    💾 Guardar cambios
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
                 </button>
                 <a href="/perfil" class="btn btn-secondary" style="flex:1; text-align:center; padding:0.8rem;">
                     Cancelar

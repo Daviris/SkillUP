@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <div class="fade-in-up" style="margin-bottom:2rem;">
     <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-        ⭐ Reseñas de "<?= htmlspecialchars($curso['titulo']) ?>"
+        <i class="fa-solid fa-star"></i> Reseñas de "<?= htmlspecialchars($curso['titulo']) ?>"
     </h1>
     <p style="color:#94a3b8; font-size:1.1rem;">Valoraciones de los aventureros sobre esta misión</p>
 </div>
@@ -26,7 +26,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap; gap:1rem;">
                     <div style="flex:1; min-width:200px;">
                         <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
-                            <span style="font-size:1.5rem;">🧑‍🎓</span>
+                            <span style="font-size:1.5rem;"><i class="fa-solid fa-user-graduate"></i></span>
                             <span style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($resena['alumno_nombre']) ?></span>
                         </div>
                         <div style="color:#fbbf24; font-size:1.1rem; margin-bottom:0.5rem;">
@@ -41,7 +41,7 @@
                         <a href="/admin/resenas/eliminar/<?= $resena['id'] ?>?curso_id=<?= $curso['id'] ?>" 
                            class="btn btn-danger btn-sm" 
                            onclick="return confirm('¿Eliminar esta reseña?')">
-                            🗑️ Eliminar
+                            <i class="fa-solid fa-trash-can"></i> Eliminar
                         </a>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
     </div>
 <?php else: ?>
     <div class="card" style="padding:3rem; text-align:center;">
-        <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+        <p style="font-size:3rem; margin-bottom:1rem;">	<i class="fa-solid fa-inbox"></i></p>
         <p style="color:#cbd5e1; font-size:1.1rem;">Este curso aún no tiene reseñas.</p>
     </div>
 <?php endif; ?>

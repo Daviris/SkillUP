@@ -4,7 +4,7 @@
     <div class="fade-in-up" style="margin-bottom:2rem; display:flex; justify-content:space-between; align-items:center;">
         <div>
             <h1 class="font-rpg" style="font-size:2.8rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-                🧙 Panel de Instructor
+                <i class="fa-solid fa-hat-wizard"></i> Panel de Instructor
             </h1>
             <p style="color:#94a3b8; font-size:1.1rem;">Gestiona tus cursos y comparte tu conocimiento</p>
         </div>
@@ -42,7 +42,7 @@
                             <td style="font-weight:600; color:#fbbf24;"><?= htmlspecialchars($curso['titulo']) ?></td>
                             <td>
                                 <span class="badge" style="background:<?= $curso['modalidad'] === 'online' ? '#065f46' : '#7f1d1d' ?>; color:white;">
-                                    <?= $curso['modalidad'] === 'online' ? '🌐 Online' : '🏰 Presencial' ?>
+                                    <?= $curso['modalidad'] === 'online' ? '<i class="fa-solid fa-globe"></i> Online' : '<i class="fa-solid fa-dungeon"></i> Presencial' ?>
                                 </span>
                             </td>
                             <td style="color:#fbbf24; font-weight:600;"><?= number_format($curso['precio'], 2) ?> €</td>
@@ -63,11 +63,11 @@
                             <td>
                                 <?php if ($curso['modalidad'] === 'online'): ?>
                                     <a href="/instructor/cursos/<?= $curso['id'] ?>/clases" class="btn btn-secondary btn-sm">
-                                        📚 Clases
+                                        <i class="fa-solid fa-book-open"></i> Clases
                                     </a>
                                 <?php else: ?>
                                     <a href="/instructor/cursos/<?= $curso['id'] ?>/asistentes" class="btn btn-secondary btn-sm">
-                                        👥 Asistentes
+                                        <i class="fa-solid fa-people-group"></i> Asistentes
                                     </a>
                                 <?php endif; ?>
                             </td>
@@ -77,7 +77,7 @@
                                         <a href="/instructor/enviar-revision/<?= $curso['id'] ?>" 
                                            class="btn btn-secondary btn-sm"
                                            onclick="return confirm('¿Enviar este curso a revisión?')">
-                                            📤 Enviar a revisión
+                                            <i class="fa-solid fa-upload"></i> Enviar a revisión
                                         </a>
                                     <?php elseif ($estado === 'rechazado'): ?>
                                         <div style="margin-right:0.5rem;">
@@ -87,15 +87,15 @@
                                             <a href="/instructor/enviar-revision/<?= $curso['id'] ?>" 
                                                class="btn btn-secondary btn-sm"
                                                onclick="return confirm('¿Reenviar este curso a revisión?')">
-                                                🔄 Reenviar a revisión
+                                                <i class="fa-solid fa-rotate-right"></i> Reenviar a revisión
                                             </a>
                                         </div>
                                     <?php endif; ?>
                                     <a href="/instructor/editar/<?= $curso['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                                        ✏️ Editar
+                                        <i class="fa-solid fa-pencil"></i> Editar
                                     </a>
                                     <a href="/instructor/eliminar/<?= $curso['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">
-                                        🗑️ Eliminar
+                                        <i class="fa-solid fa-trash-can"></i> Eliminar
                                     </a>
                                 </div>
                             </td>
@@ -107,11 +107,11 @@
         </div>
     <?php else: ?>
         <div class="fade-in-up card" style="padding:4rem 2rem; text-align:center;">
-            <p style="font-size:4rem; margin-bottom:1rem;">📜</p>
+            <p style="font-size:4rem; margin-bottom:1rem;"><i class="fa-solid fa-scroll"></i></p>
             <h2 class="font-rpg" style="font-size:2rem; color:#fbbf24; margin-bottom:0.5rem;">Aún no has creado ningún curso</h2>
             <p style="color:#94a3b8; font-size:1.1rem; margin-bottom:2rem;">Comparte tu sabiduría con el mundo y crea tu primera misión de aprendizaje.</p>
             <a href="/instructor/crear" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem 2.5rem; font-size:1.1rem;">
-                ⚔️ Crear mi primer curso
+                <i class="fa-solid fa-sword"></i> Crear mi primer curso
             </a>
         </div>
     <?php endif; ?>

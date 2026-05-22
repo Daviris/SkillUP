@@ -2,7 +2,7 @@
 <div style="max-width:1100px; margin:0 auto;">
     <!-- Migas de pan -->
     <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
-        <a href="/mis-cursos" style="color:#fbbf24;">📖 Mis Cursos</a> /
+        <a href="/mis-cursos" style="color:#fbbf24;"><i class="fa-solid fa-book"></i> Mis Cursos</a> /
         <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
     </div>
 
@@ -19,21 +19,21 @@
             <div style="display:flex; flex-wrap:wrap; gap:1.5rem; color:#94a3b8; font-size:0.95rem;">
                 <!-- Enlace al perfil del instructor -->
                 <a href="/instructor/<?= $curso['id_instructor'] ?>" style="color:#fbbf24; text-decoration:underline;">
-                    🧙 <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?>
+                    <i class="fa-solid fa-hat-wizard"></i> <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?>
                 </a>
-                <span><?= $curso['modalidad'] === 'online' ? '🌐 Online' : '🏰 Presencial' ?></span>
+                <span><?= $curso['modalidad'] === 'online' ? '<i class="fa-solid fa-globe"></i> Online' : '<i class="fa-solid fa-dungeon"></i> Presencial' ?></span>
                 <?php if ($curso['modalidad'] === 'online'): ?>
-                    <span>📚 <?= count($curso['clases'] ?? []) ?> clases</span>
-                    <span>⏱️ <?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min total</span>
+                    <span><i class="fa-solid fa-book-open"></i> <?= count($curso['clases'] ?? []) ?> clases</span>
+                    <span><i class="fa-solid fa-stopwatch"></i> <?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min total</span>
                 <?php else: ?>
                     <?php if (!empty($curso['fecha'])): ?>
-                        <span>📅 <?= date('d/m/Y', strtotime($curso['fecha'])) ?></span>
+                        <span><i class="fa-regular fa-calendar"></i> <?= date('d/m/Y', strtotime($curso['fecha'])) ?></span>
                     <?php endif; ?>
                     <?php if (!empty($curso['hora'])): ?>
-                        <span>🕐 <?= $curso['hora'] ?></span>
+                        <span><i class="fa-regular fa-clock"></i> <?= $curso['hora'] ?></span>
                     <?php endif; ?>
                     <?php if (!empty($curso['ubicacion'])): ?>
-                        <span>📍 <?= htmlspecialchars($curso['ubicacion']) ?></span>
+                        <span><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($curso['ubicacion']) ?></span>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
@@ -43,7 +43,7 @@
     <!-- Contenido según modalidad -->
     <?php if ($curso['modalidad'] === 'online'): ?>
         <div class="fade-in-up" style="transition-delay:0.2s; margin-bottom:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📖 Clases de esta misión</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-book"></i> Clases de esta misión</h2>
             <?php if (!empty($curso['clases'])): ?>
                 <div style="display:grid; gap:1rem;">
                     <?php foreach ($curso['clases'] as $clase): ?>
@@ -65,40 +65,40 @@
                 </div>
             <?php else: ?>
                 <div class="card" style="padding:3rem; text-align:center;">
-                    <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+                    <p style="font-size:3rem; margin-bottom:1rem;"><i class="fa-solid fa-inbox"></i></p>
                     <p style="color:#cbd5e1; font-size:1.1rem;">Este curso aún no tiene clases publicadas.</p>
                 </div>
             <?php endif; ?>
         </div>
     <?php else: ?>
         <div class="fade-in-up" style="transition-delay:0.2s; margin-bottom:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📍 Información de la sesión</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-location-dot"></i> Información de la sesión</h2>
             <div class="card" style="padding:2rem;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                     <?php if (!empty($curso['fecha'])): ?>
                         <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                            <div style="font-size:1.2rem; margin-bottom:0.25rem;">📅</div>
+                            <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-regular fa-calendar"></i></div>
                             <div style="color:#fbbf24; font-weight:600;"><?= date('d/m/Y', strtotime($curso['fecha'])) ?></div>
                             <div style="color:#94a3b8; font-size:0.8rem;">Fecha</div>
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($curso['hora'])): ?>
                         <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                            <div style="font-size:1.2rem; margin-bottom:0.25rem;">🕐</div>
+                            <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-regular fa-clock"></i></div>
                             <div style="color:#fbbf24; font-weight:600;"><?= $curso['hora'] ?></div>
                             <div style="color:#94a3b8; font-size:0.8rem;">Hora</div>
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($curso['ubicacion'])): ?>
                         <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                            <div style="font-size:1.2rem; margin-bottom:0.25rem;">📍</div>
+                            <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-solid fa-location-dot"></i></div>
                             <div style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($curso['ubicacion']) ?></div>
                             <div style="color:#94a3b8; font-size:0.8rem;">Ubicación</div>
                         </div>
                     <?php endif; ?>
                     <?php if (isset($curso['plazas'])): ?>
                         <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                            <div style="font-size:1.2rem; margin-bottom:0.25rem;">👥</div>
+                            <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-solid fa-people-group"></i></div>
                             <div style="color:#fbbf24; font-weight:600;"><?= $curso['plazas'] ?> plazas</div>
                             <div style="color:#94a3b8; font-size:0.8rem;">Capacidad</div>
                         </div>
@@ -113,7 +113,7 @@
 
     <!-- Sección de reseñas -->
     <div class="fade-in-up card" style="margin-top:2rem; padding:2.5rem;">
-        <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">⭐ Reseñas de Aventureros</h2>
+        <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-star"></i> Reseñas de Aventureros</h2>
 
         <?php $resenas = \App\Models\Resena::delCurso($curso['id']); ?>
 
@@ -123,7 +123,7 @@
                     <div style="padding:1.5rem; background:#0f172a; border:1px solid #334155; border-radius:0.75rem;">
                         <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.75rem;">
                             <span style="color:#fbbf24; font-weight:600; font-size:1.1rem;">
-                                🧑‍🎓 <?= htmlspecialchars($resena['alumno_nombre']) ?>
+                                <i class="fa-solid fa-user-graduate"></i> <?= htmlspecialchars($resena['alumno_nombre']) ?>
                             </span>
                             <span style="color:#fbbf24; font-size:1.1rem;">
                                 <?= str_repeat('★', $resena['puntuacion']) ?><?= str_repeat('☆', 5 - $resena['puntuacion']) ?>
@@ -163,7 +163,7 @@
                             <textarea name="comentario" class="form-textarea" rows="3" placeholder="Comparte tu experiencia con otros aventureros..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                            📝 Enviar reseña
+                            <i class="fa-solid fa-file-pen"></i> Enviar reseña
                         </button>
                     </form>
                 </div>

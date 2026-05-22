@@ -5,7 +5,7 @@
         <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:radial-gradient(circle at 30% 20%, rgba(251,191,36,0.08) 0%, transparent 60%); pointer-events:none;"></div>
         <div style="position:relative; z-index:2; display:flex; align-items:center; gap:2rem; flex-wrap:wrap;">
             <!-- Avatar -->
-            <div style="font-size:5rem;">🧙</div>
+            <div style="font-size:5rem;"><i class="fa-solid fa-hat-wizard"></i></div>
             <div style="flex:1; min-width:250px;">
                 <h1 class="font-rpg" style="font-size:2.8rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
                     <?= htmlspecialchars($instructor['nombre']) ?>
@@ -44,7 +44,7 @@
 
     <!-- Cursos publicados -->
     <div class="fade-in-up" style="transition-delay:0.2s;">
-        <h2 class="font-rpg" style="font-size:2rem; color:#fbbf24; margin-bottom:1.5rem;">📚 Cursos publicados</h2>
+        <h2 class="font-rpg" style="font-size:2rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-book-open"></i> Cursos publicados</h2>
         <?php if (!empty($cursos)): ?>
             <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem;">
                 <?php foreach ($cursos as $curso): ?>
@@ -52,7 +52,7 @@
                         <div style="padding:1.5rem; flex:1;">
                             <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
                                 <span class="badge" style="background:<?= $curso['modalidad'] === 'online' ? '#065f46' : '#7f1d1d' ?>; color:white; font-size:0.7rem;">
-                                    <?= $curso['modalidad'] === 'online' ? '🌐 Online' : '🏰 Presencial' ?>
+                                    <?= $curso['modalidad'] === 'online' ? '<i class="fa-solid fa-globe"></i> Online' : '<i class="fa-solid fa-dungeon"></i> Presencial' ?>
                                 </span>
                             </div>
                             <h3 class="card-title" style="font-size:1.2rem; margin-bottom:0.5rem;"><?= htmlspecialchars($curso['titulo']) ?></h3>
@@ -73,7 +73,7 @@
             </div>
         <?php else: ?>
             <div class="card" style="padding:3rem; text-align:center;">
-                <p style="font-size:3rem; margin-bottom:1rem;">📭</p>
+                <p style="font-size:3rem; margin-bottom:1rem;"><i class="fa-solid fa-inbox"></i></p>
                 <p style="color:#cbd5e1; font-size:1.1rem;">Este instructor aún no ha publicado cursos.</p>
             </div>
         <?php endif; ?>

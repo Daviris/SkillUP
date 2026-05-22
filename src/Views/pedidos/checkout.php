@@ -2,7 +2,7 @@
 <div style="max-width:800px; margin:0 auto;">
     <div class="fade-in-up" style="margin-bottom:2rem;">
         <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem;">
-            ⚔️ Finalizar Misión
+            <i class="fa-solid fa-sword"></i> Finalizar Misión
         </h1>
         <p style="color:#94a3b8; font-size:1.1rem;">Completa los pasos para adquirir tus cursos</p>
     </div>
@@ -24,7 +24,7 @@
         <?= \App\Core\Csrf::tokenField() ?>
         <!-- Paso 1: Datos personales -->
         <div id="paso1" class="paso card fade-in-up" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📋 Datos personales</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-clipboard-list"></i> Datos personales</h2>
             <div class="form-group">
                 <label class="form-label">Nombre completo</label>
                 <input type="text" name="nombre" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['nombre'] ?? '') ?>">
@@ -46,7 +46,7 @@
 
         <!-- Paso 2: Tarjeta (simulado) -->
         <div id="paso2" class="paso card hidden fade-in-up" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">💳 Datos de pago</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-regular fa-credit-card"></i> Datos de pago</h2>
             <p style="color:#94a3b8; margin-bottom:1.5rem;">Estos datos son simulados y no se almacenarán.</p>
             <div class="form-group">
                 <label class="form-label">Titular de la tarjeta</label>
@@ -76,7 +76,7 @@
 
         <!-- Paso 3: Confirmación -->
         <div id="paso3" class="paso card hidden fade-in-up" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;">✅ Confirmar compra</h2>
+            <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-solid fa-circle-check"></i> Confirmar compra</h2>
 
             <div class="card" style="background:#0f172a; margin-bottom:1.5rem; padding:1.5rem; border:1px solid #334155;">
                 <h3 class="font-rpg" style="font-size:1.3rem; color:#fbbf24; margin-bottom:1rem;">Resumen del pedido</h3>
@@ -101,7 +101,7 @@
             <div style="display:flex; justify-content:space-between;">
                 <button type="button" onclick="siguientePaso(2)" class="btn btn-secondary">← Anterior</button>
                 <button type="submit" class="btn btn-success" style="background:linear-gradient(135deg, #065f46, #047857); border:none;">
-                    ✅ Confirmar pago
+                    <i class="fa-solid fa-circle-check"></i> Confirmar pago
                 </button>
             </div>
         </div>

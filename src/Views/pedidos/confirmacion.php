@@ -2,7 +2,7 @@
 <div style="max-width:700px; margin:3rem auto;">
     <div class="fade-in-up card" style="padding:3rem 2rem; text-align:center;">
         <!-- Icono de éxito -->
-        <div style="font-size:5rem; margin-bottom:1rem;">✅</div>
+        <div style="font-size:5rem; margin-bottom:1rem;"><i class="fa-solid fa-circle-check"></i></div>
         
         <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem;">
             ¡Misión Completada!
@@ -32,7 +32,7 @@
         </div>
 
         <!-- Cursos adquiridos -->
-        <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem; text-align:left;">📚 Cursos adquiridos</h2>
+        <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem; text-align:left;"><i class="fa-solid fa-book-open"></i> Cursos adquiridos</h2>
         <div class="table-container" style="margin-bottom:2rem;">
             <table style="width:100%;">
                 <thead>
@@ -55,11 +55,11 @@
         <!-- Botones de acción -->
         <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
             <a href="/cursos" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; font-size:1.1rem; padding:0.8rem 2rem;">
-                🗺️ Seguir explorando
+                <i class="fa-solid fa-map"></i> Seguir explorando
             </a>
             <?php if (count($detalles) === 1): ?>
                 <a href="/mis-cursos/ver/<?= $detalles[0]['curso_id'] ?>" class="btn btn-primary" style="background:linear-gradient(135deg, #065f46, #047857); border:none; font-size:1.1rem; padding:0.8rem 2rem;">
-                    ⚔️ Ir a la misión
+                    <i class="fa-solid fa-sword"></i> Ir a la misión
                 </a>
             <?php endif; ?>
         </div>

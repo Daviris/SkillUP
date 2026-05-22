@@ -2,7 +2,7 @@
 <div style="max-width:1000px; margin:0 auto;">
     <!-- Migas de pan -->
     <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
-        <a href="/instructor" style="color:#fbbf24;">🧙 Panel Instructor</a> /
+        <a href="/instructor" style="color:#fbbf24;"><i class="fa-solid fa-hat-wizard"></i> Panel Instructor</a> /
         <a href="/instructor/cursos/<?= $clase['curso_id'] ?>/clases" style="color:#fbbf24;">Clases</a> /
         <span style="color:#e5e7eb;">Entregas de "<?= htmlspecialchars($clase['titulo']) ?>"</span>
     </div>
@@ -12,12 +12,12 @@
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
             <div>
                 <h1 class="font-rpg" style="font-size:2.2rem; color:#fbbf24; margin-bottom:0.25rem;">
-                    📋 Entregas
+                    <i class="fa-solid fa-clipboard-list"></i> Entregas
                 </h1>
                 <p style="color:#cbd5e1;"><?= htmlspecialchars($clase['titulo']) ?> · <?= count($entregas ?? []) ?> entregas</p>
             </div>
             <span class="badge" style="background:#7f1d1d; color:white; font-size:0.9rem; padding:0.5rem 1rem;">
-                📝 Tarea
+                <i class="fa-solid fa-file-pen"></i> Tarea
             </span>
         </div>
     </div>
@@ -38,12 +38,12 @@
                             </p>
                             <?php if (!empty($entrega['archivo_nombre'])): ?>
                                 <a href="/archivo/descargar/<?= $entrega['archivo_id'] ?>" class="btn btn-secondary btn-sm" style="margin-top:0.25rem;">
-                                    📄 <?= htmlspecialchars($entrega['archivo_nombre']) ?>
+                                    <i class="fa-solid fa-file"></i> <?= htmlspecialchars($entrega['archivo_nombre']) ?>
                                 </a>
                             <?php endif; ?>
                             <?php if (!empty($entrega['comentario_alumno'])): ?>
                                 <p style="color:#cbd5e1; font-size:0.9rem; margin-top:0.5rem;">
-                                    💬 <?= htmlspecialchars($entrega['comentario_alumno']) ?>
+                                    <i class="fa-solid fa-comments"></i> <?= htmlspecialchars($entrega['comentario_alumno']) ?>
                                 </p>
                             <?php endif; ?>
                         </div>
@@ -60,7 +60,7 @@
                                         </p>
                                     <?php endif; ?>
                                     <button onclick="activarEdicion(<?= $entrega['id'] ?>)" class="btn btn-primary btn-sm" style="margin-top:0.5rem; background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                                        ✏️ Editar
+                                        <i class="fa-solid fa-pencil"></i> Editar
                                     </button>
                                 </div>
                                 <!-- Formulario de edición oculto -->
@@ -74,7 +74,7 @@
                                         </div>
                                         <textarea name="feedback" rows="2" placeholder="Feedback" class="form-textarea" style="margin-bottom:0.5rem;"><?= htmlspecialchars($entrega['feedback_instructor'] ?? '') ?></textarea>
                                         <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                                            <button type="submit" class="btn btn-success btn-sm">💾 Guardar</button>
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                                             <button type="button" onclick="cancelarEdicion(<?= $entrega['id'] ?>)" class="btn btn-secondary btn-sm">Cancelar</button>
                                         </div>
                                     </form>
@@ -89,7 +89,7 @@
                                         <span style="color:#94a3b8;">/10</span>
                                     </div>
                                     <textarea name="feedback" rows="2" placeholder="Feedback para el alumno" class="form-textarea" style="margin-bottom:0.5rem;"></textarea>
-                                    <button type="submit" class="btn btn-success btn-sm">✅ Calificar</button>
+                                    <button type="submit" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-check"></i> Calificar</button>
                                 </form>
                             <?php endif; ?>
                         </div>
@@ -99,7 +99,7 @@
         </div>
     <?php else: ?>
         <div class="fade-in-up card" style="padding:4rem 2rem; text-align:center;">
-            <p style="font-size:4rem; margin-bottom:1rem;">📭</p>
+            <p style="font-size:4rem; margin-bottom:1rem;"><i class="fa-solid fa-inbox"></i></p>
             <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:0.5rem;">No hay entregas aún</h2>
             <p style="color:#94a3b8;">Los alumnos todavía no han enviado sus tareas.</p>
         </div>

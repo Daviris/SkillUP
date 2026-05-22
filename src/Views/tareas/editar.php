@@ -2,7 +2,7 @@
 <div style="max-width:550px; margin:3rem auto;">
     <div class="fade-in-up card" style="padding:2.5rem;">
         <!-- Icono decorativo -->
-        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;">📤</div>
+        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;"><i class="fa-solid fa-upload"></i></div>
 
         <h1 class="font-rpg" style="font-size:2.2rem; color:#fbbf24; text-align:center; margin-bottom:1.5rem;">
             Modificar entrega
@@ -22,7 +22,7 @@
 
             <div style="display:flex; gap:1rem; margin-top:2rem;">
                 <button type="submit" class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem;">
-                    💾 Actualizar
+                    <i class="fa-solid fa-floppy-disk"></i> Actualizar
                 </button>
                 <a href="/mis-cursos/ver/<?= $entrega['clase_id'] ?>" class="btn btn-secondary" style="flex:1; text-align:center; padding:0.8rem;">
                     Cancelar

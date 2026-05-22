@@ -2,7 +2,7 @@
 <div style="max-width:900px; margin:0 auto;">
     <!-- Migas de pan -->
     <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
-        <a href="/mis-cursos" style="color:#fbbf24;">📖 Mis Cursos</a> /
+        <a href="/mis-cursos" style="color:#fbbf24;"><i class="fa-solid fa-book"></i> Mis Cursos</a> /
         <a href="/mis-cursos/ver/<?= $curso['id'] ?>" style="color:#fbbf24;"><?= htmlspecialchars($curso['titulo']) ?></a> /
         <span style="color:#e5e7eb;"><?= htmlspecialchars($clase['titulo']) ?></span>
     </div>
@@ -20,13 +20,13 @@
                 <span style="color:#94a3b8; font-size:0.9rem;"><?= $clase['duracion'] ?> min</span>
             </div>
         </div>
-        <p style="color:#94a3b8; font-size:0.9rem;"><?= $curso['modalidad'] === 'online' ? '🌐 Online' : '🏰 Presencial' ?></p>
+        <p style="color:#94a3b8; font-size:0.9rem;"><?= $curso['modalidad'] === 'online' ? '<i class="fa-solid fa-globe"></i> Online' : '<i class="fa-solid fa-dungeon"></i> Presencial' ?></p>
     </div>
 
     <!-- Contenido según tipo de clase -->
     <?php if ($clase['tipo'] === 'teoria'): ?>
         <div class="fade-in-up card" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">📖 Contenido teórico</h2>
+            <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-solid fa-book"></i> Contenido teórico</h2>
             <div style="color:#e5e7eb; line-height:1.8;">
                 <?= nl2br(htmlspecialchars($clase['contenido_texto'] ?? '')) ?>
             </div>
@@ -34,7 +34,7 @@
 
     <?php elseif ($clase['tipo'] === 'archivo'): ?>
         <div class="fade-in-up card" style="padding:2rem;">
-            <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">📄 Material de la clase</h2>
+            <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-solid fa-file"></i> Material de la clase</h2>
             <?php if (!empty($clase['archivo_id'])): ?>
                 <div style="display:flex; align-items:center; justify-content:space-between; background:#0f172a; padding:1.5rem; border-radius:0.75rem; border:1px solid #334155;">
                     <div>
@@ -42,7 +42,7 @@
                         <p style="color:#94a3b8; font-size:0.9rem;">Descarga el material para estudiar</p>
                     </div>
                     <a href="/archivo/descargar/<?= $clase['archivo_id'] ?>" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                        📥 Descargar
+                        <i class="fa-solid fa-download"></i> Descargar
                     </a>
                 </div>
             <?php else: ?>
@@ -53,7 +53,7 @@
     <?php elseif ($clase['tipo'] === 'tarea'): ?>
         <!-- Descripción de la tarea -->
         <div class="fade-in-up card" style="padding:2rem; margin-bottom:2rem;">
-            <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;">📝 Descripción de la tarea</h2>
+            <h2 class="font-rpg" style="font-size:1.5rem; color:#fbbf24; margin-bottom:1rem;"><i class="fa-solid fa-file-pen"></i> Descripción de la tarea</h2>
             <?php if (!empty($clase['criterios_evaluacion'])): ?>
                 <p style="color:#e5e7eb; line-height:1.6;"><?= nl2br(htmlspecialchars($clase['criterios_evaluacion'])) ?></p>
             <?php else: ?>
@@ -65,7 +65,7 @@
         <?php if ($entrega): ?>
             <div class="fade-in-up card" style="padding:1.5rem; background:rgba(6,95,70,0.1); border:1px solid #065f46;">
                 <h3 style="color:#10b981; font-weight:600; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
-                    ✅ Tu entrega
+                    <i class="fa-solid fa-circle-check"></i> Tu entrega
                 </h3>
                 <p style="color:#e5e7eb; font-size:0.95rem; margin-bottom:0.5rem;">
                     Entregado el <?= date('d/m/Y H:i', strtotime($entrega['fecha_entrega'])) ?>
@@ -103,7 +103,7 @@
             </div>
         <?php else: ?>
             <div class="fade-in-up card" style="padding:1.5rem;">
-                <h3 style="color:#fbbf24; font-weight:600; margin-bottom:1rem;">📤 Subir entrega</h3>
+                <h3 style="color:#fbbf24; font-weight:600; margin-bottom:1rem;"><i class="fa-solid fa-upload"></i> Subir entrega</h3>
                 <form action="/archivo/subir" method="POST" enctype="multipart/form-data">
                     <?= \App\Core\Csrf::tokenField() ?>
                     <input type="hidden" name="clase_id" value="<?= $clase['id'] ?>">

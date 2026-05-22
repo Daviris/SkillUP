@@ -2,7 +2,7 @@
 <div style="max-width:1100px; margin:0 auto;">
     <!-- Migas de pan -->
     <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
-        <a href="/instructor" style="color:#fbbf24;">🧙 Panel Instructor</a> /
+        <a href="/instructor" style="color:#fbbf24;"><i class="fa-solid fa-hat-wizard"></i> Panel Instructor</a> /
         <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
     </div>
 
@@ -39,14 +39,14 @@
                     <!-- Bloque derecho (botones) -->
                     <div style="display:flex; gap:1rem; align-items:center; flex-shrink:0;">
                         <a href="/instructor/clases/editar/<?= $clase['id'] ?>" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                            ✏️ Editar
+                            <i class="fa-solid fa-pencil"></i> Editar
                         </a>
                         <a href="/instructor/clases/eliminar/<?= $clase['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta clase?')">
-                            🗑️ Eliminar
+                            <i class="fa-solid fa-trash-can"></i> Eliminar
                         </a>
                         <?php if ($clase['tipo'] === 'tarea'): ?>
                             <a href="/instructor/clases/<?= $clase['id'] ?>/entregas" class="btn btn-secondary btn-sm">
-                                📋 Entregas
+                                <i class="fa-solid fa-clipboard-list"></i> Entregas
                             </a>
                         <?php endif; ?>
                     </div>
@@ -55,7 +55,7 @@
         </div>
     <?php else: ?>
         <div class="fade-in-up card" style="padding:4rem 2rem; text-align:center;">
-            <p style="font-size:4rem; margin-bottom:1rem;">📭</p>
+            <p style="font-size:4rem; margin-bottom:1rem;"><i class="fa-solid fa-inbox"></i></p>
             <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:0.5rem;">No hay clases todavía</h2>
             <p style="color:#94a3b8; font-size:1.1rem; margin-bottom:2rem;">Crea la primera clase para este curso y comparte tu conocimiento.</p>
             <a href="/instructor/cursos/<?= $curso['id'] ?>/clases/crear" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.7rem 2rem;">

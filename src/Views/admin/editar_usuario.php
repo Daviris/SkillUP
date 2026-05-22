@@ -19,9 +19,9 @@
             <div class="form-group">
                 <label class="form-label">Rol</label>
                 <select name="rol" class="form-select">
-                    <option value="alumno" <?= $usuario['rol'] === 'alumno' ? 'selected' : '' ?>>📖 Alumno</option>
-                    <option value="instructor" <?= $usuario['rol'] === 'instructor' ? 'selected' : '' ?>>🧙 Instructor</option>
-                    <option value="admin" <?= $usuario['rol'] === 'admin' ? 'selected' : '' ?>>🛡️ Administrador</option>
+                    <option value="alumno" <?= $usuario['rol'] === 'alumno' ? 'selected' : '' ?>><i class="fa-solid fa-book"></i> Alumno</option>
+                    <option value="instructor" <?= $usuario['rol'] === 'instructor' ? 'selected' : '' ?>><i class="fa-solid fa-hat-wizard"></i> Instructor</option>
+                    <option value="admin" <?= $usuario['rol'] === 'admin' ? 'selected' : '' ?>><i class="fa-solid fa-shield"></i> Administrador</option>
                 </select>
             </div>
             <div class="form-group">
@@ -31,7 +31,7 @@
 
             <div style="display:flex; gap:1rem; margin-top:2rem;">
                 <button type="submit" class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #b45309, #d97706); border:none; padding:0.8rem;">
-                    💾 Guardar cambios
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
                 </button>
                 <a href="/admin/usuarios" class="btn btn-secondary" style="flex:1; text-align:center; padding:0.8rem;">
                     Cancelar

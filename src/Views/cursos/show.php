@@ -2,7 +2,7 @@
 <div style="max-width:1100px; margin:0 auto;">
     <!-- Migas de pan -->
     <div class="fade-in-up" style="margin-bottom:1.5rem; color:#94a3b8; font-size:0.9rem;">
-        <a href="/cursos" style="color:#fbbf24;">🗺️ Tablón de Misiones</a> /
+        <a href="/cursos" style="color:#fbbf24;"><i class="fa-solid fa-map"></i> Tablón de Misiones</a> /
         <span style="color:#e5e7eb;"><?= htmlspecialchars($curso['titulo']) ?></span>
     </div>
 
@@ -16,10 +16,10 @@
                 <div style="flex:1; min-width:300px;">
                     <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
                         <span class="badge" style="background:<?= $curso['modalidad'] === 'online' ? '#065f46' : '#7f1d1d' ?>; font-size:0.8rem;">
-                            <?= $curso['modalidad'] === 'online' ? '🌐 Online' : '🏰 Presencial' ?>
+                            <?= $curso['modalidad'] === 'online' ? '<i class="fa-solid fa-globe"></i> Online' : '<i class="fa-solid fa-dungeon"></i> Presencial' ?>
                         </span>
                         <?php if ($completo): ?>
-                            <span class="badge" style="background:#7f1d1d; font-size:0.8rem;">⚠️ Completo</span>
+                            <span class="badge" style="background:#7f1d1d; font-size:0.8rem;"><i class="fa-solid fa-triangle-exclamation"></i> Completo</span>
                         <?php endif; ?>
                     </div>
                     <h1 class="font-rpg" style="font-size:2.8rem; color:#fbbf24; margin-bottom:1rem; text-shadow:0 0 20px rgba(251,191,36,0.4);">
@@ -31,7 +31,7 @@
                     
                     <!-- Instructor con reputación -->
                     <div style="display:flex; align-items:center; gap:1rem; margin-top:1rem;">
-                        <div style="font-size:2.5rem;">🧙</div>
+                        <div style="font-size:2.5rem;"><i class="fa-solid fa-hat-wizard"></i></div>
                         <div>
                             <a href="/instructor/<?= $curso['id_instructor'] ?>" style="color:#fbbf24; font-weight:600; font-size:1.1rem; text-decoration:underline;">
                                 <?= htmlspecialchars($curso['instructor_nombre']) ?>
@@ -62,16 +62,16 @@
                             </div>
                         <?php else: ?>
                             <a href="/carrito/agregar/<?= $curso['id'] ?>" class="btn btn-primary" style="width:100%; padding:1rem; font-size:1.1rem; background:linear-gradient(135deg, #b45309, #d97706); border:none; box-shadow:0 0 25px rgba(251,191,36,0.3);">
-                                ⚔️ Añadir a la mochila
+                                <i class="fa-solid fa-sword"></i> Añadir a la mochila
                             </a>
                         <?php endif; ?>
                     <?php elseif (isset($_SESSION['usuario']) && $yaComprado): ?>
                         <div class="flash-message flash-success" style="text-align:center;">
-                            ✅ Ya has adquirido este curso
+                            <i class="fa-solid fa-circle-check"></i> Ya has adquirido este curso
                         </div>
                     <?php else: ?>
                         <a href="/login" class="btn btn-primary" style="width:100%; padding:1rem; font-size:1.1rem; background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                            🔐 Inicia sesión para comprar
+                            <i class="fa-solid fa-lock"></i> Inicia sesión para comprar
                         </a>
                     <?php endif; ?>
                 </div>
@@ -83,12 +83,12 @@
         <!-- Detalles del curso -->
         <div class="fade-in-up" style="transition-delay:0.2s;">
             <div class="card" style="padding:2rem;">
-                <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📋 Detalles de la Misión</h2>
+                <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-clipboard-list"></i> Detalles de la Misión</h2>
                 
                 <div style="display:grid; gap:1rem;">
                     <!-- Modalidad -->
                     <div style="display:flex; align-items:center; gap:1rem; padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                        <span style="font-size:1.5rem;"><?= $curso['modalidad'] === 'online' ? '🌐' : '🏰' ?></span>
+                        <span style="font-size:1.5rem;"><?= $curso['modalidad'] === 'online' ? '<i class="fa-solid fa-globe"></i>' : '<i class="fa-solid fa-dungeon"></i>' ?></span>
                         <div>
                             <div style="color:#fbbf24; font-weight:600;">Modalidad</div>
                             <div style="color:#94a3b8;"><?= ucfirst($curso['modalidad']) ?></div>
@@ -99,12 +99,12 @@
                         <!-- Duración y clases -->
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                             <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                                <div style="font-size:1.5rem; margin-bottom:0.25rem;">⏱️</div>
+                                <div style="font-size:1.5rem; margin-bottom:0.25rem;"><i class="fa-solid fa-stopwatch"></i></div>
                                 <div style="color:#fbbf24; font-weight:600;"><?= array_sum(array_column($curso['clases'] ?? [], 'duracion')) ?> min</div>
                                 <div style="color:#94a3b8; font-size:0.9rem;">Duración total</div>
                             </div>
                             <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                                <div style="font-size:1.5rem; margin-bottom:0.25rem;">📚</div>
+                                <div style="font-size:1.5rem; margin-bottom:0.25rem;"><i class="fa-solid fa-book-open"></i></div>
                                 <div style="color:#fbbf24; font-weight:600;"><?= count($curso['clases'] ?? []) ?></div>
                                 <div style="color:#94a3b8; font-size:0.9rem;">Clases</div>
                             </div>
@@ -114,28 +114,28 @@
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
                             <?php if (!empty($curso['fecha'])): ?>
                                 <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;">📅</div>
+                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-regular fa-calendar"></i></div>
                                     <div style="color:#fbbf24; font-weight:600;"><?= date('d/m/Y', strtotime($curso['fecha'])) ?></div>
                                     <div style="color:#94a3b8; font-size:0.8rem;">Fecha</div>
                                 </div>
                             <?php endif; ?>
                             <?php if (!empty($curso['hora'])): ?>
                                 <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;">🕐</div>
+                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-regular fa-clock"></i></div>
                                     <div style="color:#fbbf24; font-weight:600;"><?= $curso['hora'] ?></div>
                                     <div style="color:#94a3b8; font-size:0.8rem;">Hora</div>
                                 </div>
                             <?php endif; ?>
                             <?php if (!empty($curso['ubicacion'])): ?>
                                 <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;">📍</div>
+                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-solid fa-location-dot"></i></div>
                                     <div style="color:#fbbf24; font-weight:600;"><?= htmlspecialchars($curso['ubicacion']) ?></div>
                                     <div style="color:#94a3b8; font-size:0.8rem;">Ubicación</div>
                                 </div>
                             <?php endif; ?>
                             <?php if (isset($curso['plazas'])): ?>
                                 <div style="padding:1rem; background:#0f172a; border-radius:0.5rem; border:1px solid #334155;">
-                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;">👥</div>
+                                    <div style="font-size:1.2rem; margin-bottom:0.25rem;"><i class="fa-solid fa-people-group"></i></div>
                                     <div style="color:<?= $completo ? '#ef4444' : '#fbbf24' ?>; font-weight:600;">
                                         <?= $completo ? 'Completo' : ($curso['compradores'] ?? 0) . ' / ' . $curso['plazas'] . ' plazas' ?>
                                     </div>
@@ -152,7 +152,7 @@
         <div class="fade-in-up" style="transition-delay:0.3s;">
             <?php if ($curso['modalidad'] === 'online'): ?>
                 <div class="card" style="padding:2rem;">
-                    <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">📖 Contenido del Curso</h2>
+                    <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-book"></i> Contenido del Curso</h2>
                     <?php if (!empty($curso['clases'])): ?>
                         <div style="display:grid; gap:0.75rem;">
                             <?php foreach ($curso['clases'] as $clase): ?>
@@ -186,7 +186,7 @@
 
     <!-- Sección de reseñas -->
     <div class="fade-in-up card" style="margin-top:2rem; padding:2.5rem;">
-        <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;">⭐ Reseñas de Aventureros</h2>
+        <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:1.5rem;"><i class="fa-solid fa-star"></i> Reseñas de Aventureros</h2>
 
         <?php $resenas = \App\Models\Resena::delCurso($curso['id']); ?>
 
@@ -196,7 +196,7 @@
                     <div style="padding:1.5rem; background:#0f172a; border:1px solid #334155; border-radius:0.75rem;">
                         <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:0.75rem;">
                             <span style="color:#fbbf24; font-weight:600; font-size:1.1rem;">
-                                🧑‍🎓 <?= htmlspecialchars($resena['alumno_nombre']) ?>
+                                <i class="fa-solid fa-user-graduate"></i> <?= htmlspecialchars($resena['alumno_nombre']) ?>
                             </span>
                             <span style="color:#fbbf24; font-size:1.1rem;">
                                 <?= str_repeat('★', $resena['puntuacion']) ?><?= str_repeat('☆', 5 - $resena['puntuacion']) ?>
@@ -241,7 +241,7 @@
                             <textarea name="comentario" class="form-textarea" rows="3" placeholder="Comparte tu experiencia con otros aventureros..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                            📝 Enviar reseña
+                            <i class="fa-solid fa-file-pen"></i> Enviar reseña
                         </button>
                     </form>
                 </div>

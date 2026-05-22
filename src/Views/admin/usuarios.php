@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <div class="fade-in-up" style="margin-bottom:2rem;">
     <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-        👥 Usuarios
+        <i class="fa-solid fa-people-group"></i> Usuarios
     </h1>
     <p style="color:#94a3b8; font-size:1.1rem;">Gestión de todos los aventureros de la plataforma</p>
 </div>

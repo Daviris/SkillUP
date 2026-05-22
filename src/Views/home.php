@@ -23,11 +23,11 @@
         <!-- Botones de acción -->
         <div style="display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;">
             <a href="/cursos" class="btn btn-primary" style="font-size: 1.15rem; padding: 0.9rem 2.5rem; box-shadow: 0 0 20px rgba(251,191,36,0.3);">
-                🗺️ Explorar cursos
+                <i class="fa-solid fa-map"></i> Explorar cursos
             </a>
             <?php if (!isset($_SESSION['usuario'])): ?>
                 <a href="/register" class="btn btn-secondary" style="font-size: 1.15rem; padding: 0.9rem 2.5rem; border-color: #fbbf24; color: #fbbf24;">
-                    ✨ Crear cuenta gratuita
+                    <i class="fa-solid fa-wand-sparkles"></i> Crear cuenta gratuita
                 </a>
             <?php endif; ?>
         </div>
@@ -41,15 +41,15 @@
 <div class="carousel fade-in-up" id="homeCarousel" style="transition-delay:0.4s;">
     <div class="carousel-track">
         <div class="carousel-slide active">
-            <h2>🔥 Aprende a tu ritmo</h2>
+            <h2><i class="fa-solid fa-fire"></i> Aprende a tu ritmo</h2>
             <p>Cursos online y presenciales con horarios flexibles</p>
         </div>
         <div class="carousel-slide">
-            <h2>🧠 Instructores expertos</h2>
+            <h2><i class="fa-solid fa-brain"></i> Instructores expertos</h2>
             <p>Aprende de profesionales con experiencia real</p>
         </div>
         <div class="carousel-slide">
-            <h2>📜 Certifícate</h2>
+            <h2><i class="fa-solid fa-scroll"></i> Certifícate</h2>
             <p>Obtén un diploma al finalizar cada curso</p>
         </div>
     </div>
@@ -64,19 +64,19 @@
 <div class="fade-in-up" style="max-width: 1100px; margin: 0 auto 4rem; padding: 0 1rem;">
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
         <div class="stat-card">
-            <div class="stat-icon">🗡️</div>
+            <div class="stat-icon">	<i class="fa-solid fa-scroll"></i></div>
             <div class="stat-number"><?= $totalCursos ?></div>
             <div class="stat-label">Misiones disponibles</div>
             <div class="stat-desc">Cursos para todos los niveles</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon">🧑‍🎓</div>
+            <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
             <div class="stat-number"><?= $totalAlumnos ?></div>
             <div class="stat-label">Aventureros activos</div>
             <div class="stat-desc">Alumnos forjando su leyenda</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon">🧙</div>
+            <div class="stat-icon"><i class="fa-solid fa-hat-wizard"></i></div>
             <div class="stat-number"><?= $totalInstructores ?></div>
             <div class="stat-label">Maestros guías</div>
             <div class="stat-desc">Instructores con experiencia real</div>
@@ -88,17 +88,17 @@
 <div class="fade-in-up" style="max-width: 1100px; margin: 0 auto 2rem; padding: 0 1rem;">
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
         <div class="feature-card">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;"><i class="fa-solid fa-shield"></i></div>
             <h3 class="font-rpg" style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 0.5rem;">Acceso de por vida</h3>
             <p style="color: #94a3b8; font-size: 0.95rem;">Tendrás acceso ilimitado al contenido para que puedas repasar siempre que quieras.</p>
         </div>
         <div class="feature-card">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏆</div>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;"><i class="fa-solid fa-trophy"></i></div>
             <h3 class="font-rpg" style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 0.5rem;">Retos prácticos</h3>
             <p style="color: #94a3b8; font-size: 0.95rem;">Cada curso incluye ejercicios y tareas para que pongas a prueba lo aprendido.</p>
         </div>
         <div class="feature-card">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">💬</div>
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;"><i class="fa-solid fa-comments"></i></div>
             <h3 class="font-rpg" style="font-size: 1.4rem; color: #fbbf24; margin-bottom: 0.5rem;">Comunidad activa</h3>
             <p style="color: #94a3b8; font-size: 0.95rem;">Resuelve dudas y comparte experiencias con otros aventureros y con el instructor.</p>
         </div>

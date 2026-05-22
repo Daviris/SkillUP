@@ -6,42 +6,42 @@
         <div class="card" style="padding:2rem; background:linear-gradient(135deg, #1e293b, #0f172a); border:1px solid #334155; position:relative; overflow:hidden;">
             <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:radial-gradient(circle at 30% 20%, rgba(251,191,36,0.05) 0%, transparent 60%); pointer-events:none;"></div>
             <div style="position:relative; z-index:2;">
-                <div style="text-align:center; font-size:3.5rem; margin-bottom:1rem;">🛡️</div>
+                <div style="text-align:center; font-size:3.5rem; margin-bottom:1rem;"><i class="fa-solid fa-shield"></i></div>
                 <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; text-align:center; margin-bottom:1.5rem;">
                     ¿Por qué unirte a SkillUP?
                 </h2>
                 
                 <div style="display:grid; gap:1rem;">
                     <div style="display:flex; gap:1rem; padding:1rem; background:rgba(15,23,42,0.6); border-radius:0.5rem; border:1px solid #334155;">
-                        <span style="font-size:1.5rem;">🔐</span>
+                        <span style="font-size:1.5rem;"><i class="fa-solid fa-lock"></i></span>
                         <div>
                             <div style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">Cuenta segura</div>
                             <div style="color:#94a3b8; font-size:0.9rem;">Tus datos están encriptados y protegidos con los más altos estándares de seguridad.</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:1rem; padding:1rem; background:rgba(15,23,42,0.6); border-radius:0.5rem; border:1px solid #334155;">
-                        <span style="font-size:1.5rem;">💳</span>
+                        <span style="font-size:1.5rem;"><i class="fa-regular fa-credit-card"></i></span>
                         <div>
                             <div style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">Pagos protegidos</div>
                             <div style="color:#94a3b8; font-size:0.9rem;">Simulación de pago con datos bancarios simulados, sin riesgos reales.</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:1rem; padding:1rem; background:rgba(15,23,42,0.6); border-radius:0.5rem; border:1px solid #334155;">
-                        <span style="font-size:1.5rem;">♾️</span>
+                        <span style="font-size:1.5rem;"><i class="fa-solid fa-infinity"></i></span>
                         <div>
                             <div style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">Acceso de por vida</div>
                             <div style="color:#94a3b8; font-size:0.9rem;">Una vez comprado un curso, tendrás acceso ilimitado para siempre.</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:1rem; padding:1rem; background:rgba(15,23,42,0.6); border-radius:0.5rem; border:1px solid #334155;">
-                        <span style="font-size:1.5rem;">🧑‍🏫</span>
+                        <span style="font-size:1.5rem;"><i class="fa-solid fa-hat-wizard"></i></span>
                         <div>
                             <div style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">Instructores verificados</div>
                             <div style="color:#94a3b8; font-size:0.9rem;">Todos los maestros pasan un proceso de verificación y tienen reputación pública.</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:1rem; padding:1rem; background:rgba(15,23,42,0.6); border-radius:0.5rem; border:1px solid #334155;">
-                        <span style="font-size:1.5rem;">📜</span>
+                        <span style="font-size:1.5rem;">	<i class="fa-solid fa-scroll"></i></span>
                         <div>
                             <div style="color:#fbbf24; font-weight:600; margin-bottom:0.25rem;">Certificados</div>
                             <div style="color:#94a3b8; font-size:0.9rem;">Obtén un certificado al completar cada curso para demostrar tus habilidades.</div>
@@ -91,12 +91,12 @@
                 <div class="form-group">
                     <label class="form-label">Tipo de cuenta</label>
                     <select name="rol" class="form-select">
-                        <option value="alumno" <?= ($_SESSION['old']['rol'] ?? '') === 'alumno' ? 'selected' : '' ?>>📖 Aprendiz (Alumno)</option>
-                        <option value="instructor" <?= ($_SESSION['old']['rol'] ?? '') === 'instructor' ? 'selected' : '' ?>>🧙 Maestro (Instructor)</option>
+                        <option value="alumno" <?= ($_SESSION['old']['rol'] ?? '') === 'alumno' ? 'selected' : '' ?>><i class="fa-solid fa-book"></i> Aprendiz (Alumno)</option>
+                        <option value="instructor" <?= ($_SESSION['old']['rol'] ?? '') === 'instructor' ? 'selected' : '' ?>><i class="fa-solid fa-hat-wizard"></i> Maestro (Instructor)</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1.5rem; padding:0.8rem; font-size:1rem; background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                    ✨ Crear cuenta
+                    	<i class="fa-solid fa-wand-sparkles"></i> Crear cuenta
                 </button>
             </form>
             

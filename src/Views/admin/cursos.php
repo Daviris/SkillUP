@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <div class="fade-in-up" style="margin-bottom:2rem;">
     <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; margin-bottom:0.5rem; text-shadow:0 0 15px rgba(251,191,36,0.4);">
-        📚 Cursos
+        <i class="fa-solid fa-book-open"></i> Cursos
     </h1>
     <p style="color:#94a3b8; font-size:1.1rem;">Gestión de todas las misiones disponibles en la plataforma</p>
 </div>
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 data: 'modalidad',
                 render: (modalidad) => {
                     const badge = modalidad === 'online' ? 'badge-exito' : 'badge-peligro';
-                    const icono = modalidad === 'online' ? '🌐' : '🏰';
+                    const icono = modalidad === 'online' ? '<i class="fa-solid fa-globe"></i>' : '<i class="fa-solid fa-dungeon"></i>';
                     return `<span class="badge ${badge}">${icono} ${modalidad}</span>`;
                 }
             },
@@ -71,13 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Botón de estado según el estado actual
                     let botonEstado = '';
                     if (row.estado !== 'revision') {
-                        botonEstado = `<a href="/admin/cursos/cambiar-estado/${id}?estado=revision" class="btn btn-warning btn-sm" style="background:#fbbf24; color:#0f172a; font-size:0.7rem;" onclick="return confirm('¿Mover este curso a revisión?')" title="Mover a revisión">🔍 Revisar</a>`;
+                        botonEstado = `<a href="/admin/cursos/cambiar-estado/${id}?estado=revision" class="btn btn-warning btn-sm" style="background:#fbbf24; color:#0f172a; font-size:0.7rem;" onclick="return confirm('¿Mover este curso a revisión?')" title="Mover a revisión"><i class="fa-solid fa-magnifying-glass"></i> Revisar</a>`;
                     } else {
                         botonEstado = `<span class="btn btn-sm" style="background:#4b5563; color:#94a3b8; font-size:0.7rem; cursor:default;" title="Este curso ya está en revisión">En revisión</span>`;
                     }
                     return `
                         <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                            <a href="/admin/cursos/ver-clases/${id}" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📚 Clases</a>
+                            <a href="/admin/cursos/ver-clases/${id}" class="btn btn-secondary btn-sm" style="font-size:0.75rem;"><i class="fa-solid fa-book-open"></i> Clases</a>
                             ${botonEstado}
                             <a href="/admin/cursos/editar/${id}" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">Editar</a>
                             <a href="/admin/cursos/eliminar/${id}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este curso?')">Eliminar</a>

@@ -2,7 +2,7 @@
 <div style="max-width:500px; margin:3rem auto;">
     <div class="card fade-in-up" style="padding:2.5rem 2rem;">
         <!-- Icono decorativo -->
-        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;">🗝️</div>
+        <div style="text-align:center; font-size:3rem; margin-bottom:0.5rem;"><i class="fa-solid fa-key"></i></div>
         
         <h1 class="font-rpg" style="font-size:2.5rem; color:#fbbf24; text-align:center; margin-bottom:1.5rem;">
             Acceder a la Taberna
@@ -31,7 +31,7 @@
                 <input type="password" name="password" class="form-input" placeholder="••••••••">
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1.5rem; padding:0.8rem; font-size:1rem; background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                ⚔️ Entrar
+                <i class="fa-solid fa-sword"></i> Entrar
             </button>
         </form>
         

@@ -18,11 +18,11 @@
                                 <?= htmlspecialchars($curso['titulo']) ?>
                             </h3>
                             <p style="color:#94a3b8; font-size:0.9rem;">
-                                🧙 <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?>
+                                	<i class="fa-solid fa-hat-wizard"></i> <?= htmlspecialchars($curso['instructor_nombre'] ?? 'N/A') ?>
                             </p>
                             <?php if ($curso['modalidad'] === 'presencial' && !empty($curso['fecha'])): ?>
                                 <p style="color:#6b7280; font-size:0.8rem; margin-top:0.25rem;">
-                                    📅 <?= date('d/m/Y', strtotime($curso['fecha'])) ?> · 🕐 <?= $curso['hora'] ?? '--:--' ?>
+                                    <i class="fa-regular fa-calendar"></i> <?= date('d/m/Y', strtotime($curso['fecha'])) ?> · 	<i class="fa-regular fa-clock"></i> <?= $curso['hora'] ?? '--:--' ?>
                                 </p>
                             <?php endif; ?>
                         </div>
@@ -32,7 +32,7 @@
                             </span>
                             <br>
                             <a href="/carrito/eliminar/<?= $curso['id'] ?>" class="btn btn-danger btn-sm" style="margin-top:0.5rem;" onclick="return confirm('¿Quitar este curso de la mochila?')">
-                                🗑️ Quitar
+                                <i class="fa-solid fa-trash-can"></i> Quitar
                             </a>
                         </div>
                     </div>
@@ -49,10 +49,10 @@
                 </div>
                 <div style="display:flex; gap:1rem; align-items:center;">
                     <a href="/carrito/vaciar" class="btn btn-secondary" onclick="return confirm('¿Vaciar completamente la mochila?')">
-                        🗑️ Vaciar mochila
+                        <i class="fa-solid fa-trash-can"></i> Vaciar mochila
                     </a>
                     <a href="/checkout" class="btn btn-primary" style="padding:0.8rem 2rem; font-size:1rem; background:linear-gradient(135deg, #b45309, #d97706); border:none; box-shadow:0 0 20px rgba(251,191,36,0.3);">
-                        ⚔️ Finalizar misión (Comprar)
+                        <i class="fa-solid fa-sword"></i> Finalizar misión (Comprar)
                     </a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             <h2 class="font-rpg" style="font-size:1.8rem; color:#fbbf24; margin-bottom:0.5rem;">Tu mochila está vacía</h2>
             <p style="color:#94a3b8; margin-bottom:2rem;">Visita el tablón de misiones y añade cursos para empezar tu aventura.</p>
             <a href="/cursos" class="btn btn-primary" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">
-                🗺️ Explorar cursos
+                <i class="fa-solid fa-map"></i> Explorar cursos
             </a>
         </div>
     <?php endif; ?>

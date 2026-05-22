@@ -9,19 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
         <aside class="admin-sidebar" style="background:linear-gradient(180deg, #0f172a, #1e293b); border-right:2px solid #b45309;">
-            <h2 style="font-family:'VT323', monospace; font-size:2rem; color:#fbbf24; margin-bottom:2rem; text-shadow:0 0 10px rgba(251,191,36,0.5);">🛡️ Admin</h2>
+            <h2 style="font-family:'VT323', monospace; font-size:2rem; color:#fbbf24; margin-bottom:2rem; text-shadow:0 0 10px rgba(251,191,36,0.5);"><i class="fa-solid fa-shield"></i> Admin</h2>
             <nav>
-                <a href="/admin" style="display:flex; align-items:center; gap:0.5rem;">📊 Dashboard</a>
-                <a href="/admin/usuarios" style="display:flex; align-items:center; gap:0.5rem;">👥 Usuarios</a>
-                <a href="/admin/cursos" style="display:flex; align-items:center; gap:0.5rem;">📚 Cursos</a>
-                <a href="/admin/pedidos" style="display:flex; align-items:center; gap:0.5rem;">🛒 Pedidos</a>
+                <a href="/admin" style="display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                <a href="/admin/usuarios" style="display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-people-group"></i> Usuarios</a>
+                <a href="/admin/cursos" style="display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-book-open"></i> Cursos</a>
+                <a href="/admin/pedidos" style="display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-cart-shopping"></i> Pedidos</a>
                 <a href="/admin/revisiones" style="display:flex; align-items:center; gap:0.5rem; position:relative;">
-                    🔍 Revisiones
+                    <i class="fa-solid fa-magnifying-glass"></i> Revisiones
                     <?php if (!empty($pendientesRevision)): ?>
                         <span class="badge badge-peligro" style="position:absolute; top:-5px; right:-10px; font-size:0.7rem; min-width:1.2rem; height:1.2rem; border-radius:50%; display:flex; align-items:center; justify-content:center;">
                             <?= $pendientesRevision ?>
@@ -29,8 +30,8 @@
                     <?php endif; ?>
                 </a>
                 <div class="dropdown-divider" style="margin:1rem 0;"></div>
-                <a href="/" style="display:flex; align-items:center; gap:0.5rem;">🏠 Volver a SkillUP</a>
-                <a href="/logout" style="color:#f87171; display:flex; align-items:center; gap:0.5rem;">🚪 Cerrar sesión</a>
+                <a href="/" style="display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-house"></i> Volver a SkillUP</a>
+                <a href="/logout" style="color:#f87171; display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-ban"></i> Cerrar sesión</a>
             </nav>
         </aside>
 
