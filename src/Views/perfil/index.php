@@ -46,7 +46,7 @@
                                 <td><?= date('d/m/Y', strtotime($pedido['fecha'])) ?></td>
                                 <td style="color:#fbbf24;"><?= number_format($pedido['total'], 2) ?> €</td>
                                 <td><span class="badge" style="background:#065f46; color:white;"><?= $pedido['estado'] ?></span></td>
-                                <td><a href="/pedido/confirmacion/<?= $pedido['id'] ?>" style="color:#fbbf24; font-size:0.9rem;">Ver</a></td>
+                                <td><a href="/pedidos/confirmacion/<?= $pedido['id'] ?>" style="color:#fbbf24; font-size:0.9rem;">Ver</a></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
