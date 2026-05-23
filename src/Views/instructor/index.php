@@ -24,8 +24,8 @@
     <!-- Listado de cursos -->
     <?php if (!empty($cursos)): ?>
         <div class="fade-in-up" style="transition-delay:0.2s;">
-            <div class="table-container">
-                <table style="width:100%;">
+            <div class="table-container panel-cursos-table">
+                <table class="panel-cursos-tabla">
                     <thead>
                         <tr>
                             <th>Título</th>

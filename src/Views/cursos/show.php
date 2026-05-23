@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <div style="display:grid; grid-template-columns: minmax(300px, 1fr) 1fr; gap:2rem;">
+    <div class="detalle-grid">
         <!-- Detalles del curso -->
         <div class="fade-in-up" style="transition-delay:0.2s;">
             <div class="card" style="padding:2rem;">

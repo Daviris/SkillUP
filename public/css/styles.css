@@ -559,6 +559,12 @@ tr:hover td {
     gap: 1.5rem;
 }
 
+.detalle-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) 1fr;
+    gap: 2rem;
+}
+
 /* ========== BADGES ========== */
 
 .badge {
@@ -982,7 +988,7 @@ table.dataTable tbody tr:hover td {
     display: none;
 }
 
-/* ========== RESPONSIVE MEDIA QUERY QUIRÚRGICA CON IMPORTANT MÍNIMOS ========== */
+/* ========== RESPONSIVE MEDIA QUERY ========== */
 @media screen and (max-width: 768px) {
     
     html, body {
@@ -1130,5 +1136,37 @@ table.dataTable tbody tr:hover td {
         padding: 1.5rem 1rem;
         width: 100%;
         box-sizing: border-box;
+    }
+
+    /* GRID */
+    .detalle-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    /* Checkout para el móvil */
+    .paso.hidden {
+        display: none;
+    }
+
+    /* Panel de instructor */
+    .panel-cursos-table {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling:
+    }
+
+    .panel-cursos-tabla {
+        min-width: 800px;
+        font-size: 0.85rem;
+    }
+
+    .panel-cursos-tabla th, .panel-cursos-tabla td {
+        padding: 0.5rem 0.75rem;
+        white-space: nowrap;
+    }
+
+    .panel-cursos-tabla th:nth-child(5), .panel-cursos-tabla td:nth-child(5) {
+        display: none;
     }
 }
