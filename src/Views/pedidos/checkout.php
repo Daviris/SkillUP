@@ -34,7 +34,7 @@
                 <input type="text" name="email" class="form-input" value="<?= htmlspecialchars($_SESSION['usuario']['email'] ?? '') ?>">
             </div>
             <div class="form-group">
-                <label class="form-label">Teléfono (opcional)</label>
+                <label class="form-label">Teléfono</label>
                 <input type="text" name="telefono" class="form-input" placeholder="+34 600 000 000">
             </div>
             <div style="text-align:right; margin-top:1.5rem;">
