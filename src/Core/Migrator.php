@@ -5,6 +5,11 @@ class Migrator
 {
     public static function run(): void
     {
+        // Comprobación para migrar solo 1 vez
+        if (file_exists(__DIR__ . '/../../storage/migrated.lock')) {
+            return;
+        }
+
         $pdo = Database::getConnection();
 
         // ==================== TABLAS PRINCIPALES ====================
@@ -225,5 +230,8 @@ class Migrator
         if ((int) $stmt->fetchColumn() === 0) {
             $pdo->exec("INSERT INTO usuarios (nombre, email, password, rol, reputacion) VALUES ('Administrador', 'admin@skillup.com', '" . password_hash('admin123', PASSWORD_DEFAULT) . "', 'admin', 0)");
         }
+
+        // Crear archivo para comprobación de migrator
+        file_put_contents(__DIR__ . '/../../storage/migrated.lock', date('Y-m-d H:i:s'));
     }
 }
