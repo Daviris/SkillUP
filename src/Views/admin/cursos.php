@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     return `
                         <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                            <a href="/admin/cursos/${id}/alumnos" class="btn btn-secondary btn-sm" style="font-size:0.75rem;"><i class="fa-solid fa-people-group"></i> Alumnos</a>
                             <a href="/admin/cursos/ver-clases/${id}" class="btn btn-secondary btn-sm" style="font-size:0.75rem;"><i class="fa-solid fa-book-open"></i> Clases</a>
                             ${botonEstado}
                             <a href="/admin/cursos/editar/${id}" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #b45309, #d97706); border:none;">Editar</a>
