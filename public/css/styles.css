@@ -565,6 +565,16 @@ tr:hover td {
     gap: 2rem;
 }
 
+.cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.course-card {
+    width: 100%;
+}
+
 /* ========== BADGES ========== */
 
 .badge {
@@ -801,12 +811,12 @@ tr:hover td {
     pointer-events: none;
 }
 
-/* Carrusel mejorado */
+/* Carrusel*/
 .carousel-slide.active {
     animation: slideIn 0.6s ease-out;
 }
 
-/* Efecto hover en tarjetas mejorado */
+/* Efecto hover en tarjetas */
 .card {
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -1140,6 +1150,11 @@ table.dataTable tbody tr:hover td {
 
     /* GRID */
     .detalle-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .cursos-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }

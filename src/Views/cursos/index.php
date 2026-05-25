@@ -45,7 +45,7 @@
 
     <!-- Grid de cursos -->
     <?php if (!empty($cursos)): ?>
-        <div id="cursos-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+        <div id="cursos-grid" class="cursos-grid">
             <?php foreach ($cursos as $index => $curso): ?>
                 <div class="course-card fade-in-up" style="transition-delay: <?= 0.1 * $index ?>s; display: flex; flex-direction: column; height: 100%;">
                     <!-- Icono de portada -->
