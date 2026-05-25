@@ -565,16 +565,6 @@ tr:hover td {
     gap: 2rem;
 }
 
-.cursos-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-.course-card {
-    width: 100%;
-}
-
 /* ========== BADGES ========== */
 
 .badge {
@@ -1150,11 +1140,6 @@ table.dataTable tbody tr:hover td {
 
     /* GRID */
     .detalle-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .cursos-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
